@@ -69,9 +69,7 @@ export default function RegisterAccount() {
   return (
     <Card className="w-[30rem]">
       <CardHeader className="flex justify-center items-center">
-        <CardTitle className="font-bold text-3xl">
-          Shaqdidi Resgister Account
-        </CardTitle>
+        <CardTitle className="font-bold text-3xl">Shaqdidi Sign Up</CardTitle>
         <CardDescription className="tex-base">
           Register your Shaqdidi Account
         </CardDescription>
@@ -146,7 +144,7 @@ export default function RegisterAccount() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-end">
+      <CardFooter className="flex justify-center">
         <small className="pr-2">Already have an account ?</small>
         <Link to={"/"} className="text-rose-700">
           {""} Log In

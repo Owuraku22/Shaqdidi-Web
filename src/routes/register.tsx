@@ -1,4 +1,4 @@
-import RegisterAccount from "@/components/ui/Register_account";
+import RegisterAccount from "@/components/Register_account";
 
 const Regiter = () => {
   return (

@@ -98,7 +98,7 @@ export function SignInForm() {
           </form>
         </Form>
       </CardContent>
-      <CardFooter className="flex justify-end text-center">
+      <CardFooter className="flex justify-center text-center">
         <small className="pr-2">Not Registered? </small>
         <Link to={"/register"} className="text-rose-700">
           {" "}
