@@ -100,7 +100,7 @@ export function SignInForm() {
       </CardContent>
       <CardFooter className="flex justify-end text-center">
         <small className="pr-2">Not Registered? </small>
-        <Link to={"/sign-up"} className="text-rose-700">
+        <Link to={"/register"} className="text-rose-700">
           {" "}
           Sign up
         </Link>
