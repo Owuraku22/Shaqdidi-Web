@@ -7,6 +7,11 @@ import ErrorPage from "./error-page";
 import Login from "./routes/login";
 import { Toaster } from "./components/ui/toaster";
 import Regiter from "./routes/register";
+import PsDashboard from "./components/permanent-staff-dashboard/ps-dashboard";
+import {
+  QueryClient,
+  QueryClientProvider,
+} from "@tanstack/react-query";
 
 const router = createBrowserRouter([
   // {
@@ -24,11 +29,19 @@ const router = createBrowserRouter([
     element: <Regiter />,
     errorElement: <ErrorPage />,
   },
+  {
+    path: "/ps-dashboard",
+    element: <PsDashboard />,
+    errorElement: <ErrorPage />,
+  },
 ]);
+const queryClient = new QueryClient();
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
-    <Toaster />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+      <Toaster />
+    </QueryClientProvider>
   </React.StrictMode>
 );
