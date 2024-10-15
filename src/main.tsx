@@ -1,47 +1,25 @@
-import * as React from "react";
-import * as ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import "./index.css";
-// import Root from "./routes/root";
-import ErrorPage from "./error-page";
-import Login from "./routes/login";
-import { Toaster } from "./components/ui/toaster";
-import Regiter from "./routes/register";
-import PsDashboard from "./components/permanent-staff-dashboard/ps-dashboard";
-import {
-  QueryClient,
-  QueryClientProvider,
-} from "@tanstack/react-query";
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import App from './App'
+import './index.css'
 
-const router = createBrowserRouter([
-  // {
-  //   path: "/",
-  //   element: <Root />,
-  //   errorElement: <ErrorPage />,
-  // },
-  {
-    path: "/",
-    element: <Login />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/register",
-    element: <Regiter />,
-    errorElement: <ErrorPage />,
-  },
-  {
-    path: "/ps-dashboard",
-    element: <PsDashboard />,
-    errorElement: <ErrorPage />,
-  },
-]);
-const queryClient = new QueryClient();
+declare global {
+  interface Window {
+    env: {
+      VITE_REACT_APP_USE_FAKER: boolean
+    }
+  }
+}
 
-ReactDOM.createRoot(document.getElementById("root")!).render(
+// Set the environment variable
+window.env = {
+  VITE_REACT_APP_USE_FAKER: import.meta.env.VITE_REACT_APP_USE_FAKER 
+}
+
+console.log(import.meta.env.VITE_REACT_APP_USE_FAKER)
+
+ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
-      <Toaster />
-    </QueryClientProvider>
-  </React.StrictMode>
-);
+      <App />
+  </React.StrictMode>,
+)
