@@ -56,6 +56,7 @@ export default {
       },
       fontFamily: {
         poppins: ['"Poppins"', ...defaultTheme.fontFamily.sans],
+        roboto: ['"Roboto"', ...defaultTheme.fontFamily.sans],
       },
     },
   },
