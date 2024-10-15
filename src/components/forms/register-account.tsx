@@ -18,7 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import FormAuth from "./auth";
 import { toast } from "@/hooks/use-toast";
 
