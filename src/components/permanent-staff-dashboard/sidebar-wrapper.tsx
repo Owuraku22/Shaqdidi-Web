@@ -6,6 +6,7 @@ const Menu = [
     label: "Home",
     link: "/",
     icon: <Icons.Home />,
+    isActive: true,
   },
   {
     label: "Order History",
@@ -24,7 +25,7 @@ const isActive = true;
 const Auth = ({ children }: { children: React.ReactNode }) => {
   return (
     <section className="flex flex-row  h-auto w-screen ">
-      <div className=" flex-[1] border border-black pt-[10em] bg-background">
+      <div className="hidden md:flex flex-[1]  pt-[10em] bg-background">
         <ul className="gap-4 flex flex-col px-6">
           {Menu.map((menu) => (
             <Link to={menu.link} key={menu.label}>
@@ -47,8 +48,8 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
           </Link>
         </ul>
       </div>
-      <div className="flex flex-[6] flex-col h-screen border border-red-600 bg-white">
-        <div className="flex flex-row justify-between items-center text-center h-[5em] px-16 border border-blue-600 ">
+      <div className="flex flex-[4] flex-col h-screen  bg-white md:px-8">
+        <div className="hidden md:flex flex-row justify-between items-center text-center h-[5em] px-16 ">
           <h2>Home</h2>
         </div>
         {children}
