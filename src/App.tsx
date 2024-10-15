@@ -11,7 +11,7 @@ const queryClient = new QueryClient();
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: '/nsp',
     element: <Layout />,
     errorElement: <ErrorBoundary />,
     children: [
@@ -25,22 +25,22 @@ const router = createBrowserRouter([
           return { todayOrders, previousOrders };
         },
       },
-      {
-        path: 'permanent-staff',
-        element: <PermanentStaff />,
-        errorElement: <ErrorBoundary />,
-        loader: async () => {
-          return queryClient.fetchQuery({queryKey: ['staffMembers'], queryFn: () => fetchStaffMembers()});
-        },
-      },
-      {
-        path: 'profile',
-        element: <Profile />,
-        errorElement: <ErrorBoundary />,
-        loader: async () => {
-          return queryClient.fetchQuery({queryKey: ['userProfile'], queryFn: fetchUserProfile});
-        },
-      },
+      // {
+      //   path: 'permanent-staff',
+      //   element: <PermanentStaff />,
+      //   errorElement: <ErrorBoundary />,
+      //   loader: async () => {
+      //     return queryClient.fetchQuery({queryKey: ['staffMembers'], queryFn: () => fetchStaffMembers()});
+      //   },
+      // },
+      // // {
+      //   path: 'profile',
+      //   element: <Profile />,
+      //   errorElement: <ErrorBoundary />,
+      //   loader: async () => {
+      //     return queryClient.fetchQuery({queryKey: ['userProfile'], queryFn: fetchUserProfile});
+      //   },
+      // },
     ],
   },
 ]);

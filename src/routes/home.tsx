@@ -27,7 +27,7 @@ console.log(activeTab)
           <TabsTrigger value="previous" className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow', { 'bg-primary text-white': activeTab === 'previous' })}>Previous Orders</TabsTrigger>
         </TabsList>
         <TabsContent value="today">
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
             {todayOrders.map(order => (
               <OrderCard
                 key={order.id}

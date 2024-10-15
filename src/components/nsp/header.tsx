@@ -26,7 +26,7 @@ export default function Header({ onMenuClick, title }: HeaderProps) {
     const interval = setInterval(() => {
       setNotificationCount((prevCount) => prevCount + 1);
       play();
-    }, 300000); // New notification every 30 seconds
+    }, 3000000); // New notification every 30 seconds
 
     return () => clearInterval(interval);
   }, [play]);

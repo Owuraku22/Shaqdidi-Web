@@ -60,13 +60,13 @@ export default function OrderCard({
             </div>
           </div>
         </CardContent>
-        <CardFooter className="p-4 flex justify-end">
+        {/* <CardFooter className="p-4 flex justify-end">
           {status === 'Pending' && (
             <Button onClick={handleMarkCompleted} className="">
               Mark as Completed
             </Button>
           )}
-        </CardFooter>
+        </CardFooter> */}
       </Card>
 
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
