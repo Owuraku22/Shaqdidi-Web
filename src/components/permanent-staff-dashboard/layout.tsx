@@ -5,13 +5,14 @@ import Navbar from "@/components/navbar";
 
 export default function Layout() {
     return(
-    <section className="flex w-full h-full">
+    <section className="fixed flex w-full h-screen">
         {/* SIDE BAR*/}
-        <div className="flex-1 px-4">
+        <div className="hidden lg:block flex-1 px-4">
             <div className="py-10"></div>
             <Menu />
         </div>
-        <div className="flex-[5] w-full bg-foreground">
+        <div className="lg:hidden fixed z-50 left-0 top-0"></div>
+        <div className="flex-[8] w-full bg-white">
             {/** NAV BAR */}
             <Navbar />
 

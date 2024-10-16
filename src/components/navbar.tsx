@@ -7,14 +7,14 @@ export default function Navbar() {
 
     return(
     <nav className="flex justify-between items-center p-4 shadow-sm">
-        <h1 className="text-primary-text text-xl">
-            { pathname === "/" && "Home"}
-            { pathname === "/order-history" && "Order History"}
-            { pathname === "/nsps" && "NSPs"}
+        <h1 className="text-primary text-xl">
+            { pathname === "/ps" && "Home"}
+            { pathname === "/ps/order-history" && "Order History"}
         </h1>
-        <div className="flex gap-2 items-center">
+        <div className="flex gap-4 items-center">
             <span> <Icons.Notification /> </span>
-            <div className="w-10 h-10 bg-primary-text rounded-full text-center pt-2 cursor-pointer">IA</div>
+            <div className="w-8 h-8 bg-primary-foreground rounded-full text-center pt-1 cursor-pointer">IA</div>
+            <span className="lg:hidden text-black text-xl"> &#9776; </span>
         </div>
     </nav>
     )
