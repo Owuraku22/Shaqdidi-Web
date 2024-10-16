@@ -1,7 +1,6 @@
 import { useState } from 'react';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
+import { Card, CardContent} from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
 import {
   Dialog,
   DialogContent,
@@ -9,11 +8,11 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { Order } from '@/lib/api';
-import { ScrollArea } from '../ui/scroll-area';
 import { cn } from '@/lib/utils';
 
 interface OrderCardProps extends Order {
   onMarkCompleted: (id: string) => void;
+  activeTab: string;
 }
 
 export default function OrderCard({
@@ -28,6 +27,7 @@ export default function OrderCard({
   note,
   phoneNumber,
   onMarkCompleted,
+  activeTab
 }: OrderCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -113,12 +113,22 @@ export default function OrderCard({
             </div>
           </div>
           <DialogFooter className='p-5'>
-            <Button variant="outline" onClick={() => setIsModalOpen(false)}>
-              Cancel
-            </Button>
-            <Button onClick={confirmMarkCompleted} className="bg-red-500 hover:bg-red-600">
-              Confirm Order
-            </Button>
+            {
+              activeTab === 'today' ? (
+                <>
+                <Button variant="outline" onClick={() => setIsModalOpen(false)}>
+                  Cancel
+                </Button>
+                <Button onClick={confirmMarkCompleted} className="bg-red-500 hover:bg-red-600">
+                  Confirm Order
+                </Button>
+              </>
+              ) : (
+                <Button onClick={() => setIsModalOpen(false)}>
+                  Back
+              </Button>
+              )
+            }
           </DialogFooter>
           {/* </ScrollArea> */}
           
