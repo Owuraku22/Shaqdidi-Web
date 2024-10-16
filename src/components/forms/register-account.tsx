@@ -139,7 +139,7 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="************" {...field} />
+                      <Input placeholder="************" type="password" {...field} />
                     </FormControl>
                   </FormItem>
                 )}

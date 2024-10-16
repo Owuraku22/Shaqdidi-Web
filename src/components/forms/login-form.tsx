@@ -84,7 +84,7 @@ export function SignInForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="enter your password" {...field} />
+                      <Input placeholder="enter your password" type="password" {...field} />
                     </FormControl>
 
                     <FormMessage />
@@ -93,7 +93,7 @@ export function SignInForm() {
               />
               <div className="flex justify-center items-center text-center lg:hidden ">
                 <small className="pr-2">Not Registered? </small>
-                <Link to={"/register"} className="text-rose-700">
+                <Link to={"/sign-up"} className="text-rose-700">
                   {" "}
                   Sign up
                 </Link>
@@ -107,7 +107,7 @@ export function SignInForm() {
         <CardFooter></CardFooter>
         <CardFooter className="lg:flex justify-center items-center text-center hidden ">
           <small className="pr-2">Not Registered? </small>
-          <Link to={"/register"} className="text-rose-700">
+          <Link to={"/sign-up"} className="text-rose-700">
             {" "}
             Sign up
           </Link>

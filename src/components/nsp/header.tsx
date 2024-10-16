@@ -7,6 +7,11 @@ import useSound from 'use-sound';
 import { useEffect, useState } from 'react';
 import notificationSoundUrl from '/notification-sound.wav';
 import notificationSoundUrl2 from '/notification-sound-2.mp3';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover"
 
 
 
@@ -41,8 +46,8 @@ export default function Header({ onMenuClick, title }: HeaderProps) {
 
   return (
     <header className="bg-white border-b border-gray-200 px-4 py-2 flex justify-between w-full items-center ">
-      <div className="flex items-center justify-start space-x-4 ">
-        <img src="/logo.svg" alt="ShaQ D|D" className="h-10 mx-4 md:hidden" />
+      <div className="flex items-center justify-start space-x-4">
+        <img src="/logo.svg" alt="ShaQ D|D" className="h-10 mx-4" />
         <h2 className="text-xl  md:block hidden text-primary">{title}</h2>
       </div>
       
@@ -69,13 +74,30 @@ export default function Header({ onMenuClick, title }: HeaderProps) {
               }
             </Button>
       </div>
-        <Avatar onClick={() => navigate('/profile', {replace: true})} className="hover:cursor-pointer">
+      <Popover>
+  <PopoverTrigger asChild>
+        <Avatar onClick={() => handleNotificationClick()} className="hover:cursor-pointer">
           <AvatarImage src="/avatar.png" alt="User" />
-          <AvatarFallback>U</AvatarFallback>
+          <AvatarFallback>J</AvatarFallback>
         </Avatar>
-        <Button variant="ghost" size="icon" className="md:hidden" onClick={onMenuClick}>
+  </PopoverTrigger>
+  <PopoverContent>
+    <h5 className="text-base font-semibold">
+      James Zokah
+    </h5>
+    <span className='text-sm text-gray-500'>jamesszokah@gmail.com</span>
+    <div className="flex justify-center items-center mt-2 w-full">
+      <Button className='w-full focus-visible:ring-0' variant={'ghost'} onClick={() => {navigate('/sign-in');}}>
+        Logout
+      </Button>
+    </div>
+  </PopoverContent>
+</Popover>
+
+        
+        {/* <Button variant="ghost" size="icon" className="md:hidden" onClick={onMenuClick}>
           <Menu className="h-5 w-5" />
-        </Button>
+        </Button> */}
       </div>
     </header>
   );

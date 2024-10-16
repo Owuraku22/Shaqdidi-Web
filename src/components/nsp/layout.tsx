@@ -20,6 +20,10 @@ const menus = [
 ]
 
 
+const routes = [
+  { path: '/nsp', label: 'Home' },
+];
+
 export default function Layout({isPs = false, routes}: {
   isPs?: boolean,
   routes: {
