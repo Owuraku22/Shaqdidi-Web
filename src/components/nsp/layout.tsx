@@ -20,6 +20,10 @@ const menus = [
 ]
 
 
+const routes = [
+  { path: '/nsp', label: 'Home' },
+];
+
 export default function Layout({isPs = false, routes}: {
   isPs?: boolean,
   routes: {
@@ -67,7 +71,7 @@ export default function Layout({isPs = false, routes}: {
           </>
           ) : null
         }
-      <div className="flex flex-col flex-1 overflow-hidden">
+      <div className="flex flex-col flex-1 overflow-hidden bg-white">
         <Header onMenuClick={toggleSidebar} title={title} />
         <main className="flex-1 overflow-y-auto p-4">
           <Outlet />

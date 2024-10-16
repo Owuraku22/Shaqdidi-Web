@@ -9,6 +9,8 @@ import { fetchTodayOrders, fetchPreviousOrders, fetchStaffMembers, fetchUserProf
 import ErrorBoundary from './error-page';
 import Dashboard from './routes/dashboard';
 import OrderHistory from './components/permanent-staff-dashboard/order-history';
+import Regiter from './routes/register';
+import Login from './routes/login';
 
 const queryClient = new QueryClient();
 
@@ -23,6 +25,21 @@ const psRoutes = [
 
 const router = createBrowserRouter([
   {
+    path: '/',
+    element: <Regiter />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
+    path: '/sign-up',
+    element: <Regiter />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
+    path: '/sign-in',
+    element: <Login />,
+    errorElement: <ErrorBoundary />,
+  },
+  {
     path: '/nsp',
     element: <Layout routes={nspRoutes} />,
     errorElement: <ErrorBoundary />,
@@ -30,8 +47,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-
-        
         errorElement: <ErrorBoundary />,
         loader: async () => {
           const todayOrders = await queryClient.fetchQuery({queryKey: ['todayOrders'], queryFn: fetchTodayOrders});

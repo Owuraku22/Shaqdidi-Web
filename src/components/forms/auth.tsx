@@ -11,7 +11,7 @@ const FormAuth = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <section className="flex lg:flex-row flex-col w-full h-screen">
+    <section className="flex lg:flex-row flex-col w-full h-screen bg-white">
       <div className="relative flex h-screen bg-[url('/gradient.svg')] bg-no-repeat lg:w-1/2 bg-cover">
         <div className="z-30 text-white left-10 top-10 flex flex-col justify-center items-center w-full text-center py-6">
           <h2 className="font-extrabold text-3xl lg:text-5xl ">Welcome to</h2>
@@ -27,7 +27,7 @@ const FormAuth = ({
             <Button
               variant={"outline"}
               className="mt-4 lg:w-[18rem] lg:block hidden bg-inherit"
-              onClick={() => navigate("/", { replace: true })}
+              onClick={() => navigate("/sign-in")}
             >
               Sign In
             </Button>
