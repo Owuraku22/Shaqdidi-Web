@@ -5,22 +5,16 @@ import { useLocation } from "react-router-dom";
 const menu = [
     {
         label: "Home",
-        url: "/",
+        url: "/ps",
         icon: <Icons.Home /> ,
         active: true
     },
     {
         label: "Order History",
-        url: "/order-history",
+        url: "/ps/order-history",
         icon: <Icons.Time /> ,
         active: false,
-    },
-    {
-        label: "NSPs",
-        url: "/nsps",
-        icon: <Icons.Group /> ,
-        active: false,
-    },
+    }
 ]
 
 export default function Menu() {
