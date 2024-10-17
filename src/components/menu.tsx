@@ -14,7 +14,7 @@ const menu = [
         url: "/ps/order-history",
         icon: <Icons.Time /> ,
         active: false,
-    }
+    },
 ]
 
 export default function Menu() {
