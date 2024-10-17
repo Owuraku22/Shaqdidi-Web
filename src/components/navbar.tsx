@@ -1,21 +1,24 @@
-import { useLocation } from "react-router-dom"
+import { useLocation } from "react-router-dom";
 import { Icons } from "./icons/icons";
 
-
 export default function Navbar() {
-    let { pathname } = useLocation();
+  let { pathname } = useLocation();
 
-    return(
+  return (
     <nav className="flex justify-between items-center p-4 shadow-sm">
-        <h1 className="text-primary-text text-xl">
-            { pathname === "/" && "Home"}
-            { pathname === "/order-history" && "Order History"}
-            { pathname === "/nsps" && "NSPs"}
-        </h1>
-        <div className="flex gap-2 items-center">
-            <span> <Icons.Notification /> </span>
-            <div className="w-10 h-10 bg-primary-text rounded-full text-center pt-2 cursor-pointer">IA</div>
+      <h1 className="text-primary text-xl">
+        {pathname === "/ps" && "Home"}
+        {pathname === "/ps/order-history" && "Order History"}
+      </h1>
+      <div className="flex gap-2 items-center">
+        <span>
+          {" "}
+          <Icons.Notification />{" "}
+        </span>
+        <div className="w-10 h-10 bg-primary rounded-full text-center pt-2 cursor-pointer">
+          IA
         </div>
+      </div>
     </nav>
-    )
+  );
 }
