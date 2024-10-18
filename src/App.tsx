@@ -30,8 +30,6 @@ const router = createBrowserRouter([
       {
         index: true,
         element: <Home />,
-
-        
         errorElement: <ErrorBoundary />,
         loader: async () => {
           const todayOrders = await queryClient.fetchQuery({queryKey: ['todayOrders'], queryFn: fetchTodayOrders});
