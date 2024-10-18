@@ -28,8 +28,16 @@ export default function Menu() {
         {
             menu.map(menu => (
             <Link to={menu.url}>
+<<<<<<< HEAD
                 <li className={`${ pathname === menu.url ? "bg-primary-foreground text-primary" : "text-slate-900 hover:bg-gray-200"} flex items-center gap-2 px-2 rounded py-3 text-[.9em]`}>
                 <li className={`${ pathname === menu.url ? "bg-primary-foreground text-primary" : "text-slate-900 hover:bg-gray-200"} flex items-center gap-2 px-2 rounded py-3 text-[.9em]`}>
+=======
+                <li className={`${ pathname === menu.url
+                 ? "bg-primary-foreground text-primary" 
+                 : "text-slate-900 hover:bg-gray-200"
+                 } flex items-center gap-2 px-2 rounded py-3 text-[.9em]`}
+                 >
+>>>>>>> 304487f (changes in font, added popover and drawer to order page, created details page)
                     <span className="size-6 block"> { menu.icon } </span>
                     <span> { menu.label } </span>
                 </li>
