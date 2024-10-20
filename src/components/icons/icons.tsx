@@ -126,5 +126,23 @@ export const Icons = {
         <path d="M10.5 3.125C10.5 3.95343 11.1716 5 12 5C12.8284 5 13.5 3.95343 13.5 3.125C13.5 2.29657 12.8284 2 12 2C11.1716 2 10.5 2.29657 10.5 3.125Z" stroke="currentColor" strokeWidth="1.5" />
         <path d="M15 19C15 20.6569 13.6569 22 12 22C10.3431 22 9 20.6569 9 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
+  ),
+  Bell: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="36"
+      fill="none"
+      viewBox="0 0 36 36"
+      {...props}
+    >
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeWidth="1.6"
+        d="M22.5 25.5H30l-2.108-2.108A3.047 3.047 0 0127 21.237V16.5a9.003 9.003 0 00-6-8.489V7.5a3 3 0 00-6 0v.511A9.006 9.006 0 009 16.5v4.738c0 .808-.321 1.583-.893 2.154L6 25.5h7.5m9 0h-9m9 0V27a4.5 4.5 0 11-9 0v-1.5"
+      ></path>
+    </svg>
   )
 };
