@@ -1,4 +1,4 @@
-import { Bell, Menu } from 'lucide-react';
+import { Bell, LogOut, Menu } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router-dom';
@@ -12,16 +12,19 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover"
+import { cn } from '@/lib/utils';
+import { Icons } from '../icons/icons';
 
 
 
 interface HeaderProps {
   onMenuClick: () => void;
   title: string;
+  psShowLogo?: boolean
 }
 
 
-export default function Header({ onMenuClick, title }: HeaderProps) {
+export default function Header({ onMenuClick, title, psShowLogo= false }: HeaderProps) {
   const navigate = useNavigate();
   const [notificationCount, setNotificationCount] = useState(0);
   const [play] = useSound(notificationSoundUrl);
@@ -45,16 +48,18 @@ export default function Header({ onMenuClick, title }: HeaderProps) {
 
 
   return (
-    <header className="bg-white border-b border-gray-200 px-4 space-x-4 py-2 flex justify-between w-full items-center ">
+    <header className="bg-white border-b shadow border-gray-200 px-6 md:px-10 space-x-4 py-2 flex justify-between w-full items-center ">
       <div className="flex items-center justify-start space-x-4">
-        <img src="/logo.svg" alt="ShaQ D|D" className="h-10 mx-4" />
+        <img src="/logo.svg" alt="ShaQ D|D" className={cn("h-10 mx-4", {
+          'md:hidden': psShowLogo
+        })} />
         <h2 className="text-xl  md:block hidden text-primary">{title}</h2>
       </div>
       
       <div className="flex items-center space-x-4 mr-4">
       <div className="relative">
         <Button variant="ghost" size="icon" onClick={handleNotificationClick}>
-              <Bell className="md:h-5 md:w-5 h-4 w-4" />
+              <Icons.Bell className="md:h-6 md:w-6 h-5 w-5" />
               {notificationCount > 1 ? (
                 <Badge
                   variant="default"
@@ -76,9 +81,9 @@ export default function Header({ onMenuClick, title }: HeaderProps) {
       </div>
       <Popover>
       <PopoverTrigger asChild>
-            <Avatar onClick={() => handleNotificationClick()} className="hover:cursor-pointer">
+            <Avatar onClick={() => handleNotificationClick()} className="hover:cursor-pointer hover:bg-primary hover:text-white w-8 h-8">
               <AvatarImage src="/avatar.png" alt="User" />
-              <AvatarFallback>J</AvatarFallback>
+              <AvatarFallback className='bg-ring'>JZ</AvatarFallback>
             </Avatar>
       </PopoverTrigger>
       <PopoverContent>
@@ -87,8 +92,9 @@ export default function Header({ onMenuClick, title }: HeaderProps) {
       </h5>
       <span className='text-sm text-gray-500'>jamesszokah@gmail.com</span>
       <div className="flex justify-center items-center mt-2 w-full">
-        <Button className='w-full focus-visible:ring-0' variant={'ghost'} onClick={() => {navigate('/sign-in');}}>
-        Logout
+        <Button className='w-full outline-none border-none focus-visible:ring-0 focus-visible:outline-none' variant={'ghost'} onClick={() => {navigate('/sign-in');}}>
+          <LogOut className='w-4 h-4 text-gray-600 mr-4' />
+          Logout
       </Button>
     </div>
   </PopoverContent>
