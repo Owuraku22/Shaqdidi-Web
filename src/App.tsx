@@ -31,19 +31,14 @@ const router = createBrowserRouter([
         element: <Home />,
         errorElement: <ErrorBoundary />,
         loader: async () => {
-          const todayOrders = await queryClient.fetchQuery({
-            queryKey: ["todayOrders"],
-            queryFn: fetchTodayOrders,
-          });
-          const previousOrders = await queryClient.fetchQuery({
-            queryKey: ["previousOrders"],
-            queryFn: fetchPreviousOrders,
-          });
-          return { todayOrders, previousOrders };
+          const orders = await queryClient.fetchQuery({queryKey: ['orders'], queryFn: fetchOrders});
+          console.log('orders', orders)
+          return { orders };
         },
       },
     ],
   },
+  
   {
     path: "/ps",
     element: <PsLayout />,
@@ -53,11 +48,19 @@ const router = createBrowserRouter([
         index: true,
         element: <PsDashboardPage />,
         errorElement: <ErrorBoundary />,
+        loader: async () => {
+          const orders = await queryClient.fetchQuery({queryKey: ['orders'], queryFn: fetchOrders});
+          return { orders };
+        },
       },
       {
         path: "order-history",
         element: <OrderHistory />,
         errorElement: <ErrorBoundary />,
+        loader: async () => {
+          const orders = await queryClient.fetchQuery({queryKey: ['orders'], queryFn: fetchOrders});
+          return { orders };
+        },
       },
     ],
   },
