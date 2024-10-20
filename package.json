@@ -35,11 +35,11 @@
     "react-router-dom": "^6.26.2",
     "tailwind-merge": "^2.5.3",
     "tailwindcss-animate": "^1.0.7",
-    "vaul": "^1.1.0",
     "zod": "^3.23.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.11.1",
+    "@faker-js/faker": "^9.0.3",
     "@faker-js/faker": "^9.0.3",
     "@tanstack/eslint-plugin-query": "^5.59.1",
     "@types/node": "^22.7.4",
@@ -47,6 +47,7 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.2",
     "autoprefixer": "^10.4.20",
+    "axios": "^1.7.7",
     "axios": "^1.7.7",
     "eslint": "^9.11.1",
     "eslint-plugin-react-hooks": "^5.1.0-rc.0",
@@ -56,6 +57,7 @@
     "tailwindcss": "^3.4.13",
     "typescript": "^5.5.3",
     "typescript-eslint": "^8.7.0",
+    "use-sound": "^4.0.3",
     "use-sound": "^4.0.3",
     "vite": "^5.4.8"
   }
