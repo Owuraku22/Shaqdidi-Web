@@ -23,6 +23,7 @@ import { cn } from '@/lib/utils';
 import { useQueryClient } from '@tanstack/react-query';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Hidden } from '@/components/ui/hidden';
+import { useMediaQuery } from '@/hooks/use-media-query';
 
 interface OrderCardProps extends Order {
   onMarkCompleted: (id: number) => void;
@@ -43,14 +44,10 @@ export default function OrderCard({
   activeTab
 }: OrderCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const queryClient = useQueryClient();
+  const { isMobile } = useMediaQuery();
 
-  useEffect(() => {
-    const handleResize = () => setIsMobile(window.innerWidth < 768);
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [window.innerWidth]);
+  
 
   const handleMarkCompleted = async () => {
     try {
@@ -152,7 +149,7 @@ export default function OrderCard({
         <DrawerTrigger asChild>
           {CardTrigger}
         </DrawerTrigger>
-        <DrawerContent className={cn('max-h-[calc(100vh-4rem)] border-none')}>
+        <DrawerContent className={cn('max-h-[calc(100vh-6rem)] border-none')}>
           <DrawerHandle className='w-16 h-3 rounded-full bg-gray-300 mb-2' />
           <Hidden>
               <DrawerTitle className="p-5">Order Details</DrawerTitle>
@@ -173,7 +170,7 @@ export default function OrderCard({
           <DialogTrigger asChild>
             {CardTrigger}
           </DialogTrigger>
-          <DialogContent className="max-h-dvh p-0 border-none md:min-w-[50rem] rounded-t-2xl">
+          <DialogContent className="max-h-dvh p-0 border-none md:min-w-[50rem] rounded-t-2xl [&>button]:hidden">
             <Hidden>
               <DialogTitle className="p-5">Order Details</DialogTitle>
               <DialogDescription className="p-5">

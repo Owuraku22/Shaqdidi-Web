@@ -40,7 +40,6 @@ const Sidebar  = memo(({ onClose, menus }: SidebarProps) => {
                 to={menu.url}
                 end
                 className={({ isActive }) => {
-                  console.log(isActive)
                   return cn('flex items-center px-4 py-2 text-sm rounded-md', {'bg-red-100 text-red-600': isActive, 'text-gray-600 hover:bg-gray-100': !isActive})
                 }}>
                 {menu.icon}
