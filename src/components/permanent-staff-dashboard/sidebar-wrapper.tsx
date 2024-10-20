@@ -48,12 +48,7 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
           </Link>
         </ul>
       </div>
-      <div className="flex flex-[4] flex-col h-screen  bg-white md:px-8">
-        <div className="hidden md:flex flex-row justify-between items-center text-center h-[5em] px-16 ">
-          <h2>Home</h2>
-        </div>
-        {children}
-      </div>
+      
     </section>
   );
 };
