@@ -11,7 +11,7 @@ export default function Profile() {
     const isProfilePicAvailable = false;
 
     return(
-    <DropdownMenu>
+    <DropdownMenu >
         <DropdownMenuTrigger>
         {
             isProfilePicAvailable ? (
