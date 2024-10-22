@@ -52,13 +52,6 @@ const PopoverForm = ({
         <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="border-none p-0">
           <FoodJoints value={value} setOpenModel={setOpenModel} />
-          {/* <DialogFooter className="sm:justify-start border border-red-500">
-            <DialogClose asChild>
-              <Button type="button" variant="secondary">
-                Close
-              </Button>
-            </DialogClose>
-          </DialogFooter> */}
         </DialogContent>
       </Dialog>
     </div>
