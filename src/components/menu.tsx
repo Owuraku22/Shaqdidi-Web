@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Icons } from "@/components/icons/icons";
 import { useLocation } from "react-router-dom";
 
@@ -19,6 +19,7 @@ const menu = [
 
 export default function Menu() {
     let { pathname } = useLocation();
+    const navigate = useNavigate();
 
     return(
         <ul className="flex flex-col gap-2">
@@ -34,6 +35,7 @@ export default function Menu() {
         }
             <li 
                 className={`text-slate-900 hover:bg-gray-200 flex items-center gap-2 cursor-pointer px-2 rounded py-3 text-[.9em]`}
+                onClick={() => navigate('/sign-in')}
             >
                 <span className="size-6 block"> <Icons.Logout /> </span>
                 Logout

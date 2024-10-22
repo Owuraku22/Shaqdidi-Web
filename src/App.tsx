@@ -11,6 +11,7 @@ import Dashboard from './routes/dashboard';
 import OrderHistory from './components/permanent-staff-dashboard/order-history';
 import Regiter from './routes/register';
 import Login from './routes/login';
+import PsDashboardPage from './components/permanent-staff-dashboard/permanent-staff-dashboard';
 
 const queryClient = new QueryClient();
 
@@ -65,7 +66,7 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Dashboard />,
+        element: <PsDashboardPage />,
         errorElement: <ErrorBoundary />,
         
       },
