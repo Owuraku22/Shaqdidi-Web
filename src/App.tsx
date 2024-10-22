@@ -42,6 +42,7 @@ const router = createBrowserRouter([
   {
     path: "/ps",
     element: <PsLayout />,
+    // element: <Layout isPs routes={psRoutes} />,¬
     errorElement: <ErrorBoundary />,
     children: [
       {
@@ -69,8 +70,7 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-    <Toaster />
-    <Toaster />
+      <Toaster />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
