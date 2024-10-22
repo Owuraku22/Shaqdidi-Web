@@ -60,7 +60,7 @@ const router = createBrowserRouter([
   {
     path: "/ps",
     element: <PsLayout />,
-    // element: <Layout isPs routes={psRoutes} />,
+    // element: <Layout isPs routes={psRoutes} />,¬
     errorElement: <ErrorBoundary />,
     children: [
       {

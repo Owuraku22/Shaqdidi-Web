@@ -79,20 +79,20 @@ export default function Header({ onMenuClick, title, psShowLogo= false }: Header
               }
             </Button>
       </div>
-      <Popover>
+      <Popover >
       <PopoverTrigger asChild>
             <Avatar onClick={() => handleNotificationClick()} className="hover:cursor-pointer hover:bg-primary hover:text-white w-8 h-8">
               <AvatarImage src="/avatar.png" alt="User" />
               <AvatarFallback className='bg-ring'>JZ</AvatarFallback>
             </Avatar>
       </PopoverTrigger>
-      <PopoverContent>
+      <PopoverContent className=''>
       <h5 className="text-base font-semibold">
         James Zokah
       </h5>
       <span className='text-sm text-gray-500'>jamesszokah@gmail.com</span>
       <div className="flex justify-center items-center mt-2 w-full">
-        <Button className='w-full outline-none border-none focus-visible:ring-0 focus-visible:outline-none' variant={'ghost'} onClick={() => {navigate('/sign-in');}}>
+        <Button className={cn('w-full outline-none border-none focus-visible:ring-offset-none  focus-visible:outline-none outline-0 focus:ring-offset-0 focus:ring-0')} variant={'ghost'} onClick={() => {navigate('/sign-in');}}>
           <LogOut className='w-4 h-4 text-gray-600 mr-4' />
           Logout
       </Button>
