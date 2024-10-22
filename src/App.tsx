@@ -3,45 +3,41 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Layout from '@/components/nsp/layout';
 import PsLayout from '@/components/permanent-staff-dashboard/layout'
 import Home from '@/routes/home';
-import PermanentStaff from '@/routes/permanent-staff';
-import Profile from '@/routes/profile';
-import { fetchTodayOrders, fetchPreviousOrders, fetchStaffMembers, fetchUserProfile } from '@/lib/api';
+import { fetchTodayOrders, fetchPreviousOrders } from '@/lib/api';
 import ErrorBoundary from './error-page';
-import Dashboard from './routes/dashboard';
 import OrderHistory from './components/permanent-staff-dashboard/order-history';
 import Regiter from './routes/register';
 import Login from './routes/login';
 import PsDashboardPage from './components/permanent-staff-dashboard/permanent-staff-dashboard';
+import { Toaster } from './components/ui/toaster';
 
 const queryClient = new QueryClient();
 
-const nspRoutes = [
-  { path: '/nsp', label: 'Home' },
-];
+const nspRoutes = [{ path: "/nsp", label: "Home" }];
 
 const psRoutes = [
-  { path: '/ps', label: 'Home' },
-  { path: '/ps/order-history', label: 'Order History' },
+  { path: "/ps", label: "Home" },
+  { path: "/ps/order-history", label: "Order History" },
 ];
 
 const router = createBrowserRouter([
   {
-    path: '/',
+    path: "/",
     element: <Regiter />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: '/sign-up',
+    path: "/sign-up",
     element: <Regiter />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: '/sign-in',
+    path: "/sign-in",
     element: <Login />,
     errorElement: <ErrorBoundary />,
   },
   {
-    path: '/nsp',
+    path: "/nsp",
     element: <Layout routes={nspRoutes} />,
     errorElement: <ErrorBoundary />,
     children: [
@@ -50,16 +46,21 @@ const router = createBrowserRouter([
         element: <Home />,
         errorElement: <ErrorBoundary />,
         loader: async () => {
-          const todayOrders = await queryClient.fetchQuery({queryKey: ['todayOrders'], queryFn: fetchTodayOrders});
-          const previousOrders = await queryClient.fetchQuery({queryKey: ['previousOrders'], queryFn: fetchPreviousOrders});
+          const todayOrders = await queryClient.fetchQuery({
+            queryKey: ["todayOrders"],
+            queryFn: fetchTodayOrders,
+          });
+          const previousOrders = await queryClient.fetchQuery({
+            queryKey: ["previousOrders"],
+            queryFn: fetchPreviousOrders,
+          });
           return { todayOrders, previousOrders };
         },
       },
-      
     ],
   },
   {
-    path: '/ps',
+    path: "/ps",
     element: <PsLayout />,
     // element: <Layout isPs routes={psRoutes} />,
     errorElement: <ErrorBoundary />,
@@ -68,15 +69,12 @@ const router = createBrowserRouter([
         index: true,
         element: <PsDashboardPage />,
         errorElement: <ErrorBoundary />,
-        
       },
       {
-        path: 'order-history',
+        path: "order-history",
         element: <OrderHistory />,
         errorElement: <ErrorBoundary />,
-
       },
-      
     ],
   },
 ]);
@@ -84,6 +82,7 @@ const router = createBrowserRouter([
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
+      <Toaster />
       <RouterProvider router={router} />
     </QueryClientProvider>
   );
