@@ -44,16 +44,16 @@ const PsDashboardPage = () => {
         <Icons.Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
       </div>
 
-      <div className="grid gap-y-4 gap-x-2 lg:gap-5 md:gap-y-0 grid-cols-2 md:grid-cols-3 lg:grid-cols-4 3xl:grid-5 overflow-auto  md:ml-0 2xl:mx-5 w-[22.4em] md:w-[47em] lg:w-[80em] 2xl:w-[80em] 3xl:w-[95em]">
+      <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
         {data.map((values, index) => (
           <>
             {isMobile ? (
               <DrawerForm value={values} key={index}>
-                <div className="md:my-4 rounded-xl  cursor-pointer border h-[9.5em] md:md:h-[12em]  lg:h-[13.5em] w-[10.7em] md:w-[14.5em] first-letter: lg:w-[18em] 2xl:w-[18.7em] ">
-                  <div className="h-[6em] md:h-[7.5em] lg:h-[9em] rounded-t-xl object-cover mb-1 border ">
+                <div className="rounded-xl  cursor-pointer border">
+                  <div className="rounded-t-xl object-cover mb-1 border ">
                     <img
                       src="/hamburger.png"
-                      className="h-[6em] md:h-[7.5em]  lg:h-[9em] w-full rounded-t-xl object-cover object-center"
+                      className=" w-full h-[10rem] rounded-t-xl object-cover object-center"
                     />
                   </div>
                   <h1
@@ -70,10 +70,10 @@ const PsDashboardPage = () => {
               </DrawerForm>
             ) : (
               <PopoverForm value={values} key={index}>
-                <div className="md:my-4 rounded-xl  cursor-pointer border h-[9.5em] md:md:h-[12em]  lg:h-[13.5em] w-[10.7em] md:w-[14.5em] first-letter: lg:w-[18em] 2xl:w-[18.7em] ">
+                <div className="md:my-4 rounded-xl  cursor-pointer w-full border h-[9.5em] md:md:h-[12em]  lg:h-[13.5em] ">
                   <div className="h-[6em] md:h-[7.5em] lg:h-[9em] rounded-t-xl object-cover mb-1 border ">
                     <img
-                      src="/hamburger.png"
+                      src="/wakye.jpeg"
                       className="h-[6em] md:h-[7.5em]  lg:h-[9em] w-full rounded-t-xl object-cover object-center"
                     />
                   </div>

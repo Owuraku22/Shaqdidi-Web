@@ -10,7 +10,6 @@ import ErrorBoundary from "./error-page";
 import OrderHistory from "./components/permanent-staff-dashboard/order-history";
 import Regiter from "./routes/register";
 import Login from "./routes/login";
-import Dashboard from "./components/permanent-staff-dashboard/dashboard";
 import { Toaster } from "./components/ui/toaster";
 import PsDashboardPage from "./components/permanent-staff-dashboard/permanent-staff-dashboard";
 
