@@ -10,6 +10,7 @@ import { Bell, Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SheetSide } from "./permanent-staff-dashboard/side-bar";
 
+
 export default function Navbar() {
   let { pathname } = useLocation();
   const [notificationCount, setNotificationCount] = useState(0);

@@ -33,8 +33,7 @@ export default function Menu() {
             ))
         }
             <li 
-                className={`text-slate-900 hover:bg-gray-200 flex items-center gap-2 cursor-pointer px-2 rounded py-3 text-[.9em]`}
-            >
+                className={`text-slate-900 hover:bg-gray-200 flex items-center gap-2 cursor-pointer px-2 rounded py-3 text-[.9em]`}>
                 <span className="size-6 block"> <Icons.Logout /> </span>
                 Logout
             </li>
