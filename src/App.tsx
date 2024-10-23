@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "@/components/nsp/layout";
 import PsLayout from "@/components/permanent-staff-dashboard/layout";
 import Home from "@/routes/home";
+<<<<<<< HEAD
 import {
   api,
   fetchAvailablePersonnels,
@@ -10,6 +11,9 @@ import {
   fetchOrders,
   signIn,
 } from "@/lib/api";
+=======
+import { fetchTodayOrders, fetchPreviousOrders } from "@/lib/api";
+>>>>>>> 2a816a8 (Changes to layouts of food others)
 import ErrorBoundary from "./error-page";
 import OrderHistory from "./components/permanent-staff-dashboard/order-history";
 import Regiter from "./routes/register";

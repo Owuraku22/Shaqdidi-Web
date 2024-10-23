@@ -34,6 +34,7 @@ const PsDashboardPage = () => {
       </div>
 
       <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
+<<<<<<< HEAD
         {foodJoints?.map((values, index) => (
           <>
             {isMobile ? (
@@ -42,6 +43,12 @@ const PsDashboardPage = () => {
                 personnels={personnels!}
                 key={index}
               >
+=======
+        {data.map((values, index) => (
+          <>
+            {isMobile ? (
+              <DrawerForm value={values} key={index}>
+>>>>>>> 2a816a8 (Changes to layouts of food others)
                 <div className="rounded-xl  cursor-pointer border">
                   <div className="rounded-t-xl object-cover mb-1 border ">
                     <img
@@ -62,11 +69,15 @@ const PsDashboardPage = () => {
                 </div>
               </DrawerForm>
             ) : (
+<<<<<<< HEAD
               <PopoverForm
                 foodJoint={values}
                 personnels={personnels!}
                 key={index}
               >
+=======
+              <PopoverForm value={values} key={index}>
+>>>>>>> 2a816a8 (Changes to layouts of food others)
                 <div className="md:my-4 rounded-xl  cursor-pointer w-full border h-[9.5em] md:md:h-[12em]  lg:h-[13.5em] ">
                   <div className="h-[6em] md:h-[7.5em] lg:h-[9em] rounded-t-xl object-cover mb-1 border ">
                     <img
