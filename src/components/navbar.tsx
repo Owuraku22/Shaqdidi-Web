@@ -1,5 +1,4 @@
 import { useLocation } from "react-router-dom";
-import { useLocation } from "react-router-dom";
 import { Icons } from "./icons/icons";
 import Profile from "./permanent-staff-dashboard/profile";
 import { Badge } from "@/components/ui/badge";
