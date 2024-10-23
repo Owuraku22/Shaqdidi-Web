@@ -122,7 +122,7 @@ const FoodJoints = ({
                   <Textarea
                     placeholder="Add any Special instructions or requests"
                     {...field}
-                    className="h-[10em] text-start bg-white font-roboto"
+                    className="text-start bg-white font-roboto"
                   />
                 </FormControl>
               </FormItem>

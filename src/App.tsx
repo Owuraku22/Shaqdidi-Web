@@ -3,18 +3,12 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "@/components/nsp/layout";
 import PsLayout from "@/components/permanent-staff-dashboard/layout";
 import Home from "@/routes/home";
-import {
-  fetchTodayOrders,
-  fetchPreviousOrders,
-  fetchStaffMembers,
-  fetchUserProfile,
-} from "@/lib/api";
+import { fetchTodayOrders, fetchPreviousOrders } from "@/lib/api";
 import ErrorBoundary from "./error-page";
 // import Dashboard from "./routes/dashboard";
 import OrderHistory from "./components/permanent-staff-dashboard/order-history";
 import Regiter from "./routes/register";
 import Login from "./routes/login";
-import Dashboard from "./components/permanent-staff-dashboard/dashboard";
 import { Toaster } from "./components/ui/toaster";
 import PsDashboardPage from "./components/permanent-staff-dashboard/permanent-staff-dashboard";
 
