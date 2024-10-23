@@ -3,9 +3,8 @@ import Menu from "@/components/menu";
 import Navbar from "@/components/navbar";
 import { ScrollArea } from "../ui/scroll-area";
 
-
 export default function Layout() {
-    return(
+  return (
     <section className="fixed flex w-full h-screen">
         {/* SIDE BAR*/}
         <aside className="hidden lg:block flex-1 px-4">
@@ -29,5 +28,5 @@ export default function Layout() {
             </main>
         </div>
     </section>
-    )
+  );
 }

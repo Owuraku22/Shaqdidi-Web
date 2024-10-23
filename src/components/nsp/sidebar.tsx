@@ -3,6 +3,8 @@ import { Home, Users, User, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Icons } from '../icons/icons';
 import { useLocation } from 'react-router-dom';
+import { memo } from 'react';
+import { cn } from '@/lib/utils';
 
 interface SidebarProps {
   onClose: () => void;
@@ -15,7 +17,7 @@ interface SidebarProps {
 
 
 
-export default function Sidebar({ onClose, menus }: SidebarProps) {
+const Sidebar  = memo(({ onClose, menus }: SidebarProps) => {
   const location = useLocation()
 
   return (
@@ -32,18 +34,14 @@ export default function Sidebar({ onClose, menus }: SidebarProps) {
       <nav className="mt-4 mx-4">
         {
           menus?.map(menu => {
-            console.log(menu.url)
-            const matchingSubLink = menus?.find((link) => location.pathname === link.url)
             return(
               <NavLink
                 key={menu.label}
                 to={menu.url}
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-2 text-sm rounded-md ${
-                    matchingSubLink ? 'bg-red-100 text-red-600' : 'text-gray-600 hover:bg-gray-100'
-                  }`
-                }
-              >
+                end
+                className={({ isActive }) => {
+                  return cn('flex items-center px-4 py-2 text-sm rounded-md', {'bg-red-100 text-red-600': isActive, 'text-gray-600 hover:bg-gray-100': !isActive})
+                }}>
                 {menu.icon}
                 {menu.label}
               </NavLink>
@@ -54,4 +52,7 @@ export default function Sidebar({ onClose, menus }: SidebarProps) {
       </nav>
     </aside>
   );
-}
+});
+
+
+export default Sidebar;

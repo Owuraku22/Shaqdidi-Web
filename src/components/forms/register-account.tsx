@@ -117,7 +117,7 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="John" {...field} />
+                      <Input placeholder="John" type='text' {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -128,7 +128,7 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="john@gmail.com" {...field} />
+                      <Input placeholder="john@gmail.com" type='email' {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -150,7 +150,7 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="0266784556" {...field} />
+                      <Input placeholder="0266784556" type='number' {...field} />
                     </FormControl>
                   </FormItem>
                 )}

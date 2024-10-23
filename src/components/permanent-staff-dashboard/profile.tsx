@@ -12,7 +12,7 @@ export default function Profile() {
     const navigate = useNavigate();
 
     return(
-    <DropdownMenu>
+    <DropdownMenu >
         <DropdownMenuTrigger>
             <Avatar className="hover:cursor-pointer">
                 <AvatarImage src="https://github.com/shadcn.png" />
