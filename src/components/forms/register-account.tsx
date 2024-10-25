@@ -18,9 +18,10 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, useSubmit } from "react-router-dom";
 import FormAuth from "./auth";
 import { toast } from "@/hooks/use-toast";
+
 
 const formSchema = z
   .object({
@@ -44,19 +45,22 @@ const formSchema = z
 const formSchema1 = formSchema.required();
 
 export default function RegisterAccount() {
+  // const actionData = useActionData();
+  const submit = useSubmit();
   const form = useForm<z.infer<typeof formSchema1>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       username: "",
       email: "",
       password: "",
-      account_type: "ps",
+      account_type: "staff",
       mobile: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Toast should appear");
+    submit(values, { action: "/sign-up", method: "post" });
     toast({
       title: "You have submitted th following values:",
       description: (
@@ -100,11 +104,11 @@ export default function RegisterAccount() {
                       value={field.value}
                     >
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="ps" id="ps" />
+                        <RadioGroupItem value="staff" id="staff" />
                         <Label htmlFor="ps">PS</Label>
                       </div>
                       <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="nsp" id="nsp" />
+                        <RadioGroupItem value="personnel" id="personnel" />
                         <Label htmlFor="nsp">NSP</Label>
                       </div>
                     </RadioGroup>
@@ -117,7 +121,7 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="John" type='text' {...field} />
+                      <Input placeholder="John" type="text" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
@@ -128,7 +132,11 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="john@gmail.com" type='email' {...field} />
+                      <Input
+                        placeholder="john@gmail.com"
+                        type="email"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -139,7 +147,11 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="************" type="password" {...field} />
+                      <Input
+                        placeholder="************"
+                        type="password"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -150,7 +162,11 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="0266784556" type='number' {...field} />
+                      <Input
+                        placeholder="0266784556"
+                        type="number"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}

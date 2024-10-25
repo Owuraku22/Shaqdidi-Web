@@ -27,7 +27,7 @@ const FormAuth = ({
             <Button
               variant={"outline"}
               className="mt-4 lg:w-[18rem] lg:block hidden bg-inherit"
-              onClick={() => navigate("/sign-in")}
+              onClick={() => navigate("/")}
             >
               Sign In
             </Button>

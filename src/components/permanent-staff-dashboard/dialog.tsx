@@ -2,18 +2,16 @@ import React, { useState } from "react";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 // import ConfirmPopoverForm from "./confirm-dialog";
+import { FoodJoint, Personnel } from "@/lib/api";
 import FoodJoints from "./food-joints";
-type JointData = {
-  name: string;
-  address: string;
-  id: number;
-};
 
 const PopoverForm = ({
-  value,
+  foodJoint,
+  personnels,
   children,
 }: {
-  value: JointData;
+  foodJoint: FoodJoint;
+  personnels: Personnel[];
   children: React.ReactNode;
 }) => {
   const [openModel, setOpenModel] = useState(false);
@@ -21,7 +19,7 @@ const PopoverForm = ({
       <Dialog open={openModel} onOpenChange={setOpenModel}>
         <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="border-none p-0">
-          <FoodJoints value={value} setOpenModel={setOpenModel} />
+          <FoodJoints foodJoint={foodJoint} personnels={personnels} setOpenModel={setOpenModel} />
         </DialogContent>
       </Dialog>
   );

@@ -1,11 +1,11 @@
-import axios, { AxiosError } from 'axios';
-import { faker } from '@faker-js/faker';
+import axios, { AxiosError } from "axios";
+import { faker } from "@faker-js/faker";
 
 const api = axios.create({
-  baseURL: 'https://api.shaqdidi.com/',
+  baseURL: "https://didi.shaqexpress.com/",
   headers: {
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
+    "Content-Type": "application/json",
+    Accept: "application/json",
   },
 });
 
@@ -20,6 +20,7 @@ export interface AuthResponse {
   user: {
     id: number;
     full_name: string;
+    email: string;
     account_type?: string;
   };
 }
@@ -32,6 +33,10 @@ export interface Staff {
   phone_number: string;
   status?: string;
 }
+export interface Personnel {
+  id: number;
+  name: string;
+}
 
 export interface Order {
   id: number;
@@ -40,7 +45,7 @@ export interface Order {
   address: string;
   amount: string;
   name: string;
-  status: 'Pending' | 'Completed' | 'Cancelled';
+  status: "Pending" | "Completed" | "Cancelled";
   note?: string;
   phone_number?: string;
 }
@@ -51,14 +56,22 @@ export interface FoodJoint {
   address: string;
 }
 
-const useFaker = import.meta.env.VITE_REACT_APP_USE_FAKER === 'true';
+const useFaker = import.meta.env.VITE_REACT_APP_USE_FAKER === "true";
 
 const handleApiError = (error: unknown) => {
   if (axios.isAxiosError(error)) {
-    const axiosError = error as AxiosError<{ message: string; errors?: Record<string, string[]> }>;
+    const axiosError = error as AxiosError<{
+      message: string;
+      errors?: Record<string, string[]>;
+    }>;
     if (axiosError.response) {
-      if (axiosError.response.status === 422 && axiosError.response.data.errors) {
-        throw new Error(Object.values(axiosError.response.data.errors).flat().join(', '));
+      if (
+        axiosError.response.status === 422 &&
+        axiosError.response.data.errors
+      ) {
+        throw new Error(
+          Object.values(axiosError.response.data.errors).flat().join(", ")
+        );
       }
       throw new Error(axiosError.response.data.message || axiosError.message);
     }
@@ -72,8 +85,8 @@ export const signUp = async (userData: {
   password: string;
   account_type: string;
   phone_number: string;
-  role: string;
-  fb_token: string;
+  role?: string;
+  fb_token?: string;
 }): Promise<AuthResponse | undefined> => {
   if (useFaker) {
     return {
@@ -87,18 +100,24 @@ export const signUp = async (userData: {
       user: {
         id: faker.number.int(),
         full_name: userData.full_name,
+        email: faker.internet.email({ firstName: faker.person.fullName() }),
+        account_type: "staff",
       },
     };
   }
   try {
-    const response = await api.post<AuthResponse>('/auth/sign-up', userData);
+    const response = await api.post<AuthResponse>("/auth/sign-up", userData);
     return response.data;
   } catch (error) {
     handleApiError(error);
   }
 };
 
-export const signIn = async (credentials: { email: string; password: string; fb_token: string }): Promise<AuthResponse | undefined> => {
+export const signIn = async (credentials: {
+  email: string;
+  password: string;
+  fb_token?: string;
+}): Promise<AuthResponse | undefined> => {
   if (useFaker) {
     return {
       message: "User signed in successful",
@@ -112,23 +131,28 @@ export const signIn = async (credentials: { email: string; password: string; fb_
         id: faker.number.int(),
         full_name: faker.person.fullName(),
         account_type: "staff",
+        email: faker.internet.email({ firstName: faker.person.fullName() }),
       },
     };
   }
   try {
-    const response = await api.post<AuthResponse>('/auth/sign-in', credentials);
+    const response = await api.post<AuthResponse>("/auth/sign-in", credentials);
     return response.data;
   } catch (error) {
     handleApiError(error);
   }
 };
 
-export const signOut = async (fb_token: string): Promise<{ message: string } | undefined> => {
+export const signOut = async (
+  fb_token: string
+): Promise<{ message: string } | undefined> => {
   if (useFaker) {
     return { message: "User logged out successfully" };
   }
   try {
-    const response = await api.post<{ message: string }>('/auth/sign-out', { fb_token });
+    const response = await api.post<{ message: string }>("/auth/sign-out", {
+      fb_token,
+    });
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -147,38 +171,43 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
       },
       user: {
         id: faker.number.int(),
+        email: faker.internet.email({ firstName: faker.person.fullName() }),
         full_name: faker.person.fullName(),
       },
     };
   }
   try {
-    const response = await api.get<AuthResponse>('/auth/refresh');
+    const response = await api.get<AuthResponse>("/auth/refresh");
     return response.data;
   } catch (error) {
     handleApiError(error);
   }
 };
 
-export const fetchPersonnels = async (): Promise<Staff[] | undefined> => {
-  if (useFaker) {
-    return Array.from({ length: 10 }, () => ({
-      id: faker.number.int(),
-      name: faker.person.fullName(),
-      role: faker.person.jobTitle(),
-      status: faker.helpers.arrayElement(['Available', 'Unavailable']),
-      email: faker.internet.email(),
-      phone_number: faker.phone.number(),
-    }));
-  }
-  try {
-    const response = await api.get<{ message: string; personnels: Staff[] }>('/personnels');
-    return response.data.personnels;
-  } catch (error) {
-    handleApiError(error);
-  }
-};
+// export const fetchPersonnels = async (): Promise<Staff[] | undefined> => {
+//   if (useFaker) {
+//     return Array.from({ length: 10 }, () => ({
+//       id: faker.number.int(),
+//       name: faker.person.fullName(),
+//       role: faker.person.jobTitle(),
+//       status: faker.helpers.arrayElement(["Available", "Unavailable"]),
+//       email: faker.internet.email(),
+//       phone_number: faker.phone.number(),
+//     }));
+//   }
+//   try {
+//     const response = await api.get<{ message: string; personnels: Staff[] }>(
+//       "/personnels"
+//     );
+//     return response.data.personnels;
+//   } catch (error) {
+//     handleApiError(error);
+//   }
+// };
 
-export const fetchAvailablePersonnels = async (): Promise<Pick<Staff, 'id' | 'name'>[] | undefined> => {
+export const fetchAvailablePersonnels = async (): Promise<
+  Personnel[] | undefined
+> => {
   if (useFaker) {
     return Array.from({ length: 5 }, () => ({
       id: faker.number.int(),
@@ -186,26 +215,11 @@ export const fetchAvailablePersonnels = async (): Promise<Pick<Staff, 'id' | 'na
     }));
   }
   try {
-    const response = await api.get<{ message: string; personnels: Pick<Staff, 'id' | 'name'>[] }>('/personnels/available');
+    const response = await api.get<{
+      message: string;
+      personnels: Personnel[] | undefined;
+    }>("/personnels/available");
     return response.data.personnels;
-  } catch (error) {
-    handleApiError(error);
-  }
-};
-
-export const fetchPermanentStaffs = async (): Promise<Staff[] | undefined> => {
-  if (useFaker) {
-    return Array.from({ length: 5 }, () => ({
-      id: faker.number.int(),
-      name: faker.person.fullName(),
-      role: faker.person.jobTitle(),
-      email: faker.internet.email(),
-      phone_number: faker.phone.number(),
-    }));
-  }
-  try {
-    const response = await api.get<{ message: string; staffs: Staff[] }>('/staffs');
-    return response.data.staffs;
   } catch (error) {
     handleApiError(error);
   }
@@ -220,7 +234,9 @@ export const fetchFoodJoints = async (): Promise<FoodJoint[] | undefined> => {
     }));
   }
   try {
-    const response = await api.get<{ message: string; joints: FoodJoint[] }>('/joints');
+    const response = await api.get<{ message: string; joints: FoodJoint[] }>(
+      "/joints"
+    );
     return response.data.joints;
   } catch (error) {
     handleApiError(error);
@@ -238,7 +254,10 @@ export const createOrder = async (orderData: {
     return { message: "Order Created successful" };
   }
   try {
-    const response = await api.post<{ message: string }>('/orders/create', orderData);
+    const response = await api.post<{ message: string }>(
+      "/orders/create",
+      orderData
+    );
     return response.data;
   } catch (error) {
     handleApiError(error);
@@ -254,18 +273,22 @@ export const fetchOrders = async (): Promise<Order[] | undefined> => {
       address: faker.location.streetAddress(),
       amount: faker.commerce.price(),
       name: faker.person.fullName(),
-      status: faker.helpers.arrayElement(['Pending', 'Completed', 'Cancelled']),
+      status: faker.helpers.arrayElement(["Pending", "Completed", "Cancelled"]),
     }));
   }
   try {
-    const response = await api.get<{ message: string; orders: Order[] }>('/orders');
+    const response = await api.get<{ message: string; orders: Order[] }>(
+      "/orders"
+    );
     return response.data.orders;
   } catch (error) {
     handleApiError(error);
   }
 };
 
-export const fetchOrderDetails = async (id: number): Promise<Order | undefined> => {
+export const fetchOrderDetails = async (
+  id: number
+): Promise<Order | undefined> => {
   if (useFaker) {
     return {
       id,
@@ -275,24 +298,32 @@ export const fetchOrderDetails = async (id: number): Promise<Order | undefined> 
       amount: faker.commerce.price(),
       name: faker.person.fullName(),
       phone_number: faker.phone.number(),
-      status: faker.helpers.arrayElement(['Pending', 'Completed', 'Cancelled']),
+      status: faker.helpers.arrayElement(["Pending", "Completed", "Cancelled"]),
       address: faker.location.streetAddress(),
     };
   }
   try {
-    const response = await api.get<{ message: string; order: Order }>(`/orders/${id}`);
+    const response = await api.get<{ message: string; order: Order }>(
+      `/orders/${id}`
+    );
     return response.data.order;
   } catch (error) {
     handleApiError(error);
   }
 };
 
-export const manageOrder = async (order_id: number, status: string): Promise<{ message: string } | undefined> => {
+export const manageOrder = async (
+  order_id: number,
+  status: string
+): Promise<{ message: string } | undefined> => {
   if (useFaker) {
     return { message: "Order status successfully updated" };
   }
   try {
-    const response = await api.post<{ message: string }>('/orders/manage', { order_id, status });
+    const response = await api.post<{ message: string }>("/orders/manage", {
+      order_id,
+      status,
+    });
     return response.data;
   } catch (error) {
     handleApiError(error);
