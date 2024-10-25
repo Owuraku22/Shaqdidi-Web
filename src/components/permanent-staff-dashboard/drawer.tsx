@@ -19,9 +19,12 @@ export function DrawerForm({
   foodJoint,
   personnels,
 <<<<<<< HEAD
+<<<<<<< HEAD
 
 =======
 >>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
+=======
+>>>>>>> bad93d4 (Created logic fetching food Joints and posting data login and sign up pages)
   children,
 }: {
   foodJoint: FoodJoint;

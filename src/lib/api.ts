@@ -1,13 +1,8 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
-<<<<<<< HEAD
 import { useStoreData } from "@/store/state";
 
 export const api = axios.create({
-=======
-
-const api = axios.create({
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
   baseURL: "https://didi.shaqexpress.com/",
   headers: {
     "Content-Type": "application/json",
@@ -29,11 +24,7 @@ export interface AuthResponse {
     id: number;
     full_name: string;
     email: string;
-<<<<<<< HEAD
     account_type: string;
-=======
-    account_type?: string;
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
   };
 }
 
@@ -128,11 +119,7 @@ export const signUp = async (userData: {
 export const signIn = async (credentials: {
   email: string;
   password: string;
-<<<<<<< HEAD
   fb_token: string;
-=======
-  fb_token?: string;
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 }): Promise<AuthResponse | undefined> => {
   if (useFaker) {
     return {

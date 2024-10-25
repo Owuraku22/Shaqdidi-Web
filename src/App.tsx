@@ -6,9 +6,12 @@ import Home from "@/routes/home";
 <<<<<<< HEAD
 import {
 <<<<<<< HEAD
+<<<<<<< HEAD
   api,
 =======
 >>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
+=======
+>>>>>>> bad93d4 (Created logic fetching food Joints and posting data login and sign up pages)
   fetchAvailablePersonnels,
   fetchFoodJoints,
   fetchOrders,
@@ -24,14 +27,18 @@ import Login from "./routes/login";
 import { Toaster } from "./components/ui/toaster";
 import PsDashboardPage from "./components/permanent-staff-dashboard/permanent-staff-dashboard";
 <<<<<<< HEAD
+<<<<<<< HEAD
 import { string } from "zod";
 =======
 >>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
+=======
+>>>>>>> bad93d4 (Created logic fetching food Joints and posting data login and sign up pages)
 import {
   handleCreateOrder,
   handleSignInAction,
   handleSignUpAction,
 } from "./lib/actions";
+<<<<<<< HEAD
 <<<<<<< HEAD
 import { request } from "http";
 import { useEffect } from "react";
@@ -39,6 +46,8 @@ import { useStoreData } from "./store/state";
 import { ProtectedRoute } from "./components/protected-route";
 =======
 >>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
+=======
+>>>>>>> bad93d4 (Created logic fetching food Joints and posting data login and sign up pages)
 
 const queryClient = new QueryClient();
 
@@ -55,6 +64,27 @@ const router = createBrowserRouter([
     element: <Login />,
 <<<<<<< HEAD
 =======
+    errorElement: <ErrorBoundary />,
+    action: async ({ request }) => {
+      return await handleSignInAction(request);
+    },
+  },
+  {
+    path: "/sign-up",
+    element: <Regiter />,
+    errorElement: <ErrorBoundary />,
+    action: async ({ request }) => {
+      return await handleSignUpAction(request);
+    },
+  },
+  // {
+  //   path: "/sign-in",
+  //   element: <Login />,
+  //   errorElement: <ErrorBoundary />,
+  // },
+  {
+    path: "/",
+    element: <Login />,
     errorElement: <ErrorBoundary />,
     action: async ({ request }) => {
       return await handleSignInAction(request);
