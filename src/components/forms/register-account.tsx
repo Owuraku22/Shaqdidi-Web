@@ -18,6 +18,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+<<<<<<< HEAD
 import {
   Link,
   useActionData,
@@ -25,11 +26,15 @@ import {
   useNavigation,
   useSubmit,
 } from "react-router-dom";
+=======
+import { Link, useSubmit } from "react-router-dom";
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 import FormAuth from "./auth";
 import { toast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import { AuthResponse } from "@/lib/api";
 import { useStoreData } from "@/store/state";
+
 
 const formSchema = z
   .object({
@@ -55,10 +60,13 @@ const formSchema1 = formSchema.required();
 export default function RegisterAccount() {
   // const actionData = useActionData();
   const submit = useSubmit();
+<<<<<<< HEAD
   const actionData = useActionData() as AuthResponse;
   const navigation = useNavigation();
   const navigate = useNavigate();
   const { setUser, isAuth, user } = useStoreData();
+=======
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
   const form = useForm<z.infer<typeof formSchema1>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -66,7 +74,11 @@ export default function RegisterAccount() {
       email: "",
       password: "",
       account_type: "staff",
+<<<<<<< HEAD
       phone_number: "",
+=======
+      mobile: "",
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
     },
   });
 

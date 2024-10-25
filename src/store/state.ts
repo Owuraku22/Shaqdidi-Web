@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { AuthResponse } from '@/lib/api';
@@ -47,3 +48,19 @@ export const useAuth = () => {
   const { isAuth, user, authToken, fbToken } = useStoreData();
   return { isAuth, user, authToken, fbToken };
 };
+=======
+import { AuthResponse } from "@/lib/api";
+import { create } from "zustand";
+
+interface StoreData {
+  isAuth: boolean;
+  user: AuthResponse["user"];
+  setUser: (user: AuthResponse["user"]) => void;
+}
+
+export const useStoreData = create<StoreData>((set) => ({
+  isAuth: false,
+  user: { email: "", full_name: "", account_type: "", id: 0 },
+  setUser: (user: StoreData["user"]) => set({ user: { ...user } }),
+}));
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)

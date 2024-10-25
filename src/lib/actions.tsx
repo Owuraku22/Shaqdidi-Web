@@ -1,6 +1,9 @@
 import { redirect } from "react-router-dom";
 import { createOrder, signIn, signUp } from "./api";
+<<<<<<< HEAD
 import { useStoreData } from "@/store/state";
+=======
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 
 export const handleSignInAction = async (request: Request) => {
   const formData = await request.formData();
@@ -8,17 +11,28 @@ export const handleSignInAction = async (request: Request) => {
   const password = formData.get("password") as string;
 
   try {
+<<<<<<< HEAD
     const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
     const response = await signIn({ email, password, fb_token });
+=======
+    // calling the singin api and passing the form data to it
+    const response = await signIn({ email, password });
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 
     //checking if the response is successful
     if (!response)
       throw new Error("Signing In failed. Please check your credentials.");
 
+<<<<<<< HEAD
     return {data: response};
   } catch (error: Error | any) {
     return { data: { error: { message: error.message || "Account registration failed. Please retry" } } };
+=======
+    return response;
+  } catch (error) {
+    console.log("Error in login action:", error);
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
   }
 };
 
@@ -40,11 +54,25 @@ export const handleSignUpAction = async (request: Request) => {
       password,
       phone_number,
       full_name,
+<<<<<<< HEAD
       fb_token: "oiuoij",
+=======
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
     });
 
     if (!response) throw new Error("Account registration failed. Please retry");
 
+<<<<<<< HEAD
+=======
+    //  Redirect based on the account type
+    const accountType = response?.user.account_type;
+    if (accountType === "personnel") {
+      redirect("/nsp");
+    } else if (accountType === "staff") {
+      redirect("/ps");
+    }
+
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
     return response;
   } catch (error) {
     console.log("Failed to sign Up:", error);

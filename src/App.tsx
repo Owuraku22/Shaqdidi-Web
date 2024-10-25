@@ -5,7 +5,10 @@ import PsLayout from "@/components/permanent-staff-dashboard/layout";
 import Home from "@/routes/home";
 <<<<<<< HEAD
 import {
+<<<<<<< HEAD
   api,
+=======
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
   fetchAvailablePersonnels,
   fetchFoodJoints,
   fetchOrders,
@@ -20,16 +23,22 @@ import Regiter from "./routes/register";
 import Login from "./routes/login";
 import { Toaster } from "./components/ui/toaster";
 import PsDashboardPage from "./components/permanent-staff-dashboard/permanent-staff-dashboard";
+<<<<<<< HEAD
 import { string } from "zod";
+=======
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 import {
   handleCreateOrder,
   handleSignInAction,
   handleSignUpAction,
 } from "./lib/actions";
+<<<<<<< HEAD
 import { request } from "http";
 import { useEffect } from "react";
 import { useStoreData } from "./store/state";
 import { ProtectedRoute } from "./components/protected-route";
+=======
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 
 const queryClient = new QueryClient();
 
@@ -44,6 +53,30 @@ const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+<<<<<<< HEAD
+=======
+    errorElement: <ErrorBoundary />,
+    action: async ({ request }) => {
+      return await handleSignInAction(request);
+    },
+  },
+  {
+    path: "/sign-up",
+    element: <Regiter />,
+    errorElement: <ErrorBoundary />,
+    action: async ({ request }) => {
+      return await handleSignUpAction(request);
+    },
+  },
+  // {
+  //   path: "/sign-in",
+  //   element: <Login />,
+  //   errorElement: <ErrorBoundary />,
+  // },
+  {
+    path: "/nsp",
+    element: <Layout routes={nspRoutes} />,
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
     errorElement: <ErrorBoundary />,
     action: async ({ request }) => {
       return await handleSignInAction(request);
@@ -69,6 +102,7 @@ const router = createBrowserRouter([
         path: "/nsp",
         element: <Layout routes={nspRoutes} />,
         errorElement: <ErrorBoundary />,
+<<<<<<< HEAD
         children: [
           {
             index: true,
@@ -125,11 +159,65 @@ const router = createBrowserRouter([
             },
           },
         ],
+=======
+        loader: async () => {
+          const orders = await queryClient.fetchQuery({
+            queryKey: ["orders"],
+            queryFn: fetchOrders,
+          });
+          console.log("orders", orders);
+          return { orders };
+        },
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
       },
     ],
     errorElement: <ErrorBoundary />,
   },
+<<<<<<< HEAD
   
+=======
+
+  {
+    path: "/ps",
+    element: <PsLayout />,
+    // element: <Layout isPs routes={psRoutes} />,
+    errorElement: <ErrorBoundary />,
+    children: [
+      {
+        index: true,
+        element: <PsDashboardPage />,
+        errorElement: <ErrorBoundary />,
+        loader: async () => {
+          const foodJoints = await queryClient.fetchQuery({
+            queryKey: ["foodJoints"],
+            queryFn: fetchFoodJoints,
+          });
+          const personnels = await queryClient.fetchQuery({
+            queryKey: ["personnel"],
+            queryFn: fetchAvailablePersonnels,
+          });
+          return { foodJoints, personnels };
+        },
+      },
+      {
+        path: "order-history",
+        element: <OrderHistory />,
+        errorElement: <ErrorBoundary />,
+        action: async ({ request }) => {
+          return await handleCreateOrder(request);
+        },
+
+        loader: async () => {
+          const orders = await queryClient.fetchQuery({
+            queryKey: ["orders"],
+            queryFn: fetchOrders,
+          });
+          return { orders };
+        },
+      },
+    ],
+  },
+>>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 ]);
 
 export default function App() {
