@@ -38,17 +38,10 @@ export const handleSignUpAction = async (request: Request) => {
       password,
       phone_number,
       full_name,
+      fb_token: "oiuoij",
     });
 
     if (!response) throw new Error("Account registration failed. Please retry");
-
-    //  Redirect based on the account type
-    const accountType = response?.user.account_type;
-    if (accountType === "personnel") {
-      redirect("/nsp");
-    } else if (accountType === "staff") {
-      redirect("/ps");
-    }
 
     return response;
   } catch (error) {
