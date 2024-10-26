@@ -60,13 +60,13 @@ export function SignInForm() {
     defaultValues: {
       email: "",
       password: "",
-    },
+    },    
   });
 
   useEffect(() => {
     if (actionData && actionData.user) {
       // setUser Data
-      setUser(actionData.user);
+      setUser!(actionData);
       // Redirect based on the account type
       console.log("Logging action data: ", actionData);
        const accountType = actionData?.user.account_type;

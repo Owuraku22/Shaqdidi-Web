@@ -18,21 +18,29 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link, useSubmit } from "react-router-dom";
+import {
+  Link,
+  useActionData,
+  useNavigate,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
 import FormAuth from "./auth";
 import { toast } from "@/hooks/use-toast";
-
+import { useEffect } from "react";
+import { AuthResponse } from "@/lib/api";
+import { useStoreData } from "@/store/state";
 
 const formSchema = z
   .object({
     email: z.string().email("Email must contain @ or '.' "),
-    username: z.string().min(2, {
+    full_name: z.string().min(2, {
       message: "Username must be at least 2 characters.",
     }),
     password: z.string().min(7, {
       message: "Password must be more than 7 characters",
     }),
-    mobile: z
+    phone_number: z
       .string()
       .min(10, { message: "Mobile number must be 10 digits." })
       .max(10, { message: "Mobile number must be 10 digits." })
@@ -47,14 +55,18 @@ const formSchema1 = formSchema.required();
 export default function RegisterAccount() {
   // const actionData = useActionData();
   const submit = useSubmit();
+  const actionData = useActionData() as AuthResponse;
+  const navigation = useNavigation();
+  const navigate = useNavigate();
+  const { setUser, isAuth, user } = useStoreData();
   const form = useForm<z.infer<typeof formSchema1>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
+      full_name: "",
       email: "",
       password: "",
       account_type: "staff",
-      mobile: "",
+      phone_number: "",
     },
   });
 
@@ -71,6 +83,21 @@ export default function RegisterAccount() {
     });
     console.log(values);
   }
+
+  useEffect(() => {
+    if (actionData) {
+      // setUser Data
+      setUser!(actionData);
+      // Redirect based on the account type
+      console.log("Sign Up action data: ", actionData);
+      const accountType = actionData?.user.account_type;
+      if (accountType === "personnel") {
+        navigate("/nsp");
+      } else if (accountType === "staff") {
+        navigate("/ps");
+      }
+    }
+  }, [actionData, setUser]);
 
   return (
     <FormAuth isSignIn>
@@ -117,7 +144,7 @@ export default function RegisterAccount() {
               />
               <FormField
                 control={form.control}
-                name="username"
+                name="full_name"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
@@ -158,7 +185,7 @@ export default function RegisterAccount() {
               />
               <FormField
                 control={form.control}
-                name="mobile"
+                name="phone_number"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>

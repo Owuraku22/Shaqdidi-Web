@@ -1,19 +1,22 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
+import { storeState, useStoreData } from "@/store/state";
 
-const api = axios.create({
-  baseURL: "https://didi.shaqexpress.com/",
+export const api = axios.create({
+  baseURL: "https://didi.shaqexpress.com/api/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
 });
 
+
+
 export interface AuthResponse {
   message: string;
   authorization: {
     token: string;
-    type: string;
+    type?: string;
     refresh_ttl: string;
     ttl: string;
   };
@@ -21,7 +24,7 @@ export interface AuthResponse {
     id: number;
     full_name: string;
     email: string;
-    account_type?: string;
+    account_type: string;
   };
 }
 
@@ -173,6 +176,7 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
         id: faker.number.int(),
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         full_name: faker.person.fullName(),
+        account_type: "staff",
       },
     };
   }
