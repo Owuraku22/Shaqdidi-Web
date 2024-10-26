@@ -21,8 +21,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import {
+  Link,
+  redirect,
+  useActionData,
+  useNavigate,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
 import FormAuth from "./auth";
+import { AuthResponse } from "@/lib/api";
+import { useEffect, useState } from "react";
+import { useStoreData } from "@/store/state";
+
+// interface ActionData {
+//   error?: string;
+// }
 
 const FormSchema = z.object({
   email: z.string().email("Email must contain @ or '.' "),
@@ -32,16 +46,45 @@ const FormSchema = z.object({
 });
 
 export function SignInForm() {
+  // display an error message on the UI
+  const submit = useSubmit();
+  const actionData = useActionData() as AuthResponse;
+  const navigation = useNavigation();
+  const navigate = useNavigate();
+  const { setUser, isAuth, user } = useStoreData();
+
+  const isSubmitting = navigation.state === "submitting";
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: "",
       password: "",
-    },
+    },    
   });
+
+  useEffect(() => {
+    if (actionData && actionData.user) {
+      // setUser Data
+      setUser!(actionData);
+      // Redirect based on the account type
+      console.log("Logging action data: ", actionData);
+       const accountType = actionData?.user.account_type;
+       if (accountType === "personnel") {
+        navigate("/nsp");
+
+       } else if (accountType === "staff") {
+         navigate("/ps");
+       }
+    }
+  }, [actionData, setUser]);
+
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
+    console.log("Logging onSubmit data: ", actionData);
+
+    submit(data, { action: "/", method: "post" });
     toast({
       title: "You submitted the following values:",
       description: (
@@ -66,6 +109,10 @@ export function SignInForm() {
               onSubmit={form.handleSubmit(onSubmit)}
               className=" space-y-6 w-full "
             >
+              {/* displaying error message */}
+              {/* {actionData?.error && (
+                <div className="text-red-500">{actionData.error}</div>
+              )} */}
               <FormField
                 control={form.control}
                 name="email"
@@ -84,7 +131,11 @@ export function SignInForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="enter your password" type="password" {...field} />
+                      <Input
+                        placeholder="enter your password"
+                        type="password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,7 +148,11 @@ export function SignInForm() {
                   Sign up
                 </Link>
               </div>
-              <Button type="submit" className="w-full text-white ">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full text-white "
+              >
                 Sign In
               </Button>
             </form>

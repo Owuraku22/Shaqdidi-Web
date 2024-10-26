@@ -1,4 +1,4 @@
-import React, { Children, useState } from "react";
+import { useState } from "react";
 import { Button } from "../ui/button";
 import {
   Select,
@@ -21,37 +21,44 @@ import {
 import { z } from "zod";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
+import { useSubmit } from "react-router-dom";
+import { FoodJoint, Personnel } from "@/lib/api";
 
-type JointData = {
-  name: string;
-  address: string;
-  id: number;
-};
 const formSchema = z.object({
   amount: z.string().min(2).max(50),
   note: z.string().min(2).max(500),
-  personnel: z.string().min(1),
+  personnel_id: z.string().min(1),
 });
 
 const FoodJoints = ({
-  value,
+  foodJoint,
+  personnels,
   setOpenModel,
 }: {
-  value: JointData;
+  foodJoint: FoodJoint;
+  personnels: Personnel[];
   setOpenModel?: (open: boolean) => void;
 }) => {
+  const submit = useSubmit();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       amount: "",
       note: "",
-      personnel: "",
+      personnel_id: "",
     },
   });
 
   const [confirm, setConfirm] = useState(false);
 
   function onSubmit(data: z.infer<typeof formSchema>) {
+    const jointData = {
+      joint_id: foodJoint.id,
+      address: foodJoint.address,
+      name: foodJoint.name,
+      ...data,
+    };
+    submit(jointData, { action: "/", method: "POST" });
     if (confirm) {
       toast({
         title: "You submitted the following values:",
@@ -76,16 +83,18 @@ const FoodJoints = ({
       >
         {/* Name of food joint and address for larger screen */}
         <div className="hidden md:flex flex-col absolute bottom-0 py-3 px-8 w-full bg-black bg-opacity-50 text-white">
-          <h2 className=" text-3xl lg:text-3xl  text-white">{value.name}</h2>
+          <h2 className=" text-3xl lg:text-3xl  text-white">
+            {foodJoint.name}
+          </h2>
           <span className="pt-2 w-[17rem] lg:w-[22em] text-slate-200 text-xl font-roboto font-light">
-            {value.address}
+            {foodJoint.address}
           </span>
         </div>
       </div>
       {/* Name of food joint and address for mobile screen */}
       <div className=" md:hidden pt-3 px-4  text-black">
-        <h2 className="xtrabold text-xl lg:text-3xl  ">{value.name}</h2>
-        <span className="pt-6 text-slate-600 text-sm">{value.address}</span>
+        <h2 className="xtrabold text-xl lg:text-3xl  ">{foodJoint.name}</h2>
+        <span className="pt-6 text-slate-600 text-sm">{foodJoint.address}</span>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 m-4 ">
@@ -122,7 +131,7 @@ const FoodJoints = ({
                   <Textarea
                     placeholder="Add any Special instructions or requests"
                     {...field}
-                    className="h-[10em] text-start bg-white font-roboto"
+                    className="text-start bg-white font-roboto"
                   />
                 </FormControl>
               </FormItem>
@@ -131,7 +140,7 @@ const FoodJoints = ({
           {/* Assigned Personnel input field */}
           <FormField
             control={form.control}
-            name="personnel"
+            name="personnel_id"
             render={({ field }) => (
               <FormItem className="flex flex-col">
                 <FormLabel className="text-primary text-xl px-0 md:px-4 font-roboto">
@@ -150,9 +159,11 @@ const FoodJoints = ({
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent {...field}>
-                      <SelectItem value="light">Light</SelectItem>
-                      <SelectItem value="dark">Dark</SelectItem>
-                      <SelectItem value="system">System</SelectItem>
+                      {personnels.map((personnel) => (
+                        <SelectItem key={personnel.id} value="light">
+                          {personnel.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                 </FormControl>

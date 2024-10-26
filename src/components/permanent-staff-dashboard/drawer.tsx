@@ -12,17 +12,17 @@ import {
 } from "@/components/ui/drawer";
 import FoodJoints from "./food-joints";
 import { ScrollArea } from "../ui/scroll-area";
-type JointData = {
-  name: string;
-  address: string;
-  id: number;
-};
+import { FoodJoint, Staff } from "@/lib/api";
+
 
 export function DrawerForm({
-  value,
+  foodJoint,
+  personnels,
+
   children,
 }: {
-  value: JointData;
+  foodJoint: FoodJoint;
+  personnels: Pick<Staff, 'id' | 'name'>[];
   children: React.ReactNode;
 }) {
   return (
@@ -31,7 +31,7 @@ export function DrawerForm({
       <DrawerContent className="max-h-[calc(100vh-6rem)] border-none">
         <DrawerHandle className="w-16 h-3 rounded-full bg-gray-300 mb-2"></DrawerHandle>
         <ScrollArea className="overflow-y-auto">
-          <FoodJoints value={value} />
+          <FoodJoints foodJoint={foodJoint} personnels={personnels} />
         </ScrollArea>
         <DrawerFooter>
           {/* <Button>Submit</Button> */}
