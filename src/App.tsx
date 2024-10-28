@@ -40,14 +40,20 @@ import {
 } from "./lib/actions";
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
 import { request } from "http";
 import { useEffect } from "react";
 import { useStoreData } from "./store/state";
 import { ProtectedRoute } from "./components/protected-route";
+<<<<<<< HEAD
 =======
 >>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
 =======
 >>>>>>> bad93d4 (Created logic fetching food Joints and posting data login and sign up pages)
+=======
+>>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
 
 const queryClient = new QueryClient();
 
@@ -83,6 +89,7 @@ const router = createBrowserRouter([
   //   errorElement: <ErrorBoundary />,
   // },
   {
+<<<<<<< HEAD
     path: "/",
     element: <Login />,
     errorElement: <ErrorBoundary />,
@@ -126,6 +133,8 @@ const router = createBrowserRouter([
   //   errorElement: <ErrorBoundary />,
   // },
   {
+=======
+>>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
     element: <ProtectedRoute />,
     children: [
       {
@@ -133,6 +142,9 @@ const router = createBrowserRouter([
         element: <Layout routes={nspRoutes} />,
         errorElement: <ErrorBoundary />,
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
         children: [
           {
             index: true,
@@ -189,6 +201,7 @@ const router = createBrowserRouter([
             },
           },
         ],
+<<<<<<< HEAD
 =======
         loader: async () => {
           const orders = await queryClient.fetchQuery({
@@ -211,43 +224,17 @@ const router = createBrowserRouter([
     path: "/ps",
     element: <PsLayout />,
     // element: <Layout isPs routes={psRoutes} />,
-    errorElement: <ErrorBoundary />,
-    children: [
-      {
-        index: true,
-        element: <PsDashboardPage />,
-        errorElement: <ErrorBoundary />,
-        loader: async () => {
-          const foodJoints = await queryClient.fetchQuery({
-            queryKey: ["foodJoints"],
-            queryFn: fetchFoodJoints,
-          });
-          const personnels = await queryClient.fetchQuery({
-            queryKey: ["personnel"],
-            queryFn: fetchAvailablePersonnels,
-          });
-          return { foodJoints, personnels };
-        },
-      },
-      {
-        path: "order-history",
-        element: <OrderHistory />,
-        errorElement: <ErrorBoundary />,
-        action: async ({ request }) => {
-          return await handleCreateOrder(request);
-        },
-
-        loader: async () => {
-          const orders = await queryClient.fetchQuery({
-            queryKey: ["orders"],
-            queryFn: fetchOrders,
-          });
-          return { orders };
-        },
+=======
       },
     ],
+>>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
+    errorElement: <ErrorBoundary />,
   },
+<<<<<<< HEAD
 >>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
+=======
+  
+>>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
 ]);
 
 export default function App() {
