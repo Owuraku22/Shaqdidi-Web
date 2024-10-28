@@ -3,7 +3,7 @@ import { faker } from "@faker-js/faker";
 import { useStoreData } from "@/store/state";
 
 export const api = axios.create({
-  baseURL: "https://didi.shaqexpress.com/",
+  baseURL: "https://didi.shaqexpress.com/v1/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
