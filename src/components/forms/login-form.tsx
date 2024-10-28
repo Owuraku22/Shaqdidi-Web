@@ -33,16 +33,9 @@ import FormAuth from "./auth";
 import { AuthResponse } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useStoreData } from "@/store/state";
-<<<<<<< HEAD
-<<<<<<< HEAD
+
 import { ToastAction } from "../ui/toast";
 import { requestPermission } from "../protected-route";
-=======
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
-=======
-import { ToastAction } from "../ui/toast";
-import { requestPermission } from "../protected-route";
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
 
 // interface ActionData {
 //   error?: string;
@@ -58,24 +51,15 @@ const FormSchema = z.object({
 export function SignInForm() {
   // display an error message on the UI
   const submit = useSubmit();
-<<<<<<< HEAD
-<<<<<<< HEAD
+
   const actionData = useActionData() as {data: {user: AuthResponse} | {  error: {message: string} }};
   const navigation = useNavigation();
   const navigate = useNavigate();
   const { setUser, isAuth, user, setAuthToken, fbToken } = useStoreData();
-=======
-  const actionData = useActionData() as AuthResponse;
-  const navigation = useNavigation();
-  const navigate = useNavigate();
-  const { setUser, isAuth, user } = useStoreData();
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
-=======
-  const actionData = useActionData() as {data: {user: AuthResponse} | {  error: {message: string} }};
-  const navigation = useNavigation();
-  const navigate = useNavigate();
-  const { setUser, isAuth, user, setAuthToken, fbToken } = useStoreData();
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
+
+
+
+
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -88,10 +72,6 @@ export function SignInForm() {
   });
 
   useEffect(() => {
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
     if (actionData && 'data' in actionData) {
       if ('error' in actionData.data) {
         toast({
@@ -113,46 +93,24 @@ export function SignInForm() {
           navigate("/ps");
         }
       }
-<<<<<<< HEAD
+
     }
   }, [actionData, setUser, navigate, toast]);
 
-  useEffect(() => {
-    if (!fbToken) toast({
-      variant: "destructive",
-      title: "Notification Error",
-      description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
-      action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
-=======
-    if (actionData && actionData.user) {
-      // setUser Data
-      setUser(actionData.user);
-      // Redirect based on the account type
-      console.log("Logging action data: ", actionData);
-       const accountType = actionData?.user.account_type;
-       if (accountType === "personnel") {
-        navigate("/nsp");
 
-       } else if (accountType === "staff") {
-         navigate("/ps");
-       }
-=======
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
-    }
-  }, [actionData, setUser, navigate, toast]);
 
-  useEffect(() => {
-    if (!fbToken) toast({
-      variant: "destructive",
-      title: "Notification Error",
-      description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
-      action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
-    });
-  }, [])
+  // useEffect(() => {
+  //   if (!fbToken) toast({
+  //     variant: "destructive",
+  //     title: "Notification Error",
+  //     description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
+  //     action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
+  //   });
+  // }, [])
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     submit(data, { action: "/", method: "post" });
-<<<<<<< HEAD
+
     toast({
       title: "You submitted the following values:",
       description: (
@@ -160,15 +118,13 @@ export function SignInForm() {
           <code className="text-white">{JSON.stringify(data, null, 2)}</code>
         </pre>
       ),
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
     });
-  }, [])
+  // }, [])
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    submit(data, { action: "/", method: "post" });
-=======
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
-  }
+  // function onSubmit(data: z.infer<typeof FormSchema>) {
+  //   submit(data, { action: "/", method: "post" });
+
+  // }
 
 
   return (

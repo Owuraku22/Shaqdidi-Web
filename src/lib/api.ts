@@ -10,6 +10,23 @@ export const api = axios.create({
   },
 });
 
+   api.interceptors.request.use(
+      (config) => {
+        // Retrieve the token from the Zustand store
+        const token = useStoreData.getState().authToken ?? '';
+        console.log(token);
+
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Handle request error
+        return Promise.reject(error);
+      }
+    );
+
 
 
 export interface AuthResponse {

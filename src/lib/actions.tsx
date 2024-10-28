@@ -1,13 +1,6 @@
 import { redirect } from "react-router-dom";
 import { createOrder, signIn, signUp } from "./api";
-<<<<<<< HEAD
-<<<<<<< HEAD
 import { useStoreData } from "@/store/state";
-=======
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
-=======
-import { useStoreData } from "@/store/state";
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
 
 export const handleSignInAction = async (request: Request) => {
   const formData = await request.formData();
@@ -15,40 +8,17 @@ export const handleSignInAction = async (request: Request) => {
   const password = formData.get("password") as string;
 
   try {
-<<<<<<< HEAD
-<<<<<<< HEAD
     const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
     const response = await signIn({ email, password, fb_token });
-=======
-    // calling the singin api and passing the form data to it
-    const response = await signIn({ email, password });
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
-=======
-    const fb_token = useStoreData.getState().fbToken ?? ''
-    // calling the singin api and passing the form data to it
-    const response = await signIn({ email, password, fb_token });
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
-
+   
     //checking if the response is successful
     if (!response)
       throw new Error("Signing In failed. Please check your credentials.");
 
-<<<<<<< HEAD
-<<<<<<< HEAD
     return {data: response};
   } catch (error: Error | any) {
-    return { data: { error: { message: error.message || "Account registration failed. Please retry" } } };
-=======
-    return response;
-  } catch (error) {
-    console.log("Error in login action:", error);
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
-=======
-    return {data: response};
-  } catch (error: Error | any) {
-    return { data: { error: { message: error.message || "Account registration failed. Please retry" } } };
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
+    return { data: { error: { message: error.message || "Account Authentication failed. Please retry" } } };
   }
 };
 
@@ -63,6 +33,8 @@ export const handleSignUpAction = async (request: Request) => {
   // const fb_token = formData.get("fb_token") as string;
 
   try {
+
+    const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
     const response = await signUp({
       account_type,
@@ -70,28 +42,14 @@ export const handleSignUpAction = async (request: Request) => {
       password,
       phone_number,
       full_name,
-<<<<<<< HEAD
-      fb_token: "oiuoij",
-=======
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
+      fb_token,
     });
 
     if (!response) throw new Error("Account registration failed. Please retry");
 
-<<<<<<< HEAD
-=======
-    //  Redirect based on the account type
-    const accountType = response?.user.account_type;
-    if (accountType === "personnel") {
-      redirect("/nsp");
-    } else if (accountType === "staff") {
-      redirect("/ps");
-    }
-
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
-    return response;
-  } catch (error) {
-    console.log("Failed to sign Up:", error);
+    return {data: response};
+  } catch (error: Error | any) {
+    return { data: { error: { message: error.message || "Account registration failed. Please retry" } } };
   }
 };
 
