@@ -1,9 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
-import { storeState, useStoreData } from "@/store/state";
+import { useStoreData } from "@/store/state";
 
 export const api = axios.create({
-  baseURL: "https://didi.shaqexpress.com/api/",
+  baseURL: "https://didi.shaqexpress.com/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
@@ -119,7 +119,7 @@ export const signUp = async (userData: {
 export const signIn = async (credentials: {
   email: string;
   password: string;
-  fb_token?: string;
+  fb_token: string;
 }): Promise<AuthResponse | undefined> => {
   if (useFaker) {
     return {

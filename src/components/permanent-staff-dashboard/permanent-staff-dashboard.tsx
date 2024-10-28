@@ -22,7 +22,7 @@ const PsDashboardPage = () => {
     <div className="flex flex-col bg-white">
       <div className="h-[5em] lg:px-4 md:my-4">
         <h2 className="font-bold text-2xl md:text-3xl font-poppins">
-          Hi, {user.user.full_name}!
+          Hi, {user?.full_name}!
         </h2>
         <h2 className="my-4 md:text-2xl text-gray-500 font-roboto">
           Browse food joints and place orders
