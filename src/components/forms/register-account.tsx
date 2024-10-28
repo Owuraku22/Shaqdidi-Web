@@ -88,7 +88,7 @@ export default function RegisterAccount() {
   useEffect(() => {
     if (actionData) {
       // setUser Data
-      setUser!(actionData);
+      setUser!(actionData.user);
       // Redirect based on the account type
       console.log("Sign Up action data: ", actionData);
       const accountType = actionData?.user.account_type;

@@ -99,32 +99,20 @@ export function SignInForm() {
 
 
 
-  // useEffect(() => {
-  //   if (!fbToken) toast({
-  //     variant: "destructive",
-  //     title: "Notification Error",
-  //     description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
-  //     action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
-  //   });
-  // }, [])
+  useEffect(() => {
+    if (!fbToken) toast({
+      variant: "destructive",
+      title: "Notification Error",
+      description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
+      action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
+    });
+  }, [])
+
+  
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     submit(data, { action: "/", method: "post" });
-
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
-  // }, [])
-
-  // function onSubmit(data: z.infer<typeof FormSchema>) {
-  //   submit(data, { action: "/", method: "post" });
-
-  // }
+  }
 
 
   return (
