@@ -65,7 +65,7 @@ export function ProtectedRoute() {
   }, []);
 
   if (!isAuth) {
-    return <Navigate to="/sign-in" replace />;
+    return <Navigate to="" replace />;
   }
 
   return <Outlet />;

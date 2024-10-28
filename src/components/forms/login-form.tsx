@@ -52,7 +52,7 @@ export function SignInForm() {
   // display an error message on the UI
   const submit = useSubmit();
 
-  const actionData = useActionData() as {data: {user: AuthResponse} | {  error: {message: string} }};
+  const actionData = useActionData() as {data: AuthResponse | {  error: {message: string} }};
   const navigation = useNavigation();
   const navigate = useNavigate();
   const { setUser, isAuth, user, setAuthToken, fbToken } = useStoreData();
@@ -80,13 +80,14 @@ export function SignInForm() {
           description: actionData.data.error.message,
         });
       } else {
-        setUser(actionData?.data.user.user);
-        setAuthToken(actionData?.data.user.authorization.token);
+        setUser(actionData?.data.user);
+        console.log(actionData?.data.authorization.token)
+        setAuthToken(actionData?.data.authorization.token);
         toast({
           title: "Sign In Successful",
-          description: `Welcome back, ${actionData.data.user.user.full_name}!`,
+          description: `Welcome back, ${actionData.data.user.name}!`,
         });
-        const accountType = actionData.data.user.user.account_type;
+        const accountType = actionData.data.user.account_type;
         if (accountType === "personnel") {
           navigate("/nsp");
         } else if (accountType === "staff") {

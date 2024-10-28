@@ -22,15 +22,7 @@ const PsDashboardPage = () => {
     <div className="flex flex-col bg-white">
       <div className="h-[5em] lg:px-4 md:my-4">
         <h2 className="font-bold text-2xl md:text-3xl font-poppins">
-<<<<<<< HEAD
-<<<<<<< HEAD
-          Hi, {user?.full_name}!
-=======
-          Hi, {user.full_name}!
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
-=======
-          Hi, {user?.full_name}!
->>>>>>> 303b43d (created and added firebase cloud messaging capabilities and altered the zustand middleware)
+          Hi, {user?.name}!
         </h2>
         <h2 className="my-4 md:text-2xl text-gray-500 font-roboto">
           Browse food joints and place orders
@@ -42,8 +34,6 @@ const PsDashboardPage = () => {
       </div>
 
       <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
-<<<<<<< HEAD
-<<<<<<< HEAD
         {foodJoints?.map((values, index) => (
           <>
             {isMobile ? (
@@ -52,22 +42,6 @@ const PsDashboardPage = () => {
                 personnels={personnels!}
                 key={index}
               >
-=======
-        {data.map((values, index) => (
-          <>
-            {isMobile ? (
-              <DrawerForm value={values} key={index}>
->>>>>>> 2a816a8 (Changes to layouts of food others)
-=======
-        {foodJoints?.map((values, index) => (
-          <>
-            {isMobile ? (
-              <DrawerForm
-                foodJoint={values}
-                personnels={personnels!}
-                key={index}
-              >
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
                 <div className="rounded-xl  cursor-pointer border">
                   <div className="rounded-t-xl object-cover mb-1 border ">
                     <img
@@ -88,21 +62,11 @@ const PsDashboardPage = () => {
                 </div>
               </DrawerForm>
             ) : (
-<<<<<<< HEAD
-<<<<<<< HEAD
-=======
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
               <PopoverForm
                 foodJoint={values}
                 personnels={personnels!}
                 key={index}
               >
-<<<<<<< HEAD
-=======
-              <PopoverForm value={values} key={index}>
->>>>>>> 2a816a8 (Changes to layouts of food others)
-=======
->>>>>>> ecebbf9 (Created logic fetching food Joints and posting data login and sign up pages)
                 <div className="md:my-4 rounded-xl  cursor-pointer w-full border h-[9.5em] md:md:h-[12em]  lg:h-[13.5em] ">
                   <div className="h-[6em] md:h-[7.5em] lg:h-[9em] rounded-t-xl object-cover mb-1 border ">
                     <img

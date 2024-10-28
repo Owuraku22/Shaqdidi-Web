@@ -39,7 +39,7 @@ export interface AuthResponse {
   };
   user: {
     id: number;
-    full_name: string;
+    name: string;
     email: string;
     account_type: string;
   };
@@ -119,7 +119,7 @@ export const signUp = async (userData: {
       },
       user: {
         id: faker.number.int(),
-        full_name: userData.full_name,
+        name: userData.full_name,
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         account_type: "staff",
       },
@@ -149,7 +149,7 @@ export const signIn = async (credentials: {
       },
       user: {
         id: faker.number.int(),
-        full_name: faker.person.fullName(),
+        name: faker.person.fullName(),
         account_type: "staff",
         email: faker.internet.email({ firstName: faker.person.fullName() }),
       },
@@ -192,7 +192,7 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
       user: {
         id: faker.number.int(),
         email: faker.internet.email({ firstName: faker.person.fullName() }),
-        full_name: faker.person.fullName(),
+        name: faker.person.fullName(),
         account_type: "staff",
       },
     };

@@ -28,7 +28,8 @@ export const useStoreData = create<StoreState>()(
     {
       name: 'auth-storage',
       partialize: (state) => ({
-        // user: state.user,
+        user: state.user,
+        isAuth: state.isAuth,
         authToken: state.authToken,
         fbToken: state.fbToken,
       }),
