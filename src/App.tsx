@@ -25,6 +25,21 @@ const psRoutes = [
 
 const router = createBrowserRouter([
   {
+    path: "/",
+    element: <Login />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: "/sign-up",
+    element: <Regiter />,
+    errorElement: <ErrorBoundary />
+  },
+  {
+    path: "/sign-in",
+    element: <Login />,
+    errorElement: <ErrorBoundary />
+  },
+  {
     path: "/nsp",
     element: <Layout routes={nspRoutes} />,
     errorElement: <ErrorBoundary />,
