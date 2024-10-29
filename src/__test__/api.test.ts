@@ -1,4 +1,4 @@
-import { fetchOrders, manageOrder } from './api';
+import { fetchOrders, manageOrder } from '../lib/api';
 
 describe('API functions', () => {
   it('fetches orders successfully', async () => {

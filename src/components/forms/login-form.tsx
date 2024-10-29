@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card";
 import {
   Link,
+  Navigate,
   redirect,
   useActionData,
   useNavigate,
@@ -115,6 +116,10 @@ export function SignInForm() {
     submit(data, { action: "/", method: "post" });
   }
 
+  // Redirect authenticated users trying to access sign-up or login pages
+  if (isAuth && (location.pathname === '/sign-up' || location.pathname === '/')) {
+    return <Navigate to={user?.account_type === 'staff' ? '/ps' : '/nsp'} replace />;
+  }
 
   return (
     <FormAuth>
