@@ -22,7 +22,7 @@ import { z } from "zod";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useSubmit } from "react-router-dom";
-import { FoodJoint, Personnel } from "@/lib/api";
+import { FoodJoint, Personnel, PersonnelResponse } from "@/lib/api";
 
 const formSchema = z.object({
   amount: z.string().min(2).max(50),
@@ -36,7 +36,7 @@ const FoodJoints = ({
   setOpenModel,
 }: {
   foodJoint: FoodJoint;
-  personnels: Personnel[];
+  personnels: PersonnelResponse;
   setOpenModel?: (open: boolean) => void;
 }) => {
   const submit = useSubmit();
@@ -58,7 +58,7 @@ const FoodJoints = ({
       name: foodJoint.name,
       ...data,
     };
-    submit(jointData, { action: "/", method: "POST" });
+    submit(jointData, { action: "/ps/order-history", method: "POST" });
     if (confirm) {
       toast({
         title: "You submitted the following values:",
@@ -78,7 +78,7 @@ const FoodJoints = ({
       <div
         className="relative w-full h-[12em] md:h-[15em] flex  bg-no-repeat bg-cover rounded-t-none  md:rounded-t-[0.5em]"
         style={{
-          backgroundImage: `url('/wakye.jpg')`,
+          backgroundImage: `url(${foodJoint.image_url})`,
         }}
       >
         {/* Name of food joint and address for larger screen */}
@@ -159,8 +159,11 @@ const FoodJoints = ({
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent {...field}>
-                      {personnels.map((personnel) => (
-                        <SelectItem key={personnel.id} value="light">
+                      {personnels.personnels.map((personnel) => (
+                        <SelectItem
+                          key={personnel.id}
+                          value={personnel.id.toString()}
+                        >
                           {personnel.name}
                         </SelectItem>
                       ))}

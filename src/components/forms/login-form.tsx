@@ -51,7 +51,10 @@ export function SignInForm() {
   const actionData = useActionData() as AuthResponse;
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const { setUser, isAuth, user } = useStoreData();
+   const setUser = useStoreData((state) => state.setUser);
+   const setAuthToken = useStoreData((state) => state.setAuthToken);
+
+  window.localStorage.setItem("token", actionData?.authorization.token);
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -60,29 +63,28 @@ export function SignInForm() {
     defaultValues: {
       email: "",
       password: "",
-    },    
+    },
   });
 
   useEffect(() => {
     if (actionData && actionData.user) {
       // setUser Data
-      setUser!(actionData);
+      setUser(actionData.user);
+      setAuthToken(actionData.authorization.token);
+
       // Redirect based on the account type
-      console.log("Logging action data: ", actionData);
-       const accountType = actionData?.user.account_type;
-       if (accountType === "personnel") {
+      const accountType = actionData?.user.account_type;
+      if (accountType === "personnel") {
         navigate("/nsp");
-
-       } else if (accountType === "staff") {
-         navigate("/ps");
-       }
+      } else if (accountType === "staff") {
+        navigate("/ps");
+      }
     }
-  }, [actionData, setUser]);
-
+  }, [actionData]);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     console.log(data);
-    console.log("Logging onSubmit data: ", actionData);
+    console.log("Logging onSubmit data: ", actionData?.user);
 
     submit(data, { action: "/", method: "post" });
     toast({

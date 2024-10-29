@@ -53,12 +53,18 @@ const formSchema = z
 const formSchema1 = formSchema.required();
 
 export default function RegisterAccount() {
-  // const actionData = useActionData();
   const submit = useSubmit();
-  const actionData = useActionData() as AuthResponse;
-  const navigation = useNavigation();
+    const actionData = useActionData() as {
+      data: AuthResponse | { error: { message: string } };
+    };
+
+  // const navigation = useNavigation();
   const navigate = useNavigate();
-  const { setUser, isAuth, user } = useStoreData();
+  const setUser = useStoreData((state) => state.setUser);
+  const setAuthToken = useStoreData((state) => state.setAuthToken);
+
+
+
   const form = useForm<z.infer<typeof formSchema1>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -73,31 +79,47 @@ export default function RegisterAccount() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Toast should appear");
     submit(values, { action: "/sign-up", method: "post" });
-    toast({
-      title: "You have submitted th following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    });
-    console.log(values);
+    // toast({
+    //   title: "You have submitted th following values:",
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
   }
-
   useEffect(() => {
-    if (actionData) {
-      // setUser Data
-      setUser!(actionData);
-      // Redirect based on the account type
-      console.log("Sign Up action data: ", actionData);
-      const accountType = actionData?.user.account_type;
-      if (accountType === "personnel") {
-        navigate("/nsp");
-      } else if (accountType === "staff") {
-        navigate("/ps");
+    if (actionData && "data" in actionData) {
+      if ("error" in actionData.data) {
+        toast({
+          variant: "destructive",
+          title: "Sign In Error",
+          description: actionData.data.error.message,
+        });
+      } else {
+        setUser(actionData?.data.user);
+        console.log(actionData?.data.authorization.token);
+        setAuthToken(actionData?.data.authorization.token);
+        // setUser!(actionData);
+        // window.localStorage.setItem(
+        //   "token",
+        //   actionData?.data.authorization.token
+        // );
+        toast({
+          title: "Sign In Successful",
+          description: `Welcome back, ${actionData.data.user.name}!`,
+        });
+        const accountType = actionData.data.user.account_type;
+        if (accountType === "personnel") {
+          navigate("/nsp");
+        } else if (accountType === "staff") {
+          navigate("/ps");
+        }
       }
     }
-  }, [actionData, setUser]);
+  }, [actionData, setUser, navigate, toast]);
+
+
 
   return (
     <FormAuth isSignIn>

@@ -1,5 +1,7 @@
 import { redirect } from "react-router-dom";
 import { createOrder, signIn, signUp } from "./api";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFoodJoints, fetchAvailablePersonnels } from "./api";
 
 export const handleSignInAction = async (request: Request) => {
   const formData = await request.formData();
@@ -8,7 +10,7 @@ export const handleSignInAction = async (request: Request) => {
 
   try {
     // calling the singin api and passing the form data to it
-    const response = await signIn({ email, password });
+    const response = await signIn({ email, password, fb_token: "oiuoij" });
 
     //checking if the response is successful
     if (!response)
@@ -43,9 +45,16 @@ export const handleSignUpAction = async (request: Request) => {
 
     if (!response) throw new Error("Account registration failed. Please retry");
 
-    return response;
-  } catch (error) {
-    console.log("Failed to sign Up:", error);
+    return { data: response };
+  } catch (error: Error | any) {
+    return {
+      data: {
+        error: {
+          message:
+            error.message || "Account Authentication failed. Please retry",
+        },
+      },
+    };
   }
 };
 

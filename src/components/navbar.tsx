@@ -13,6 +13,7 @@ export default function Navbar() {
   const [notificationCount, setNotificationCount] = useState(0);
   const [play] = useSound(notificationSoundUrl);
 
+
   useEffect(() => {
     // Simulating incoming notifications
     const interval = setInterval(() => {

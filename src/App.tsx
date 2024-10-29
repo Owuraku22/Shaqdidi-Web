@@ -8,6 +8,8 @@ import {
   fetchAvailablePersonnels,
   fetchFoodJoints,
   fetchOrders,
+  FoodJoint,
+  Personnel,
   signIn,
 } from "@/lib/api";
 import ErrorBoundary from "./error-page";
@@ -24,7 +26,7 @@ import {
 } from "./lib/actions";
 import { request } from "http";
 import { useEffect } from "react";
-import { useStoreData } from "./store/state";
+// import { useStoreData } from "./store/state";
 
 const queryClient = new QueryClient();
 
@@ -71,7 +73,6 @@ const router = createBrowserRouter([
             queryKey: ["orders"],
             queryFn: fetchOrders,
           });
-          console.log("orders", orders);
           return { orders };
         },
       },
@@ -88,17 +89,24 @@ const router = createBrowserRouter([
         index: true,
         element: <PsDashboardPage />,
         errorElement: <ErrorBoundary />,
-        loader: async () => {
-          const foodJoints = await queryClient.fetchQuery({
-            queryKey: ["orders"],
-            queryFn: fetchFoodJoints,
-          });
-          const personnel = await queryClient.fetchQuery({
-            queryKey: ["personnel"],
-            queryFn: fetchAvailablePersonnels,
-          });
-          return { foodJoints, personnel };
-        },
+        // loader: async () => {
+        //   const foodJoints = await queryClient.fetchQuery({
+        //     queryKey: ["orders"],
+        //     queryFn: fetchFoodJoints,
+        //   });
+        //   const personnel = await queryClient.fetchQuery({
+        //     queryKey: ["personnel"],
+        //     queryFn: fetchAvailablePersonnels,
+        //   });
+        //   return { foodJoints, personnel };
+        // },
+        // loader: async () => {
+        //   const foodJoints = await fetchFoodJoints();
+        //   const personnels = await fetchAvailablePersonnels();
+
+        //   // Return the response object with the full structure
+        //   return { foodJoints, personnels };
+        // },
       },
       {
         path: "order-history",
@@ -121,25 +129,6 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  // useEffect(() => {
-  //   api.interceptors.request.use(
-  //     (config) => {
-  //       // Retrieve the token from the Zustand store
-  //       const { user } = useStoreData.getState();
-  //       const token = user.authorization.token;
-  //       console.log(token);
-
-  //       if (token) {
-  //         config.headers.Authorization = `Bearer ${token}`;
-  //       }
-  //       return config;
-  //     },
-  //     (error) => {
-  //       // Handle request error
-  //       return Promise.reject(error);
-  //     }
-  //   );
-  // }, [useStoreData.getState()]);
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
