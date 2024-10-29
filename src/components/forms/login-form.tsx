@@ -21,8 +21,26 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  redirect,
+  useActionData,
+  useNavigate,
+  useNavigation,
+  useSubmit,
+} from "react-router-dom";
 import FormAuth from "./auth";
+import { AuthResponse } from "@/lib/api";
+import { useEffect, useState } from "react";
+import { useStoreData } from "@/store/state";
+
+import { ToastAction } from "../ui/toast";
+import { requestPermission } from "../protected-route";
+
+// interface ActionData {
+//   error?: string;
+// }
 
 const FormSchema = z.object({
   email: z.string().email("Email must contain @ or '.' "),
@@ -32,24 +50,75 @@ const FormSchema = z.object({
 });
 
 export function SignInForm() {
+  // display an error message on the UI
+  const submit = useSubmit();
+
+  const actionData = useActionData() as {data: AuthResponse | {  error: {message: string} }};
+  const navigation = useNavigation();
+  const navigate = useNavigate();
+  const { setUser, isAuth, user, setAuthToken, fbToken } = useStoreData();
+
+
+
+
+
+  const isSubmitting = navigation.state === "submitting";
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       email: "",
       password: "",
-    },
+    },    
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
+  useEffect(() => {
+    if (actionData && 'data' in actionData) {
+      if ('error' in actionData.data) {
+        toast({
+          variant: "destructive",
+          title: "Sign In Error",
+          description: actionData.data.error.message,
+        });
+      } else {
+        setUser(actionData?.data.user);
+        console.log(actionData?.data.authorization.token)
+        setAuthToken(actionData?.data.authorization.token);
+        toast({
+          title: "Sign In Successful",
+          description: `Welcome back, ${actionData.data.user.name}!`,
+        });
+        const accountType = actionData.data.user.account_type;
+        if (accountType === "personnel") {
+          navigate("/nsp");
+        } else if (accountType === "staff") {
+          navigate("/ps");
+        }
+      }
+
+    }
+  }, [actionData, setUser, navigate, toast]);
+
+
+
+  useEffect(() => {
+    if (!fbToken) toast({
+      variant: "destructive",
+      title: "Notification Error",
+      description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
+      action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
     });
+  }, [])
+
+  
+
+  function onSubmit(data: z.infer<typeof FormSchema>) {
+    submit(data, { action: "/", method: "post" });
+  }
+
+  // Redirect authenticated users trying to access sign-up or login pages
+  if (isAuth && (location.pathname === '/sign-up' || location.pathname === '/')) {
+    return <Navigate to={user?.account_type === 'staff' ? '/ps' : '/nsp'} replace />;
   }
 
   return (
@@ -66,6 +135,10 @@ export function SignInForm() {
               onSubmit={form.handleSubmit(onSubmit)}
               className=" space-y-6 w-full "
             >
+              {/* displaying error message */}
+              {/* {actionData?.error && (
+                <div className="text-red-500">{actionData.error}</div>
+              )} */}
               <FormField
                 control={form.control}
                 name="email"
@@ -84,7 +157,11 @@ export function SignInForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="enter your password" type="password" {...field} />
+                      <Input
+                        placeholder="enter your password"
+                        type="password"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -97,7 +174,11 @@ export function SignInForm() {
                   Sign up
                 </Link>
               </div>
-              <Button type="submit" className="w-full text-white ">
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full text-white "
+              >
                 Sign In
               </Button>
             </form>

@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetClose,
@@ -8,7 +8,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "@/components/ui/sheet"
+} from "@/components/ui/sheet";
 import Menu from "@/components/menu";
 import { Icons } from "../icons/icons";
 
@@ -32,5 +32,5 @@ export function SheetSide() {
           </SheetContent>
         </Sheet>
     </aside>
-  )
+  );
 }

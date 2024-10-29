@@ -1,15 +1,12 @@
 import { useLocation } from "react-router-dom";
-import { Icons } from "./icons/icons";
 import Profile from "./permanent-staff-dashboard/profile";
 import { Badge } from "@/components/ui/badge";
 import useSound from "use-sound";
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import notificationSoundUrl from "/notification-sound.wav";
-import { Bell, Menu } from "lucide-react";
+import { Bell } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { SheetSide } from "./permanent-staff-dashboard/side-bar";
-
 
 export default function Navbar() {
   let { pathname } = useLocation();
@@ -36,7 +33,8 @@ export default function Navbar() {
   return (
     <nav className="flex justify-between items-center py-4 px-4 lg:px-8 shadow-sm">
       <div className="flex gap-0 items-center">
-        <SheetSide /> {/* MOBILE SIDE BAR */}
+        {/* MOBILE SIDE BAR */}
+        <SheetSide />
         <h1 className="text-primary text-xl">
           {pathname === "/ps" && "Home"}
           {pathname === "/ps/order-history" && "Order History"}
