@@ -53,14 +53,12 @@ export function SignInForm() {
   // display an error message on the UI
   const submit = useSubmit();
 
-  const actionData = useActionData() as {data: AuthResponse | {  error: {message: string} }};
+  const actionData = useActionData() as {
+    data: AuthResponse | { error: { message: string } };
+  };
   const navigation = useNavigation();
   const navigate = useNavigate();
   const { setUser, isAuth, user, setAuthToken, fbToken } = useStoreData();
-
-
-
-
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -69,12 +67,12 @@ export function SignInForm() {
     defaultValues: {
       email: "",
       password: "",
-    },    
+    },
   });
 
   useEffect(() => {
-    if (actionData && 'data' in actionData) {
-      if ('error' in actionData.data) {
+    if (actionData && "data" in actionData) {
+      if ("error" in actionData.data) {
         toast({
           variant: "destructive",
           title: "Sign In Error",
@@ -82,7 +80,7 @@ export function SignInForm() {
         });
       } else {
         setUser(actionData?.data.user);
-        console.log(actionData?.data.authorization.token)
+        console.log(actionData?.data.authorization.token);
         setAuthToken(actionData?.data.authorization.token);
         toast({
           title: "Sign In Successful",
@@ -95,37 +93,45 @@ export function SignInForm() {
           navigate("/ps");
         }
       }
-
     }
   }, [actionData, setUser, navigate, toast]);
 
-
-
   useEffect(() => {
-    if (!fbToken) toast({
-      variant: "destructive",
-      title: "Notification Error",
-      description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
-      action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
-    });
-  }, [])
-
-  
+    if (!fbToken)
+      toast({
+        variant: "destructive",
+        title: "Notification Error",
+        description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
+        action: (
+          <ToastAction
+            altText="Try again"
+            onClick={async () => await requestPermission()}
+          >
+            Try again
+          </ToastAction>
+        ),
+      });
+  }, []);
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
     submit(data, { action: "/", method: "post" });
   }
 
   // Redirect authenticated users trying to access sign-up or login pages
-  if (isAuth && (location.pathname === '/sign-up' || location.pathname === '/')) {
-    return <Navigate to={user?.account_type === 'staff' ? '/ps' : '/nsp'} replace />;
+  if (
+    isAuth &&
+    (location.pathname === "/sign-up" || location.pathname === "/")
+  ) {
+    return (
+      <Navigate to={user?.account_type === "staff" ? "/ps" : "/nsp"} replace />
+    );
   }
 
   return (
     <FormAuth>
       <Card className=" shadow-none border-none w-full md:w-[30em] ">
         <CardHeader className="flex justify-center items-center">
-          <CardTitle className="font-bold text-2xl md:text-5xl">
+          <CardTitle className="font-bold-md text-2xl md:text-5xl">
             User Sign In
           </CardTitle>
         </CardHeader>
@@ -145,7 +151,11 @@ export function SignInForm() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="email" {...field} />
+                      <Input
+                        className="text-[18px] bg-transparent py-6 font-roboto"
+                        placeholder="email"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -158,6 +168,7 @@ export function SignInForm() {
                   <FormItem>
                     <FormControl>
                       <Input
+                        className="text-[18px] bg-transparent py-6 font-roboto"
                         placeholder="enter your password"
                         type="password"
                         {...field}
@@ -169,7 +180,7 @@ export function SignInForm() {
               />
               <div className="flex justify-center items-center text-center lg:hidden ">
                 <small className="pr-2">Not Registered? </small>
-                <Link to={"/sign-up"} className="text-rose-700">
+                <Link to={"/sign-up"} className="text-rose-700 ">
                   {" "}
                   Sign up
                 </Link>
@@ -177,7 +188,7 @@ export function SignInForm() {
               <Button
                 type="submit"
                 disabled={isSubmitting}
-                className="w-full text-white "
+                className="w-full text-white text-[24px] py-6 font-roboto"
               >
                 Sign In
               </Button>

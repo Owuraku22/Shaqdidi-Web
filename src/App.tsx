@@ -2,11 +2,13 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "@/components/nsp/layout";
 import PsLayout from "@/components/permanent-staff-dashboard/layout";
-import Home from "@/routes/";
+import Home from "@/routes/home";
 import {
   fetchAvailablePersonnels,
   fetchFoodJoints,
   fetchOrders,
+  FoodJoint,
+  Personnel,
   signIn,
 } from "@/lib/api";
 import ErrorBoundary from "./error-page";
@@ -25,6 +27,7 @@ import { request } from "http";
 import { useEffect } from "react";
 import { useStoreData } from "./store/state";
 import { ProtectedRoute } from "./components/protected-route";
+import PersonnelError from "./personnel-error";
 
 const queryClient = new QueryClient();
 
@@ -75,7 +78,7 @@ const router = createBrowserRouter([
           },
         ],
       },
-    
+
       {
         path: "/ps",
         element: <PsLayout />,
@@ -85,7 +88,7 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <PsDashboardPage />,
-            errorElement: <ErrorBoundary />,
+            errorElement: <PersonnelError />,
             loader: async () => {
               const foodJoints = await queryClient.fetchQuery({
                 queryKey: ["orders"],
@@ -105,7 +108,7 @@ const router = createBrowserRouter([
             action: async ({ request }) => {
               return await handleCreateOrder(request);
             },
-    
+
             loader: async () => {
               const orders = await queryClient.fetchQuery({
                 queryKey: ["orders"],
@@ -122,25 +125,6 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  // useEffect(() => {
-  //   api.interceptors.request.use(
-  //     (config) => {
-  //       // Retrieve the token from the Zustand store
-  //       const { user } = useStoreData.getState();
-  //       const token = user.authorization.token;
-  //       console.log(token);
-
-  //       if (token) {
-  //         config.headers.Authorization = `Bearer ${token}`;
-  //       }
-  //       return config;
-  //     },
-  //     (error) => {
-  //       // Handle request error
-  //       return Promise.reject(error);
-  //     }
-  //   );
-  // }, [useStoreData.getState()]);
   return (
     <QueryClientProvider client={queryClient}>
       <Toaster />
