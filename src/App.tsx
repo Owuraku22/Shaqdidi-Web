@@ -2,7 +2,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "@/components/nsp/layout";
 import PsLayout from "@/components/permanent-staff-dashboard/layout";
-import Home from "@/routes/";
+import Home from "@/routes/home";
 import {
   fetchAvailablePersonnels,
   fetchFoodJoints,
