@@ -5,141 +5,18 @@ import OrderHistoryCard from "./order-history-card";
 import { cn } from '@/lib/utils';
 import OrderHistoryEmpty from "./order-history-empty";
 
-const currentOrders = [
-    {
-        id: 1,
-        image: '/food.png',
-        title: "Daavi's Special Gob3",
-        location: 'Haatso Station',
-        status: 'Pending',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 2,
-        image: '/food.png',
-        title: "Homey's Kenkey",
-        location: 'Haatso Station',
-        status: 'Pending',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 3,
-        image: '/food.png',
-        title: "New Arrival",
-        location: 'Haatso Station',
-        status: 'Pending',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 4,
-        image: '/food.png',
-        title: "Solid Porage",
-        location: 'Haatso Station',
-        status: 'Pending',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 5,
-        image: '/food.png',
-        title: "Edge Rice",
-        location: 'Haatso Station',
-        status: 'Pending',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 6,
-        image: '/food.png',
-        title: "Daavi's Special Gob3",
-        location: 'Haatso Station',
-        status: 'Pending',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 7,
-        image: '/food.png',
-        title: "Daavi's Special Gob3",
-        location: 'Haatso Station',
-        status: 'Pending',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-]
+import { useQuery } from "@tanstack/react-query";
+import { fetchOrders } from "@/lib/api";
 
-const previousOrders = [
-    {
-        id: 1,
-        image: '/food.png',
-        title: "Daavi's Special Gob3",
-        location: 'Haatso Station',
-        status: 'Completed',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 2,
-        image: '/food.png',
-        title: "Daavi's Special Gob3",
-        location: 'Haatso Station',
-        status: 'Completed',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    {
-        id: 3,
-        image: '/food.png',
-        title: "Daavi's Special Gob3",
-        location: 'Haatso Station',
-        status: 'Completed',
-        price: 'GHC 43.00',
-        date: '',
-        staffName: '',
-        note: '',
-        phoneNumber: '',
-    },
-    
-]
 
 export default function OrderHistory() {
     const [activeTab, setActiveTab] = useState('current');
+    const { data } = useQuery({
+        queryKey: ['orders'],
+        queryFn: fetchOrders,
+    })
 
-    // const handleMarkCompleted = async (id: string) => {
-    //     await markOrderCompleted(id);
-    //     queryClient.invalidateQueries({queryKey: ['todayOrders']});
-    //     submit(null, { method: 'get', action: '/' });
-    //   };
+    console.log(data)
 
     return(
     <>
@@ -150,11 +27,11 @@ export default function OrderHistory() {
         </TabsList>
         <TabsContent value="current">
         {
-            !currentOrders.length  ? (
+            !data?.length  ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-                  {currentOrders.map(order => (
+                  {data?.filter(e => e.status === "Pending").map(order => (
                     <OrderHistoryCard
                       key={order.id}
                       {...order}
@@ -167,11 +44,11 @@ export default function OrderHistory() {
         </TabsContent>
         <TabsContent value="previous">
         {
-            previousOrders.length ? (
+            !data?.length ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-                    {previousOrders.map(order => (
+                    {data?.filter(e => (e.status === "Completed" || e.status === "Cancelled")).map(order => (
                     <OrderHistoryCard
                         key={order.id}
                         {...order}

@@ -7,34 +7,23 @@ import {
   DialogFooter,
   DialogTrigger,
 } from '@/components/ui/dialog';
-// import { Order } from '@/lib/api';
+import { Order } from '@/lib/api';
 import { cn } from '@/lib/utils';
 
-interface OrderCardProps {
-    id: number,
-    image: string,
-    title: string,
-    location: string,
-    status: string,
-    price: string,
-    date: string,
-    staffName: string,
-    note: string,
-    phoneNumber: string,
+interface OrderCardProps extends Order {
     activeTab: string;
 }
 
 export default function OrderHistoryCard({
   id,
-  image,
-  title,
-  location,
-  status,
-  price,
   date,
-  staffName,
+  joint_name,
+  address,
+  amount,
+  name,
+  status,
   note,
-  phoneNumber,
+  phone_number,
   activeTab
 }: OrderCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -53,11 +42,11 @@ export default function OrderHistoryCard({
         <DialogTrigger asChild>
           <Card className="w-full cursor-pointer">
           <CardContent className="p-0 rounded-t-lg">
-            <img src={image} alt={title} className="w-full h-40 rounded-t-xl object-cover" />
+            <img src={"/food.png"} alt={joint_name} className="w-full h-40 rounded-t-xl object-cover" />
             <div className="p-4">
-              <h3 className="text-lg font-semibold">{title}</h3>
+              <h3 className="text-lg font-semibold">{joint_name}</h3>
               <div className="flex justify-between items-center mt-2">
-              <p className="text-sm text-gray-500">{location}</p>
+              <p className="text-sm text-gray-500">{address}</p>
                 <p className='font-normal text-sm text-gray-500'>Status: 
                   <span className={cn('font-normal', {
                     'text-amber-400': status === 'Pending',
@@ -68,7 +57,7 @@ export default function OrderHistoryCard({
             
               </div>
               <div className="mt-2 text-sm text-gray-500 flex justify-between w-full">
-                <span className="font-semibold">{price}</span>
+                <span className="font-semibold">{amount}</span>
                 <p>{new Date(date).toLocaleDateString()}</p>
               </div>
           </div>
@@ -85,16 +74,16 @@ export default function OrderHistoryCard({
         <DialogContent className="max-h-dvh p-0 border-none md:min-w-[50rem] rounded-t-2xl">
           {/* <ScrollArea className=""> */}
           <div className="relative w-full bg-gradient-to-b from-black to-transparent bg-opacity-20 rounded-t-2xl">
-            <img src={image} alt={title} className="w-full h-44  object-cover rounded-t-lg" />
+            <img src={"/food.png"} alt={joint_name} className="w-full h-44  object-cover rounded-t-lg" />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-40 text-white p-2 pl-6">
-              <h3 className="text-lg font-semibold">{title}</h3>
-              <p className="text-sm">{location}</p>
+              <h3 className="text-lg font-semibold">{joint_name}</h3>
+              <p className="text-sm">{address}</p>
             </div>
           </div>
           <div className="grid gap-4 py-4 px-7">
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Amount</span>
-              <span className="col-span-3 border rounded-md px-3 py-2">{price}</span>
+              <span className="col-span-3 border rounded-md px-3 py-2">{amount}</span>
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Note</span>
@@ -102,11 +91,11 @@ export default function OrderHistoryCard({
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Assigned Personnel</span>
-              <span className="col-span-3 border rounded-md px-3 py-2">{staffName}</span>
+              <span className="col-span-3 border rounded-md px-3 py-2">{name}</span>
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Phone Number</span>
-              <span className="col-span-3 border rounded-md px-3 py-2">{phoneNumber}</span>
+              <span className="col-span-3 border rounded-md px-3 py-2">{phone_number}</span>
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Status</span>
