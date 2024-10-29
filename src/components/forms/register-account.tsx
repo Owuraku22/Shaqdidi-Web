@@ -32,7 +32,6 @@ import { useEffect } from "react";
 import { AuthResponse } from "@/lib/api";
 import { useStoreData } from "@/store/state";
 
-
 const formSchema = z
   .object({
     email: z.string().email("Email must contain @ or '.' "),
