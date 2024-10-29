@@ -20,22 +20,9 @@ import { useEffect } from "react";
 // import PopoverForm from "./details-popover";
 
 const PsDashboardPage = () => {
-  // const { foodJoints, personnels } = useLoaderData() as {
-  //   foodJoints: FoodJointResponse | undefined;
-  //   personnels: PersonnelResponse | undefined;
-  // };
   const { isMobile } = useMediaQuery();
   // const { user } = useStoreData();
   const user = useStoreData((state) => state.user);
-
-  // fetchFoodJoints().then((data) => console.log("Fetched foodjoints :", data.message));
-
-  // const { data: foodJoints, isLoading: isFoodLoading } = useQuery<
-  //   FoodJoint[] | undefined
-  // >({
-  //   queryKey: ["foodJoints"],
-  //   queryFn: fetchFoodJoints,
-  // });
 
   // // Using useQuery to fetch food joints
   const { data: foodJoints, isLoading: isFoodLoading } = useQuery<
@@ -57,23 +44,20 @@ const PsDashboardPage = () => {
     return <div>Loading...</div>;
   }
 
-  if (!foodJoints || !personnels) {
+  if (!personnels) {
     return <div>Failed to load data</div>;
   }
-
-  // console.log("Users mail:", user?.email);
-  // console.log("Available Personnels are:", personnels?.personnels);
 
   return (
     <div className="flex flex-col bg-white">
       {/* {personnels?.personnels.map((personnel) => (
         <h1> hell{personnel.name}</h1>
       ))} */}
-      <div className="h-[5em] lg:px-4 md:my-4">
-        <h2 className="font-bold text-2xl md:text-3xl font-poppins">
+      <div className="h-[5em] lg:px-4 md:my-2">
+        <h2 className="font-[600]  text-2xl md:text-3xl font-poppins">
           Hi, {user?.name}!
         </h2>
-        <h2 className="my-4 md:text-2xl text-gray-500 font-roboto">
+        <h2 className="my-2 md:text-2xl text-gray-500 font-roboto">
           Browse food joints and place orders
         </h2>
       </div>

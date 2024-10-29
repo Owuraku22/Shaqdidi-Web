@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/card";
 import {
   Link,
+  Navigate,
   useActionData,
   useNavigate,
   useNavigation,
@@ -54,16 +55,15 @@ const formSchema1 = formSchema.required();
 
 export default function RegisterAccount() {
   const submit = useSubmit();
-    const actionData = useActionData() as {
-      data: AuthResponse | { error: { message: string } };
-    };
+  const actionData = useActionData() as {
+    data: AuthResponse | { error: { message: string } };
+  };
 
   // const navigation = useNavigation();
   const navigate = useNavigate();
   const setUser = useStoreData((state) => state.setUser);
   const setAuthToken = useStoreData((state) => state.setAuthToken);
-
-
+  const { isAuth, user } = useStoreData();
 
   const form = useForm<z.infer<typeof formSchema1>>({
     resolver: zodResolver(formSchema),
@@ -119,7 +119,15 @@ export default function RegisterAccount() {
     }
   }, [actionData, setUser, navigate, toast]);
 
-
+  // Redirect authenticated users trying to access sign-up or login pages
+  if (
+    isAuth &&
+    (location.pathname === "/sign-up" || location.pathname === "/")
+  ) {
+    return (
+      <Navigate to={user?.account_type === "staff" ? "/ps" : "/nsp"} replace />
+    );
+  }
 
   return (
     <FormAuth isSignIn>
@@ -129,7 +137,7 @@ export default function RegisterAccount() {
             Let’s Get Started
           </CardTitle>
           <CardDescription
-            className="font-bold text-3xl md:text-2xl text-black
+            className="font-bold-md text-3xl md:text-2xl text-black
            md:text-gray-400"
           >
             Create an Account
@@ -147,17 +155,29 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem className="flex  justify-center">
                     <RadioGroup
-                      className="flex "
+                      className="flex  "
                       onValueChange={field.onChange}
                       // defaultValue={"ps"}
                       value={field.value}
                     >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="staff" id="staff" />
+                      <div className="flex items-center space-x-2 ">
+                        <RadioGroupItem
+                          value="staff"
+                          id="staff"
+                          className={`${
+                            field.value === "staff" && "border-primary"
+                          }`}
+                        />
                         <Label htmlFor="ps">PS</Label>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="personnel" id="personnel" />
+                      <div className="flex items-center space-x-2 ">
+                        <RadioGroupItem
+                          value="personnel"
+                          id="personnel"
+                          className={`${
+                            field.value === "personnel" && "border-primary"
+                          }`}
+                        />
                         <Label htmlFor="nsp">NSP</Label>
                       </div>
                     </RadioGroup>
@@ -170,7 +190,12 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="John" type="text" {...field} />
+                      <Input
+                        className="text-[18px] bg-transparent py-6 font-roboto"
+                        placeholder="Full Name"
+                        type="text"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -181,8 +206,8 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="john@gmail.com"
+                      <Input className="text-[18px] bg-transparent py-6 font-roboto"
+                        placeholder="Email Address"
                         type="email"
                         {...field}
                       />
@@ -196,8 +221,8 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="************"
+                      <Input className="text-[18px] bg-transparent py-6 font-roboto"
+                        placeholder="Password"
                         type="password"
                         {...field}
                       />
@@ -211,18 +236,14 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="0266784556"
-                        type="number"
-                        {...field}
-                      />
+                      <Input className="text-[18px] bg-transparent py-6 font-roboto" placeholder="Phone Number" type="tel" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
               />
 
               <Button type="submit" className="w-full">
-                Submit
+                Sign Up
               </Button>
             </form>
           </Form>

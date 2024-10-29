@@ -23,6 +23,7 @@ import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useSubmit } from "react-router-dom";
 import { FoodJoint, Personnel, PersonnelResponse } from "@/lib/api";
+import { useStoreData } from "@/store/state";
 
 const formSchema = z.object({
   amount: z.string().min(2).max(50),
@@ -48,6 +49,8 @@ const FoodJoints = ({
       personnel_id: "",
     },
   });
+  const user = useStoreData((state) => state.user);
+  const staff_id = user?.id;
 
   const [confirm, setConfirm] = useState(false);
 
@@ -55,23 +58,27 @@ const FoodJoints = ({
     const jointData = {
       joint_id: foodJoint.id,
       address: foodJoint.address,
-      name: foodJoint.name,
+      joint_name: foodJoint.name,
+      staff_id: staff_id!,
+      joint_image: foodJoint.image_url,
       ...data,
     };
+    console.log("Order data", jointData);
     submit(jointData, { action: "/ps/order-history", method: "POST" });
     if (confirm) {
       toast({
         title: "You submitted the following values:",
         description: (
           <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">{JSON.stringify(data, null, 2)}</code>
+            <code className="text-white">
+              {JSON.stringify(jointData, null, 2)}
+            </code>
           </pre>
         ),
       });
     }
     setConfirm(true);
   }
-
   return (
     <>
       {/* background image for food joint */}
@@ -83,7 +90,7 @@ const FoodJoints = ({
       >
         {/* Name of food joint and address for larger screen */}
         <div className="hidden md:flex flex-col absolute bottom-0 py-3 px-8 w-full bg-black bg-opacity-50 text-white">
-          <h2 className=" text-3xl lg:text-3xl  text-white">
+          <h2 className=" text-3xl lg:text-3xl  text-white font-poppins">
             {foodJoint.name}
           </h2>
           <span className="pt-2 w-[17rem] lg:w-[22em] text-slate-200 text-xl font-roboto font-light">

@@ -1,8 +1,6 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
-// import { storeState, useStoreData } from "@/store/state";
-import { config } from "node:process";
-import { error } from "node:console";
+import { useStoreData } from "@/store/state";
 
 export const api = axios.create({
   baseURL: "https://didi.shaqexpress.com/v1/",
@@ -14,13 +12,17 @@ export const api = axios.create({
 
 api.interceptors.request.use(
   (config) => {
-    const token = window.localStorage.getItem("token");
+    // Retrieve the token from the Zustand store
+    const token = useStoreData.getState().authToken ?? "";
+    console.log(token);
+
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
   (error) => {
+    // Handle request error
     return Promise.reject(error);
   }
 );
@@ -37,6 +39,7 @@ export interface AuthResponse {
     id: number;
     name: string;
     email: string;
+    phone_number: number;
     account_type: string;
   };
 }
@@ -127,23 +130,24 @@ export const signUp = async (userData: {
   role?: string;
   fb_token?: string;
 }): Promise<AuthResponse | undefined> => {
-  // if (useFaker) {
-  //   return {
-  //     message: "User signed up successfully",
-  //     authorization: {
-  //       token: faker.string.alphanumeric(64),
-  //       type: "bearer",
-  //       refresh_ttl: faker.date.future().toISOString(),
-  //       ttl: faker.date.future().toISOString(),
-  //     },
-  //     user: {
-  //       id: faker.number.int(),
-  //       full_name: userData.full_name,
-  //       email: faker.internet.email({ firstName: faker.person.fullName() }),
-  //       account_type: "staff",
-  //     },
-  //   };
-  // }
+  if (useFaker) {
+    return {
+      message: "User signed up successfully",
+      authorization: {
+        token: faker.string.alphanumeric(64),
+        type: "bearer",
+        refresh_ttl: faker.date.future().toISOString(),
+        ttl: faker.date.future().toISOString(),
+      },
+      user: {
+        id: faker.number.int(),
+        name: userData.full_name,
+        email: faker.internet.email({ firstName: faker.person.fullName() }),
+        account_type: "staff",
+        phone_number: faker.number.int(),
+      },
+    };
+  }
   try {
     const response = await api.post<AuthResponse>("/auth/sign-up", userData);
     return response.data;
@@ -155,7 +159,7 @@ export const signUp = async (userData: {
 export const signIn = async (credentials: {
   email: string;
   password: string;
-  fb_token?: string;
+  fb_token: string;
 }): Promise<AuthResponse | undefined> => {
   if (useFaker) {
     return {
@@ -171,6 +175,7 @@ export const signIn = async (credentials: {
         name: faker.person.fullName(),
         account_type: "staff",
         email: faker.internet.email({ firstName: faker.person.fullName() }),
+        phone_number: faker.number.int(),
       },
     };
   }
@@ -213,6 +218,7 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         name: faker.person.fullName(),
         account_type: "staff",
+        phone_number: faker.number.int(),
       },
     };
   }

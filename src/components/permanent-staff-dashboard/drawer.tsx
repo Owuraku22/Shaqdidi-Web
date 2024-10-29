@@ -18,7 +18,6 @@ import { FoodJoint, Personnel, PersonnelResponse, Staff } from "@/lib/api";
 export function DrawerForm({
   foodJoint,
   personnels,
-
   children,
 }: {
   foodJoint: FoodJoint;

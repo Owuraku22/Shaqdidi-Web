@@ -4,7 +4,6 @@ import Layout from "@/components/nsp/layout";
 import PsLayout from "@/components/permanent-staff-dashboard/layout";
 import Home from "@/routes/home";
 import {
-  api,
   fetchAvailablePersonnels,
   fetchFoodJoints,
   fetchOrders,
@@ -26,7 +25,9 @@ import {
 } from "./lib/actions";
 import { request } from "http";
 import { useEffect } from "react";
-// import { useStoreData } from "./store/state";
+import { useStoreData } from "./store/state";
+import { ProtectedRoute } from "./components/protected-route";
+import PersonnelError from "./personnel-error";
 
 const queryClient = new QueryClient();
 
@@ -54,77 +55,72 @@ const router = createBrowserRouter([
       return await handleSignUpAction(request);
     },
   },
-  // {
-  //   path: "/sign-in",
-  //   element: <Login />,
-  //   errorElement: <ErrorBoundary />,
-  // },
   {
-    path: "/nsp",
-    element: <Layout routes={nspRoutes} />,
-    errorElement: <ErrorBoundary />,
+    element: <ProtectedRoute />,
     children: [
       {
-        index: true,
-        element: <Home />,
+        path: "/nsp",
+        element: <Layout routes={nspRoutes} />,
         errorElement: <ErrorBoundary />,
-        loader: async () => {
-          const orders = await queryClient.fetchQuery({
-            queryKey: ["orders"],
-            queryFn: fetchOrders,
-          });
-          return { orders };
-        },
+        children: [
+          {
+            index: true,
+            element: <Home />,
+            errorElement: <ErrorBoundary />,
+            loader: async () => {
+              const orders = await queryClient.fetchQuery({
+                queryKey: ["orders"],
+                queryFn: fetchOrders,
+              });
+              console.log("orders", orders);
+              return { orders };
+            },
+          },
+        ],
+      },
+
+      {
+        path: "/ps",
+        element: <PsLayout />,
+        // element: <Layout isPs routes={psRoutes} />,
+        errorElement: <ErrorBoundary />,
+        children: [
+          {
+            index: true,
+            element: <PsDashboardPage />,
+            errorElement: <PersonnelError />,
+            loader: async () => {
+              const foodJoints = await queryClient.fetchQuery({
+                queryKey: ["orders"],
+                queryFn: fetchFoodJoints,
+              });
+              const personnel = await queryClient.fetchQuery({
+                queryKey: ["personnel"],
+                queryFn: fetchAvailablePersonnels,
+              });
+              return { foodJoints, personnel };
+            },
+          },
+          {
+            path: "order-history",
+            element: <OrderHistory />,
+            errorElement: <ErrorBoundary />,
+            action: async ({ request }) => {
+              return await handleCreateOrder(request);
+            },
+
+            loader: async () => {
+              const orders = await queryClient.fetchQuery({
+                queryKey: ["orders"],
+                queryFn: fetchOrders,
+              });
+              return { orders };
+            },
+          },
+        ],
       },
     ],
-  },
-
-  {
-    path: "/ps",
-    element: <PsLayout />,
-    // element: <Layout isPs routes={psRoutes} />,
     errorElement: <ErrorBoundary />,
-    children: [
-      {
-        index: true,
-        element: <PsDashboardPage />,
-        errorElement: <ErrorBoundary />,
-        // loader: async () => {
-        //   const foodJoints = await queryClient.fetchQuery({
-        //     queryKey: ["orders"],
-        //     queryFn: fetchFoodJoints,
-        //   });
-        //   const personnel = await queryClient.fetchQuery({
-        //     queryKey: ["personnel"],
-        //     queryFn: fetchAvailablePersonnels,
-        //   });
-        //   return { foodJoints, personnel };
-        // },
-        // loader: async () => {
-        //   const foodJoints = await fetchFoodJoints();
-        //   const personnels = await fetchAvailablePersonnels();
-
-        //   // Return the response object with the full structure
-        //   return { foodJoints, personnels };
-        // },
-      },
-      {
-        path: "order-history",
-        element: <OrderHistory />,
-        errorElement: <ErrorBoundary />,
-        action: async ({ request }) => {
-          return await handleCreateOrder(request);
-        },
-
-        loader: async () => {
-          const orders = await queryClient.fetchQuery({
-            queryKey: ["orders"],
-            queryFn: fetchOrders,
-          });
-          return { orders };
-        },
-      },
-    ],
   },
 ]);
 

@@ -20,10 +20,10 @@ export default function Profile() {
           <AvatarFallback>IA</AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="mr-4 p-4 gap-2 border-none shadow-sm">
+      <DropdownMenuContent className="mr-4 p-4 flex flex-col gap-1 border-none shadow-md ">
         <p className="text-lg"> {user?.name}</p>
         <p className="text-[14px] text-gray-500">{user?.email}</p>
-        {/* <p className="text-[14px] text-gray-500">{user}</p> */}
+        <p className="text-[14px] text-gray-500">{user?.phone_number}</p>
       </DropdownMenuContent>
     </DropdownMenu>
   );
