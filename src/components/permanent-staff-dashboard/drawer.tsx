@@ -29,7 +29,10 @@ export function DrawerForm({
       <DrawerContent className="max-h-[calc(100vh-6rem)] border-none">
         <DrawerHandle className="w-16 h-3 rounded-full bg-gray-300 mb-2"></DrawerHandle>
         <ScrollArea className="overflow-y-auto">
-          <FoodJoints foodJoint={foodJoint} personnels={personnels} />
+          <FoodJoints
+            foodJoint={foodJoint}
+            personnels={personnels}
+          />
         </ScrollArea>
         <DrawerFooter>
           {/* <Button>Submit</Button> */}

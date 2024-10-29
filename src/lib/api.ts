@@ -269,6 +269,39 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
 
 
 
+// export const fetchAvailablePersonnels = async (): Promise<
+//   Personnel[] | undefined
+// > => {
+//   // if (useFaker) {
+//   //   return Array.from({ length: 5 }, () => ({
+//   //     id: faker.number.int(),
+//   //     name: faker.person.fullName(),
+//   //   }));
+//   // }
+//   try {
+//     const response = await api.get<Personnel[]>("/personnels/available");
+//     return response.data;
+//   } catch (error) {
+//     handleApiError(error);
+//   }
+// };
+
+// export const fetchFoodJoints = async (): Promise<FoodJoint[] | undefined> => {
+//   // if (useFaker) {
+//   //   return Array.from({ length: 5 }, () => ({
+//   //     id: faker.number.int(),
+//   //     name: faker.company.name(),
+//   //     address: faker.location.streetAddress(),
+//   //   }));
+//   // }
+//   try {
+//     const response = await api.get<FoodJoint[]>("/joints");
+//     return response.data;
+//   } catch (error) {
+//     handleApiError(error);
+//   }
+// };
+
 export const fetchAvailablePersonnels = async (): Promise<
   PersonnelResponse 
 > => {
