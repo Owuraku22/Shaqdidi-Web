@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/card";
 import {
   Link,
+  Navigate,
   redirect,
   useActionData,
   useNavigate,
@@ -33,6 +34,9 @@ import FormAuth from "./auth";
 import { AuthResponse } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useStoreData } from "@/store/state";
+
+import { ToastAction } from "../ui/toast";
+import { requestPermission } from "../protected-route";
 
 // interface ActionData {
 //   error?: string;
@@ -48,10 +52,15 @@ const FormSchema = z.object({
 export function SignInForm() {
   // display an error message on the UI
   const submit = useSubmit();
-  const actionData = useActionData() as AuthResponse;
+
+  const actionData = useActionData() as {data: AuthResponse | {  error: {message: string} }};
   const navigation = useNavigation();
   const navigate = useNavigate();
-  const { setUser, isAuth, user } = useStoreData();
+  const { setUser, isAuth, user, setAuthToken, fbToken } = useStoreData();
+
+
+
+
 
   const isSubmitting = navigation.state === "submitting";
 
@@ -64,35 +73,52 @@ export function SignInForm() {
   });
 
   useEffect(() => {
-    if (actionData && actionData.user) {
-      // setUser Data
-      setUser!(actionData);
-      // Redirect based on the account type
-      console.log("Logging action data: ", actionData);
-       const accountType = actionData?.user.account_type;
-       if (accountType === "personnel") {
-        navigate("/nsp");
+    if (actionData && 'data' in actionData) {
+      if ('error' in actionData.data) {
+        toast({
+          variant: "destructive",
+          title: "Sign In Error",
+          description: actionData.data.error.message,
+        });
+      } else {
+        setUser(actionData?.data.user);
+        console.log(actionData?.data.authorization.token)
+        setAuthToken(actionData?.data.authorization.token);
+        toast({
+          title: "Sign In Successful",
+          description: `Welcome back, ${actionData.data.user.name}!`,
+        });
+        const accountType = actionData.data.user.account_type;
+        if (accountType === "personnel") {
+          navigate("/nsp");
+        } else if (accountType === "staff") {
+          navigate("/ps");
+        }
+      }
 
-       } else if (accountType === "staff") {
-         navigate("/ps");
-       }
     }
-  }, [actionData, setUser]);
+  }, [actionData, setUser, navigate, toast]);
 
+
+
+  useEffect(() => {
+    if (!fbToken) toast({
+      variant: "destructive",
+      title: "Notification Error",
+      description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
+      action: <ToastAction altText="Try again" onClick={async () => await requestPermission()}>Try again</ToastAction>,
+    });
+  }, [])
+
+  
 
   function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log(data);
-    console.log("Logging onSubmit data: ", actionData);
-
     submit(data, { action: "/", method: "post" });
-    toast({
-      title: "You submitted the following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(data, null, 2)}</code>
-        </pre>
-      ),
-    });
+  }
+
+  // Redirect authenticated users trying to access sign-up or login pages
+  if (isAuth && (location.pathname === '/sign-up' || location.pathname === '/')) {
+    return <Navigate to={user?.account_type === 'staff' ? '/ps' : '/nsp'} replace />;
   }
 
   return (

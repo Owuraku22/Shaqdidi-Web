@@ -20,6 +20,7 @@ import {
 } from "@/components/ui/card";
 import {
   Link,
+  Navigate,
   useActionData,
   useNavigate,
   useNavigation,
@@ -87,7 +88,7 @@ export default function RegisterAccount() {
   useEffect(() => {
     if (actionData) {
       // setUser Data
-      setUser!(actionData);
+      setUser!(actionData.user);
       // Redirect based on the account type
       console.log("Sign Up action data: ", actionData);
       const accountType = actionData?.user.account_type;
@@ -98,6 +99,11 @@ export default function RegisterAccount() {
       }
     }
   }, [actionData, setUser]);
+
+  // Redirect authenticated users trying to access sign-up or login pages
+  if (isAuth && (location.pathname === '/sign-up' || location.pathname === '/')) {
+    return <Navigate to={user?.account_type === 'staff' ? '/ps' : '/nsp'} replace />;
+  }
 
   return (
     <FormAuth isSignIn>

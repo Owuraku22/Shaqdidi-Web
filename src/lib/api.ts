@@ -1,14 +1,31 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
-import { storeState, useStoreData } from "@/store/state";
+import { useStoreData } from "@/store/state";
 
 export const api = axios.create({
-  baseURL: "https://didi.shaqexpress.com/api/",
+  baseURL: "https://didi.shaqexpress.com/v1/",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
   },
 });
+
+   api.interceptors.request.use(
+      (config) => {
+        // Retrieve the token from the Zustand store
+        const token = useStoreData.getState().authToken ?? '';
+        console.log(token);
+
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+        return config;
+      },
+      (error) => {
+        // Handle request error
+        return Promise.reject(error);
+      }
+    );
 
 
 
@@ -22,7 +39,7 @@ export interface AuthResponse {
   };
   user: {
     id: number;
-    full_name: string;
+    name: string;
     email: string;
     account_type: string;
   };
@@ -102,7 +119,7 @@ export const signUp = async (userData: {
       },
       user: {
         id: faker.number.int(),
-        full_name: userData.full_name,
+        name: userData.full_name,
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         account_type: "staff",
       },
@@ -119,7 +136,7 @@ export const signUp = async (userData: {
 export const signIn = async (credentials: {
   email: string;
   password: string;
-  fb_token?: string;
+  fb_token: string;
 }): Promise<AuthResponse | undefined> => {
   if (useFaker) {
     return {
@@ -132,7 +149,7 @@ export const signIn = async (credentials: {
       },
       user: {
         id: faker.number.int(),
-        full_name: faker.person.fullName(),
+        name: faker.person.fullName(),
         account_type: "staff",
         email: faker.internet.email({ firstName: faker.person.fullName() }),
       },
@@ -175,7 +192,7 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
       user: {
         id: faker.number.int(),
         email: faker.internet.email({ firstName: faker.person.fullName() }),
-        full_name: faker.person.fullName(),
+        name: faker.person.fullName(),
         account_type: "staff",
       },
     };
