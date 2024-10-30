@@ -18,7 +18,7 @@ import {
   FormItem,
   FormLabel,
 } from "@/components/ui/form";
-import { z } from "zod";
+import { boolean, z } from "zod";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
 import { useNavigate, useSubmit } from "react-router-dom";
@@ -55,17 +55,16 @@ const FoodJoints = ({
   const staff_id = user?.id;
 
   const [confirm, setConfirm] = useState(false);
-  // const [isFormData, setIsFormData] = useState(false);
+  const [isFormData, setIsFormData] = useState(false);
 
-  // const formValues = form.watch();
-  // useEffect(() => {
-  //   const allFieldsFilled =
-  //     Boolean(form.watch("amount")) &&
-  //     Boolean(form.watch("note")) &&
-  //     Boolean(form.watch("personnel_id"));
-  //   setIsFormData(allFieldsFilled);
-  // }, [formValues]);
-
+  const formValues = form.watch();
+  useEffect(() => {
+    const allFieldsFilled =
+      Boolean(form.watch("amount")) &&
+      Boolean(form.watch("note")) &&
+      Boolean(form.watch("personnel_id"));
+    setIsFormData(allFieldsFilled);
+  }, [formValues]);
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     const jointData = {
@@ -76,9 +75,9 @@ const FoodJoints = ({
       // joint_image: foodJoint.image_url,
       ...data,
     };
+    console.log("Order data", jointData);
     if (confirm) {
       submit(jointData, { action: "/ps/order-history", method: "POST" });
-      console.log("Orderd data: ", jointData);
       toast({
         title: "You submitted the following values:",
         description: (
@@ -89,8 +88,6 @@ const FoodJoints = ({
           </pre>
         ),
       });
-      // Navigate to OrderHistory page after submission
-      navigate("/ps/order-history");
       setConfirm(false);
     } else {
       setConfirm(true);
@@ -174,7 +171,7 @@ const FoodJoints = ({
                   Select available Personnel
                 </FormLabel>
                 <FormLabel className="text-[0.875rem] font-[400] text-[#212121] px-0 md:px-4 font-roboto">
-                  Choose who will handle this order
+                  Select available Personnel
                 </FormLabel>
                 <FormControl>
                   <Select
@@ -214,10 +211,28 @@ const FoodJoints = ({
             >
               Cancel
             </Button>
+
+            {/* {confirm ? (
+              <Button
+                type="submit"
+                className="w-full md:w-[6.5rem] rounded-full md:rounded-lg font-roboto"
+              >
+                Confirm
+              </Button>
+            ) : (
+              <Button
+                onClick={() => setConfirm(true)}
+                type="button"
+                className="w-full md:w-[6.5rem] rounded-full md:rounded-lg font-roboto"
+                disabled={!isFormData}
+              >
+                Order Now
+              </Button>
+            )} */}
             <Button
               type="submit"
               className="w-full md:w-[6.5rem]"
-              // disabled={!isFormData}
+              disabled={!isFormData}
             >
               {confirm ? "Confirm" : "Order Now"}
             </Button>
