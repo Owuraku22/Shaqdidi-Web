@@ -16,7 +16,7 @@ import OrderHistory from "./components/permanent-staff-dashboard/order-history";
 import Regiter from "./routes/register";
 import Login from "./routes/login";
 import { Toaster } from "./components/ui/toaster";
-import PsDashboardPage from "./components/permanent-staff-dashboard/permanent-staff-dashboard";
+import PsDashboardPage from "./components/permanent-staff-dashboard/ps-dashboard";
 import { string } from "zod";
 import {
   handleCreateOrder,
@@ -88,18 +88,6 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <PsDashboardPage />,
-            errorElement: <PersonnelError />,
-            loader: async () => {
-              const foodJoints = await queryClient.fetchQuery({
-                queryKey: ["orders"],
-                queryFn: fetchFoodJoints,
-              });
-              const personnel = await queryClient.fetchQuery({
-                queryKey: ["personnel"],
-                queryFn: fetchAvailablePersonnels,
-              });
-              return { foodJoints, personnel };
-            },
           },
           {
             path: "order-history",
@@ -107,14 +95,6 @@ const router = createBrowserRouter([
             errorElement: <ErrorBoundary />,
             action: async ({ request }) => {
               return await handleCreateOrder(request);
-            },
-
-            loader: async () => {
-              const orders = await queryClient.fetchQuery({
-                queryKey: ["orders"],
-                queryFn: fetchOrders,
-              });
-              return { orders };
             },
           },
         ],

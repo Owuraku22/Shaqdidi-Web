@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 export default function PersonnelError() {
-    // const error = useRouteError() as Error;
+  // const error = useRouteError() as Error;
 
   return (
     <div className="flex items-center justify-center">
