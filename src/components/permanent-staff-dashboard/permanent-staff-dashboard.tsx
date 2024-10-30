@@ -31,9 +31,12 @@ const PsDashboardPage = () => {
 
   return (
     <div className="flex flex-col bg-white">
-      <div className="h-[5em] md:my-4">
-        <h2 className="font-bold text-2xl md:text-3xl font-poppins">
-          Hi, Isaiah!
+      {/* {personnels?.personnels.map((personnel) => (
+        <h1> hell{personnel.name}</h1>
+      ))} */}
+      <div className="h-[5em] lg:px-4 md:my-2">
+        <h2 className="font-[600]  text-2xl md:text-3xl font-poppins">
+          Hi, {user?.name}!
         </h2>
         <h2 className="my-4 md:text-2xl text-gray-500 font-roboto">
           Browse food joints and place orders
@@ -77,13 +80,9 @@ const PsDashboardPage = () => {
                       className="h-[6em] md:h-[7.5em]  lg:h-[9em] w-full rounded-t-xl object-cover object-center"
                     />
                   </div>
-
-                  <h1
-                    key={index}
-                    className="flex px-2 md:px-4 pt-1 font-bold text-sm md:text-[1.1em] "
-                  >
-                    {/* {values.name} */}
-                    Daavi’s Special Gob3
+                  <h1 className="flex px-2 md:px-4 pt-1 font-bold text-sm md:text-[1.1em] ">
+                    {values.name}
+                    {/* Daavi’s Special Gob3 */}
                   </h1>
                   <h1 className="flex px-2 md:px-4 text-[0.8em] md:text-sm font-roboto">
                     {values.address}

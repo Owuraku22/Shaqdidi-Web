@@ -7,23 +7,25 @@ import {
   import { useNavigate } from 'react-router-dom';
   import { useEffect, useState } from 'react';
 import { Button } from "../ui/button";
+import { useStoreData } from "@/store/state";
 
 export default function Profile() {
     const navigate = useNavigate();
+    const { user } = useStoreData()
 
   return (
     <DropdownMenu>
-        <DropdownMenuTrigger>
-            <Avatar className="w-7 h-7 hover:cursor-pointer font-roboto font-[500]">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>MC</AvatarFallback>
-            </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="mr-4 p-4 gap-2 border-none shadow-sm font-roboto">
-            <p className="text-[18px] font-[500] text-black">MeshCom Meshack</p>
-            <p className="text-[16px] font-[500] text-gray-500">commeymeshack@gmail.com</p>
-            <p className="text-[16px] font-[500] text-gray-500">02388473384</p>
-        </DropdownMenuContent>
+      <DropdownMenuTrigger>
+        <Avatar className="size-8">
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback className="bg-primary text-white text-[18px] font-roboto">IA</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="mr-4 p-4 flex flex-col gap-1 border-none shadow-md ">
+        <p className="text-lg"> {user?.name}</p>
+        <p className="text-[14px] text-gray-500">{user?.email}</p>
+        <p className="text-[14px] text-gray-500">{user?.phone_number}</p>
+      </DropdownMenuContent>
     </DropdownMenu>
   );
 }
