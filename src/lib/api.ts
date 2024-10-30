@@ -10,24 +10,22 @@ export const api = axios.create({
   },
 });
 
-   api.interceptors.request.use(
-      (config) => {
-        // Retrieve the token from the Zustand store
-        const token = useStoreData.getState().authToken ?? '';
-        console.log(token);
+api.interceptors.request.use(
+  (config) => {
+    // Retrieve the token from the Zustand store
+    const token = useStoreData.getState().authToken ?? "";
+    console.log(token);
 
-        if (token) {
-          config.headers.Authorization = `Bearer ${token}`;
-        }
-        return config;
-      },
-      (error) => {
-        // Handle request error
-        return Promise.reject(error);
-      }
-    );
-
-
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    // Handle request error
+    return Promise.reject(error);
+  }
+);
 
 export interface AuthResponse {
   message: string;
@@ -41,6 +39,7 @@ export interface AuthResponse {
     id: number;
     name: string;
     email: string;
+    phone_number: number;
     account_type: string;
   };
 }
@@ -53,10 +52,11 @@ export interface Staff {
   phone_number: string;
   status?: string;
 }
-export interface Personnel {
-  id: number;
-  name: string;
-}
+// export interface Personnel {
+//   personnels: [];
+//   id: number;
+//   name: string;
+// }
 
 export interface Order {
   id: number;
@@ -70,10 +70,32 @@ export interface Order {
   phone_number?: string;
 }
 
+// Defining a single food joint
 export interface FoodJoint {
   id: number;
   name: string;
   address: string;
+  image_url: string;
+}
+
+// Defining the full response containing the message and an array of joints
+export interface FoodJointResponse {
+  message: string;
+  joints: FoodJoint[];
+}
+// Defines a single personnel item
+export interface Personnel {
+  id: number;
+  name: string;
+  email: string;
+  phone_number: number;
+  account_type: string;
+}
+
+// Defines the full response containing a message and an array of personnel
+export interface PersonnelResponse {
+  message: string;
+  personnels: Personnel[];
 }
 
 const useFaker = import.meta.env.VITE_REACT_APP_USE_FAKER === "true";
@@ -122,6 +144,7 @@ export const signUp = async (userData: {
         name: userData.full_name,
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         account_type: "staff",
+        phone_number: faker.number.int(),
       },
     };
   }
@@ -152,6 +175,7 @@ export const signIn = async (credentials: {
         name: faker.person.fullName(),
         account_type: "staff",
         email: faker.internet.email({ firstName: faker.person.fullName() }),
+        phone_number: faker.number.int(),
       },
     };
   }
@@ -194,6 +218,7 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         name: faker.person.fullName(),
         account_type: "staff",
+        phone_number: faker.number.int(),
       },
     };
   }
@@ -226,41 +251,62 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
 //   }
 // };
 
+// export const fetchAvailablePersonnels = async (): Promise<
+//   Personnel[] | undefined
+// > => {
+//   // if (useFaker) {
+//   //   return Array.from({ length: 5 }, () => ({
+//   //     id: faker.number.int(),
+//   //     name: faker.person.fullName(),
+//   //   }));
+//   // }
+//   try {
+//     const response = await api.get<Personnel[]>("/personnels/available");
+//     return response.data;
+//   } catch (error) {
+//     handleApiError(error);
+//   }
+// };
+
+// export const fetchFoodJoints = async (): Promise<FoodJoint[] | undefined> => {
+//   // if (useFaker) {
+//   //   return Array.from({ length: 5 }, () => ({
+//   //     id: faker.number.int(),
+//   //     name: faker.company.name(),
+//   //     address: faker.location.streetAddress(),
+//   //   }));
+//   // }
+//   try {
+//     const response = await api.get<FoodJoint[]>("/joints");
+//     return response.data;
+//   } catch (error) {
+//     handleApiError(error);
+//   }
+// };
+
 export const fetchAvailablePersonnels = async (): Promise<
-  Personnel[] | undefined
+  PersonnelResponse | undefined
 > => {
-  if (useFaker) {
-    return Array.from({ length: 5 }, () => ({
-      id: faker.number.int(),
-      name: faker.person.fullName(),
-    }));
-  }
   try {
-    const response = await api.get<{
-      message: string;
-      personnels: Personnel[] | undefined;
-    }>("/personnels/available");
-    return response.data.personnels;
+    const response = await api.get<PersonnelResponse>("/personnels/available");
+    console.log("API response data personnel:", response.data); // Logs the full response
+    return response.data; // Returns the entire PersonnelResponse object
   } catch (error) {
     handleApiError(error);
+    return undefined;
   }
 };
 
-export const fetchFoodJoints = async (): Promise<FoodJoint[] | undefined> => {
-  if (useFaker) {
-    return Array.from({ length: 5 }, () => ({
-      id: faker.number.int(),
-      name: faker.company.name(),
-      address: faker.location.streetAddress(),
-    }));
-  }
+export const fetchFoodJoints = async (): Promise<
+  FoodJointResponse | undefined
+> => {
   try {
-    const response = await api.get<{ message: string; joints: FoodJoint[] }>(
-      "/joints"
-    );
-    return response.data.joints;
+    const response = await api.get<FoodJointResponse>("/joints");
+    console.log("API response data:", response.data); // Logs the full response
+    return response.data; // This returns the entire FoodJointResponse object
   } catch (error) {
     handleApiError(error);
+    return undefined;
   }
 };
 

@@ -54,12 +54,17 @@ const formSchema = z
 const formSchema1 = formSchema.required();
 
 export default function RegisterAccount() {
-  // const actionData = useActionData();
   const submit = useSubmit();
-  const actionData = useActionData() as AuthResponse;
-  const navigation = useNavigation();
+  const actionData = useActionData() as {
+    data: AuthResponse | { error: { message: string } };
+  };
+
+  // const navigation = useNavigation();
   const navigate = useNavigate();
-  const { setUser, isAuth, user } = useStoreData();
+  const setUser = useStoreData((state) => state.setUser);
+  const setAuthToken = useStoreData((state) => state.setAuthToken);
+  const { isAuth, user } = useStoreData();
+
   const form = useForm<z.infer<typeof formSchema1>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,35 +79,54 @@ export default function RegisterAccount() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Toast should appear");
     submit(values, { action: "/sign-up", method: "post" });
-    toast({
-      title: "You have submitted th following values:",
-      description: (
-        <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-          <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-        </pre>
-      ),
-    });
-    console.log(values);
+    // toast({
+    //   title: "You have submitted th following values:",
+    //   description: (
+    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
+    //       <code className="text-white">{JSON.stringify(values, null, 2)}</code>
+    //     </pre>
+    //   ),
+    // });
   }
-
   useEffect(() => {
-    if (actionData) {
-      // setUser Data
-      setUser!(actionData.user);
-      // Redirect based on the account type
-      console.log("Sign Up action data: ", actionData);
-      const accountType = actionData?.user.account_type;
-      if (accountType === "personnel") {
-        navigate("/nsp");
-      } else if (accountType === "staff") {
-        navigate("/ps");
+    if (actionData && "data" in actionData) {
+      if ("error" in actionData.data) {
+        toast({
+          variant: "destructive",
+          title: "Sign In Error",
+          description: actionData.data.error.message,
+        });
+      } else {
+        setUser(actionData?.data.user);
+        console.log(actionData?.data.authorization.token);
+        setAuthToken(actionData?.data.authorization.token);
+        // setUser!(actionData);
+        // window.localStorage.setItem(
+        //   "token",
+        //   actionData?.data.authorization.token
+        // );
+        toast({
+          title: "Sign In Successful",
+          description: `Welcome back, ${actionData.data.user.name}!`,
+        });
+        const accountType = actionData.data.user.account_type;
+        if (accountType === "personnel") {
+          navigate("/nsp");
+        } else if (accountType === "staff") {
+          navigate("/ps");
+        }
       }
     }
-  }, [actionData, setUser]);
+  }, [actionData, setUser, navigate, toast]);
 
   // Redirect authenticated users trying to access sign-up or login pages
-  if (isAuth && (location.pathname === '/sign-up' || location.pathname === '/')) {
-    return <Navigate to={user?.account_type === 'staff' ? '/ps' : '/nsp'} replace />;
+  if (
+    isAuth &&
+    (location.pathname === "/sign-up" || location.pathname === "/")
+  ) {
+    return (
+      <Navigate to={user?.account_type === "staff" ? "/ps" : "/nsp"} replace />
+    );
   }
 
   return (
@@ -113,7 +137,7 @@ export default function RegisterAccount() {
             Let’s Get Started
           </CardTitle>
           <CardDescription
-            className="font-bold text-3xl md:text-2xl text-black
+            className="font-bold-md text-3xl md:text-2xl text-black
            md:text-gray-400"
           >
             Create an Account
@@ -131,17 +155,29 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem className="flex  justify-center">
                     <RadioGroup
-                      className="flex "
+                      className="flex  "
                       onValueChange={field.onChange}
                       // defaultValue={"ps"}
                       value={field.value}
                     >
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="staff" id="staff" />
+                      <div className="flex items-center space-x-2 ">
+                        <RadioGroupItem
+                          value="staff"
+                          id="staff"
+                          className={`${
+                            field.value === "staff" && "border-primary"
+                          }`}
+                        />
                         <Label htmlFor="ps">PS</Label>
                       </div>
-                      <div className="flex items-center space-x-2">
-                        <RadioGroupItem value="personnel" id="personnel" />
+                      <div className="flex items-center space-x-2 ">
+                        <RadioGroupItem
+                          value="personnel"
+                          id="personnel"
+                          className={`${
+                            field.value === "personnel" && "border-primary"
+                          }`}
+                        />
                         <Label htmlFor="nsp">NSP</Label>
                       </div>
                     </RadioGroup>
@@ -154,7 +190,12 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input placeholder="John" type="text" {...field} />
+                      <Input
+                        className="text-[18px] bg-transparent py-6 font-roboto"
+                        placeholder="Full Name"
+                        type="text"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
@@ -165,8 +206,8 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="john@gmail.com"
+                      <Input className="text-[18px] bg-transparent py-6 font-roboto"
+                        placeholder="Email Address"
                         type="email"
                         {...field}
                       />
@@ -180,8 +221,8 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="************"
+                      <Input className="text-[18px] bg-transparent py-6 font-roboto"
+                        placeholder="Password"
                         type="password"
                         {...field}
                       />
@@ -195,18 +236,14 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input
-                        placeholder="0266784556"
-                        type="number"
-                        {...field}
-                      />
+                      <Input className="text-[18px] bg-transparent py-6 font-roboto" placeholder="Phone Number" type="tel" {...field} />
                     </FormControl>
                   </FormItem>
                 )}
               />
 
               <Button type="submit" className="w-full">
-                Submit
+                Sign Up
               </Button>
             </form>
           </Form>

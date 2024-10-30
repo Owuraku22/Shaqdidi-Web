@@ -1,30 +1,30 @@
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuTrigger,
-  } from "@/components/ui/dropdown-menu"
-  import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-  import { useNavigate } from 'react-router-dom';
-  import { useEffect, useState } from 'react';
-import { Button } from "../ui/button";
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useStoreData } from "@/store/state";
 
 export default function Profile() {
-    const navigate = useNavigate();
+  //   const { user } = useStoreData((state) => state.user);
+  const user = useStoreData((state) => state.user);
 
-    return(
-    <DropdownMenu >
-        <DropdownMenuTrigger>
-            <Avatar className="w-7 h-7 hover:cursor-pointer font-roboto font-[500]">
-                <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>MC</AvatarFallback>
-            </Avatar>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="mr-4 p-4 gap-2 border-none shadow-sm font-roboto">
-            <p className="text-[18px] font-[500] text-black">MeshCom Meshack</p>
-            <p className="text-[16px] font-[500] text-gray-500">commeymeshack@gmail.com</p>
-            <p className="text-[16px] font-[500] text-gray-500">02388473384</p>
-        </DropdownMenuContent>
+  return (
+    <DropdownMenu>
+      <DropdownMenuTrigger>
+        <Avatar>
+          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarFallback>IA</AvatarFallback>
+        </Avatar>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="mr-4 p-4 flex flex-col gap-1 border-none shadow-md ">
+        <p className="text-lg"> {user?.name}</p>
+        <p className="text-[14px] text-gray-500">{user?.email}</p>
+        <p className="text-[14px] text-gray-500">{user?.phone_number}</p>
+      </DropdownMenuContent>
     </DropdownMenu>
-    )
+  );
 }
-

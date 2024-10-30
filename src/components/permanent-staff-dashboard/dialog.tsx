@@ -2,7 +2,7 @@ import React, { useState } from "react";
 
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 // import ConfirmPopoverForm from "./confirm-dialog";
-import { FoodJoint, Personnel } from "@/lib/api";
+import { FoodJoint, Personnel, PersonnelResponse } from "@/lib/api";
 import FoodJoints from "./food-joints";
 
 const PopoverForm = ({
@@ -11,7 +11,7 @@ const PopoverForm = ({
   children,
 }: {
   foodJoint: FoodJoint;
-  personnels: Personnel[];
+  personnels: PersonnelResponse;
   children: React.ReactNode;
 }) => {
   const [openModel, setOpenModel] = useState(false);

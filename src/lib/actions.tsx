@@ -1,6 +1,7 @@
 import { redirect } from "react-router-dom";
 import { createOrder, signIn, signUp } from "./api";
-import { useStoreData } from "@/store/state";
+import { useQuery } from "@tanstack/react-query";
+import { fetchFoodJoints, fetchAvailablePersonnels } from "./api";
 
 export const handleSignInAction = async (request: Request) => {
   const formData = await request.formData();
@@ -8,29 +9,16 @@ export const handleSignInAction = async (request: Request) => {
   const password = formData.get("password") as string;
 
   try {
-    // const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
-<<<<<<< HEAD
-    const response = await signIn({ email, password, fb_token: 'qwerty' });
-   
-=======
-    const response = await signIn({ email, password, fb_token: "qwerty" });
+    const response = await signIn({ email, password, fb_token: "oiuoij" });
 
->>>>>>> d9c7c648308c4c172d76dcce67935c7b1b55d503
     //checking if the response is successful
     if (!response)
       throw new Error("Signing In failed. Please check your credentials.");
 
-    return { data: response };
-  } catch (error: Error | any) {
-    return {
-      data: {
-        error: {
-          message:
-            error.message || "Account Authentication failed. Please retry",
-        },
-      },
-    };
+    return response;
+  } catch (error) {
+    console.log("Error in login action:", error);
   }
 };
 
@@ -45,11 +33,6 @@ export const handleSignUpAction = async (request: Request) => {
   // const fb_token = formData.get("fb_token") as string;
 
   try {
-<<<<<<< HEAD
-
-=======
->>>>>>> d9c7c648308c4c172d76dcce67935c7b1b55d503
-    // const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
     const response = await signUp({
       account_type,
@@ -57,11 +40,7 @@ export const handleSignUpAction = async (request: Request) => {
       password,
       phone_number,
       full_name,
-<<<<<<< HEAD
-      fb_token: 'qwerty',
-=======
-      fb_token: "qwerty",
->>>>>>> d9c7c648308c4c172d76dcce67935c7b1b55d503
+      fb_token: "oiuoij",
     });
 
     if (!response) throw new Error("Account registration failed. Please retry");
@@ -71,7 +50,8 @@ export const handleSignUpAction = async (request: Request) => {
     return {
       data: {
         error: {
-          message: error.message || "Account registration failed. Please retry",
+          message:
+            error.message || "Account Authentication failed. Please retry",
         },
       },
     };
