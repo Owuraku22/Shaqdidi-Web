@@ -62,10 +62,11 @@ export interface Order {
   id: number;
   date: string;
   joint_name: string;
+  joint_image: string;
   address: string;
   amount: string;
-  name: string;
-  status: "Pending" | "Completed" | "Cancelled";
+  personnel_name: string;
+  status: "pending" | "completed" | "cancelled";
   note?: string;
   phone_number?: string;
 }
@@ -337,10 +338,11 @@ export const fetchOrders = async (): Promise<Order[] | undefined> => {
       id: faker.number.int(),
       date: faker.date.recent().toISOString(),
       joint_name: faker.company.name(),
+      joint_image: faker.company.name(),
       address: faker.location.streetAddress(),
       amount: faker.commerce.price(),
-      name: faker.person.fullName(),
-      status: faker.helpers.arrayElement(["Pending", "Completed", "Cancelled"]),
+      personnel_name: faker.person.fullName(),
+      status: faker.helpers.arrayElement(["pending", "completed", "cancelled"]),
     }));
   }
   try {
@@ -360,12 +362,13 @@ export const fetchOrderDetails = async (
     return {
       id,
       joint_name: faker.company.name(),
+      joint_image: faker.company.name(),
       note: faker.lorem.sentence(),
       date: faker.date.recent().toISOString(),
       amount: faker.commerce.price(),
-      name: faker.person.fullName(),
+      personnel_name: faker.person.fullName(),
       phone_number: faker.phone.number(),
-      status: faker.helpers.arrayElement(["Pending", "Completed", "Cancelled"]),
+      status: faker.helpers.arrayElement(["pending", "completed", "cancelled"]),
       address: faker.location.streetAddress(),
     };
   }

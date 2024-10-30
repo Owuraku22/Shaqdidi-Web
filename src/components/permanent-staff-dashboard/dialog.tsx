@@ -16,12 +16,14 @@ const PopoverForm = ({
 }) => {
   const [openModel, setOpenModel] = useState(false);
   return (
+  
       <Dialog open={openModel} onOpenChange={setOpenModel}>
         <DialogTrigger>{children}</DialogTrigger>
         <DialogContent className="border-none p-0">
           <FoodJoints foodJoint={foodJoint} personnels={personnels} setOpenModel={setOpenModel} />
         </DialogContent>
       </Dialog>
+    
   );
 };
 
