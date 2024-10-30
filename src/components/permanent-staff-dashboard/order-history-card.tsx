@@ -18,9 +18,10 @@ export default function OrderHistoryCard({
   id,
   date,
   joint_name,
+  joint_image,
   address,
   amount,
-  name,
+  personnel_name,
   status,
   note,
   phone_number,
@@ -42,16 +43,16 @@ export default function OrderHistoryCard({
         <DialogTrigger asChild>
           <Card className="w-full cursor-pointer">
           <CardContent className="p-0 rounded-t-lg">
-            <img src={"/food.png"} alt={joint_name} className="w-full h-40 rounded-t-xl object-cover" />
+            <img src={joint_image} alt={joint_name} className="w-full h-40 rounded-t-lg object-cover" />
             <div className="p-4">
               <h3 className="text-lg font-semibold">{joint_name}</h3>
-              <div className="flex justify-between items-center mt-2">
-              <p className="text-sm text-gray-500">{address}</p>
+              <div className="flex justify-between gap-4 items-center mt-2">
+              <p className="text-sm text-gray-500 line-clamp-4 ... border border-green-900">{address}</p>
                 <p className='font-normal text-sm text-gray-500'>Status: 
                   <span className={cn('font-normal', {
-                    'text-amber-400': status === 'Pending',
-                    'text-green-400': status === 'Completed',
-                    'text-red-400': status === 'Cancelled',
+                    'text-amber-400': status === 'pending',
+                    'text-green-400': status === 'completed',
+                    'text-red-400': status === 'cancelled',
                   })}> {status}</span>
                 </p>
             
@@ -74,7 +75,7 @@ export default function OrderHistoryCard({
         <DialogContent className="max-h-dvh p-0 border-none md:min-w-[50rem] rounded-t-2xl">
           {/* <ScrollArea className=""> */}
           <div className="relative w-full bg-gradient-to-b from-black to-transparent bg-opacity-20 rounded-t-2xl">
-            <img src={"/food.png"} alt={joint_name} className="w-full h-44  object-cover rounded-t-lg" />
+            <img src={joint_image} alt={joint_name} className="w-full h-44  object-cover rounded-t-lg" />
             <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-40 text-white p-2 pl-6">
               <h3 className="text-lg font-semibold">{joint_name}</h3>
               <p className="text-sm">{address}</p>
@@ -91,7 +92,7 @@ export default function OrderHistoryCard({
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Assigned Personnel</span>
-              <span className="col-span-3 border rounded-md px-3 py-2">{name}</span>
+              <span className="col-span-3 border rounded-md px-3 py-2">{personnel_name}</span>
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Phone Number</span>

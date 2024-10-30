@@ -50,16 +50,11 @@ const PsDashboardPage = () => {
 
   return (
     <div className="flex flex-col bg-white">
-<<<<<<< HEAD
-      <div className="h-[5em] md:my-4">
-        <h2 className="font-bold text-2xl md:text-3xl font-poppins">
-=======
       {/* {personnels?.personnels.map((personnel) => (
         <h1> hell{personnel.name}</h1>
       ))} */}
       <div className="h-[5em] lg:px-4 md:my-2">
         <h2 className="font-[600]  text-2xl md:text-3xl font-poppins">
->>>>>>> d9c7c648308c4c172d76dcce67935c7b1b55d503
           Hi, {user?.name}!
         </h2>
         <h2 className="my-2 md:text-2xl text-gray-500 font-roboto">
@@ -115,15 +110,7 @@ const PsDashboardPage = () => {
                       className="h-[6em] md:h-[7.5em]  lg:h-[9em] w-full rounded-t-xl object-cover object-center"
                     />
                   </div>
-<<<<<<< HEAD
-
-                  <h1
-                    key={index}
-                    className="flex px-2 md:px-4 pt-1 font-bold text-sm md:text-[1.1em] "
-                  >
-=======
                   <h1 className="flex px-2 md:px-4 pt-1 font-bold text-sm md:text-[1.1em] ">
->>>>>>> d9c7c648308c4c172d76dcce67935c7b1b55d503
                     {values.name}
                     {/* Daavi’s Special Gob3 */}
                   </h1>

@@ -30,8 +30,8 @@ export default function OrderHistory() {
             !data?.length  ? (
                 <OrderHistoryEmpty />
             ) : (
-                <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-                  {data?.filter(e => e.status === "Pending").map(order => (
+                <div className="grid gap-4 md:grid-cols-3">
+                  {data?.filter(e => e.status === "pending").map(order => (
                     <OrderHistoryCard
                       key={order.id}
                       {...order}
@@ -47,8 +47,8 @@ export default function OrderHistory() {
             !data?.length ? (
                 <OrderHistoryEmpty />
             ) : (
-                <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-                    {data?.filter(e => (e.status === "Completed" || e.status === "Cancelled")).map(order => (
+                <div className="grid gap-4 md:grid-cols-3">
+                    {data?.filter(ordered => (ordered.status === "completed" || ordered.status === "cancelled")).map(order => (
                     <OrderHistoryCard
                         key={order.id}
                         {...order}
