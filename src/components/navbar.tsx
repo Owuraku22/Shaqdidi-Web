@@ -35,12 +35,12 @@ export default function Navbar() {
       <div className="flex gap-0 items-center">
         {/* MOBILE SIDE BAR */}
         <SheetSide />
-        <h1 className="text-primary text-xl">
+        <h1 className="text-primary text-[18px] font-roboto font-[400]">
           {pathname === "/ps" && "Home"}
           {pathname === "/ps/order-history" && "Order History"}
         </h1>
       </div>
-      <div className="flex gap-4 items-center">
+      <div className="flex gap-[16px] items-center">
         <div className="relative">
           <Button variant="ghost" size="icon" onClick={handleNotificationClick}>
             <Bell className="md:h-5 md:w-5 h-4 w-4" />

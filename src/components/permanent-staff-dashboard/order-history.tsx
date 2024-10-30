@@ -21,9 +21,9 @@ export default function OrderHistory() {
     return(
     <>
     <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="w-full  mb-4 bg-transparent flex md:justify-start justify-center space-x-2">
-          <TabsTrigger value="current" className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow', { 'bg-primary text-white': activeTab === 'current' })}>Current History</TabsTrigger>
-          <TabsTrigger value="previous" className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow', { 'bg-primary text-white': activeTab === 'previous' })}>Previous History</TabsTrigger>
+        <TabsList className="w-full  mb-4 bg-transparent flex md:justify-start justify-center space-x-2 text-[18px] font-roboto font-[600]">
+          <TabsTrigger value="current" className={cn('rounded-full py-2 px-10 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow', { 'bg-primary text-white': activeTab === 'current' })}>Current History</TabsTrigger>
+          <TabsTrigger value="previous" className={cn('rounded-full py-2 px-10 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow', { 'bg-primary text-white': activeTab === 'previous' })}>Previous History</TabsTrigger>
         </TabsList>
         <TabsContent value="current">
         {

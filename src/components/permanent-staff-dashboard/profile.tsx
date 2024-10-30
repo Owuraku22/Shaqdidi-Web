@@ -14,14 +14,15 @@ export default function Profile() {
     return(
     <DropdownMenu >
         <DropdownMenuTrigger>
-            <Avatar className="hover:cursor-pointer">
+            <Avatar className="w-7 h-7 hover:cursor-pointer font-roboto font-[500]">
                 <AvatarImage src="https://github.com/shadcn.png" />
                 <AvatarFallback>MC</AvatarFallback>
             </Avatar>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="mr-4 p-4 gap-2 border-none shadow-sm">
-            <p className="text-base">MeshCom Meshack</p>
-            <p className="text-sm text-gray-500">commeymeshack@gmail.com</p>
+        <DropdownMenuContent className="mr-4 p-4 gap-2 border-none shadow-sm font-roboto">
+            <p className="text-[18px] font-[500] text-black">MeshCom Meshack</p>
+            <p className="text-[16px] font-[500] text-gray-500">commeymeshack@gmail.com</p>
+            <p className="text-[16px] font-[500] text-gray-500">02388473384</p>
         </DropdownMenuContent>
     </DropdownMenu>
     )

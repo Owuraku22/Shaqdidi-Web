@@ -8,9 +8,9 @@ export const handleSignInAction = async (request: Request) => {
   const password = formData.get("password") as string;
 
   try {
-    const fb_token = useStoreData.getState().fbToken ?? ''
+    // const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
-    const response = await signIn({ email, password, fb_token });
+    const response = await signIn({ email, password, fb_token: 'qwerty' });
    
     //checking if the response is successful
     if (!response)
@@ -34,7 +34,7 @@ export const handleSignUpAction = async (request: Request) => {
 
   try {
 
-    const fb_token = useStoreData.getState().fbToken ?? ''
+    // const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
     const response = await signUp({
       account_type,
@@ -42,7 +42,7 @@ export const handleSignUpAction = async (request: Request) => {
       password,
       phone_number,
       full_name,
-      fb_token,
+      fb_token: 'qwerty',
     });
 
     if (!response) throw new Error("Account registration failed. Please retry");
