@@ -1,52 +1,123 @@
 import { useState } from 'react';
-import { useLoaderData, useSubmit } from 'react-router-dom';
-import { useQueryClient } from '@tanstack/react-query';
+import { useInfiniteQuery } from '@tanstack/react-query';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import OrderCard from '@/components/nsp/order-card';
-import { Order, manageOrder } from '@/lib/api';
+import { Order, fetchOrders, manageOrder, queryKeys } from '@/lib/api';
 import { cn } from '@/lib/utils';
 import { Input } from '@/components/ui/input';
-import { Search } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import EmptyState from '@/components/nsp/empty-state';
+import { useInView } from 'react-intersection-observer';
+import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Home() {
   const [search, setSearch] = useState('');
-  const { orders } = useLoaderData() as { orders: Order[] };
   const [activeTab, setActiveTab] = useState('today');
-  const queryClient = useQueryClient();
-  const submit = useSubmit();
+  const { toast } = useToast();
+  const { ref, inView } = useInView();
 
-  const todayOrders = orders.filter(order => new Date(order.date).toDateString() === new Date().toDateString());
-  const previousOrders = orders.filter(order => new Date(order.date) < new Date(new Date().setHours(0, 0, 0, 0)));
+  console.log('Inview : ', inView)
+
+  const {
+    data,
+    isLoading,
+    isError,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetchingNextPage,
+    refetch
+  } = useInfiniteQuery({
+    queryKey: queryKeys.orders.all,  
+    queryFn: () => {
+      console.log('Fetching orders...', )
+      return fetchOrders({ pageParam: 0 });
+    },
+    getNextPageParam: (lastPage) => {
+      console.log(lastPage)
+      if (!lastPage?.pagination) return undefined;
+      
+      const { current_page, last_page } = lastPage.pagination;
+      return current_page < last_page ? current_page + 1 : undefined;
+    },
+    initialPageParam: 0,
+  });
+
+  useEffect(() => {
+    if (inView && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  if (isError) {
+    toast({
+      variant: "destructive",
+      title: "Error",
+      description: error.message || "Failed to fetch orders",
+    });
+  }
+
+  console.log('Logging Order data : ', data)
+  // Flatten and process orders
+  const allOrders = data?.pages.flatMap(page => page.orders) ?? [];
+  
+  // Filter today's orders
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  const todayOrders = allOrders.filter(order => {
+    const orderDate = new Date(order.date);
+    orderDate.setHours(0, 0, 0, 0);
+    return orderDate.getTime() === today.getTime();
+  });
+
+  // Filter previous orders
+  const previousOrders = allOrders.filter(order => {
+    const orderDate = new Date(order.date);
+    orderDate.setHours(0, 0, 0, 0);
+    return orderDate.getTime() < today.getTime();
+  });
 
   const handleSearch = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
   };
 
-  const filteredPreviousOrders = previousOrders.filter(order =>
-    order.name.toLowerCase().includes(search.toLowerCase()) ||
-    order.address.toLowerCase().includes(search.toLowerCase()) ||
-    order.joint_name.toLowerCase().includes(search.toLowerCase())
+  const filteredPreviousOrders = previousOrders?.filter(order =>
+    order.joint_name?.toLowerCase().includes(search?.toLowerCase()) ||
+    order.address?.toLowerCase().includes(search?.toLowerCase()) ||
+    order.staff_name?.toLowerCase().includes(search?.toLowerCase())
   );
 
   const handleMarkCompleted = async (id: number) => {
     try {
       await manageOrder(id, 'Completed');
-      queryClient.invalidateQueries({ queryKey: ['orders'] });
-      submit(null, { method: 'get', action: '/' });
-    } catch (error) {
-      console.error('Failed to mark order as completed:', error);
+      refetch();
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "Error",
+        description: error.message || "Failed to mark order as completed",
+      });
     }
   };
+
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center h-screen">
+        <Loader2 className="h-8 w-8 animate-spin text-primary" />
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8 bg-white">
       <h1 className="md:text-3xl font-bold mb-6 md:mb-0">Manage Your Assigned Orders</h1>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="w-full mb-4 bg-transparent flex md:justify-start justify-center space-x-2">
+        <TabsList className="w-full my-4 bg-transparent flex md:justify-start justify-center space-x-2">
           <TabsTrigger 
             value="today" 
-            className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow', 
+            className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow md:text-lg', 
               { 'bg-primary text-white': activeTab === 'today' }
             )}
           >
@@ -54,7 +125,7 @@ export default function Home() {
           </TabsTrigger>
           <TabsTrigger 
             value="previous" 
-            className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow', 
+            className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow md:text-lg', 
               { 'bg-primary text-white': activeTab === 'previous' }
             )}
           >
@@ -62,7 +133,7 @@ export default function Home() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="today">
-          {todayOrders.length > 0 ? (
+          {todayOrders?.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
               {todayOrders.map(order => (
                 <OrderCard
@@ -75,12 +146,15 @@ export default function Home() {
             </div>
           ) : (
             <div className="h-full w-full mt-12 flex justify-center items-center">
-              <EmptyState message='No Orders Assigned Yet' onRefresh={() => submit(null, { method: 'get', action: '/nsp' })} /> 
+              <EmptyState 
+                message='No Orders Assigned Yet' 
+                onRefresh={() => refetch()} 
+              /> 
             </div>
           )}
         </TabsContent>
         <TabsContent value="previous">
-          {filteredPreviousOrders.length > 0 ? (
+          {filteredPreviousOrders?.length > 0 ? (
             <>
               <div className="relative w-64 mb-3 mt-2">
                 <Input
@@ -93,19 +167,43 @@ export default function Home() {
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               </div>
               <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-                {filteredPreviousOrders.map(order => (
-                  <OrderCard
-                    key={order.id}
-                    {...order}
-                    onMarkCompleted={handleMarkCompleted}
-                    activeTab={activeTab}
-                  />
+                {filteredPreviousOrders.map((order, index) => (
+                  <div key={order.id}>
+                    <OrderCard
+                      {...order}
+                      onMarkCompleted={handleMarkCompleted}
+                      activeTab={activeTab}
+                    />
+                    {index === filteredPreviousOrders?.length - 1 && (
+                      <div ref={ref} className="mt-4">
+                        {isFetchingNextPage && (
+                          <div className="flex justify-center">
+                            <Loader2 className="h-6 w-6 animate-spin text-primary" />
+                          </div>
+                        )}
+                      </div>
+                    )}
+                  </div>
                 ))}
               </div>
+              {hasNextPage && !isFetchingNextPage && (
+                <div className="flex justify-center mt-4">
+                  <Button 
+                    variant="outline" 
+                    onClick={() => fetchNextPage()}
+                    className="text-primary hover:text-primary-foreground"
+                  >
+                    Load More
+                  </Button>
+                </div>
+              )}
             </>
           ) : (
             <div className="h-full w-full mt-12 flex justify-center items-center">
-              <EmptyState message='No Orders Completed Yet' onRefresh={() => submit(null, { method: 'get', action: '/nsp' })} /> 
+              <EmptyState 
+                message='No Orders Completed Yet' 
+                onRefresh={() => refetch()} 
+              /> 
             </div>
           )}
         </TabsContent>
