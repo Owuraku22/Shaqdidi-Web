@@ -1,6 +1,5 @@
-import { redirect } from "react-router-dom";
-import { createOrder, signIn, signUp } from "./api";
 import { useStoreData } from "@/store/state";
+import { createOrder, signIn, signUp } from "./api";
 
 export const handleSignInAction = async (request: Request) => {
   const formData = await request.formData();
@@ -8,9 +7,9 @@ export const handleSignInAction = async (request: Request) => {
   const password = formData.get("password") as string;
 
   try {
-    // const fb_token = useStoreData.getState().fbToken ?? ''
+    const fb_token = useStoreData.getState().fbToken ?? "";
     // calling the singin api and passing the form data to it
-    const response = await signIn({ email, password, fb_token: "qwerty" });
+    const response = await signIn({ email, password, fb_token: fb_token });
 
     //checking if the response is successful
     if (!response)
@@ -40,7 +39,7 @@ export const handleSignUpAction = async (request: Request) => {
   // const fb_token = formData.get("fb_token") as string;
 
   try {
-    // const fb_token = useStoreData.getState().fbToken ?? ''
+    const fb_token = useStoreData.getState().fbToken ?? "";
     // calling the singin api and passing the form data to it
     const response = await signUp({
       account_type,
@@ -48,7 +47,7 @@ export const handleSignUpAction = async (request: Request) => {
       password,
       phone_number,
       full_name,
-      fb_token: "qwerty",
+      fb_token: fb_token,
     });
 
     if (!response) throw new Error("Account registration failed. Please retry");

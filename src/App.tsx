@@ -3,7 +3,16 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "@/components/nsp/layout";
 import PsLayout from "@/components/permanent-staff-dashboard/layout";
 import Home from "@/routes/home";
-import { fetchOrders } from "@/lib/api";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+
+import {
+  fetchAvailablePersonnels,
+  fetchFoodJoints,
+  fetchOrders,
+  FoodJoint,
+  Personnel,
+  signIn,
+} from "@/lib/api";
 import ErrorBoundary from "./error-page";
 import OrderHistory from "./components/permanent-staff-dashboard/order-history";
 import Regiter from "./routes/register";
@@ -16,8 +25,16 @@ import {
   handleSignUpAction,
 } from "./lib/actions";
 import { ProtectedRoute } from "./components/protected-route";
+import PersonnelError from "./personnel-error";
 
-const queryClient = new QueryClient();
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      retry: 1,
+    },
+  },
+});
 
 const nspRoutes = [{ path: "/nsp", label: "Home" }];
 
@@ -55,14 +72,14 @@ const router = createBrowserRouter([
             index: true,
             element: <Home />,
             errorElement: <ErrorBoundary />,
-            loader: async () => {
-              const orders = await queryClient.fetchQuery({
-                queryKey: ["orders"],
-                queryFn: fetchOrders,
-              });
-              console.log("orders", orders);
-              return { orders };
-            },
+            // loader: async () => {
+            //   const orders = await queryClient.fetchQuery({
+            //     queryKey: ["orders"],
+            //     queryFn: fetchOrders,
+            //   });
+            //   console.log("orders", orders);
+            //   return { orders: orders};
+            // },
           },
         ],
       },
@@ -76,6 +93,18 @@ const router = createBrowserRouter([
           {
             index: true,
             element: <PsDashboardPage />,
+            errorElement: <PersonnelError />,
+            loader: async () => {
+              const foodJoints = await queryClient.fetchQuery({
+                queryKey: ["foodjoint"],
+                queryFn: fetchFoodJoints,
+              });
+              const personnel = await queryClient.fetchQuery({
+                queryKey: ["personnel"],
+                queryFn: fetchAvailablePersonnels,
+              });
+              return { foodJoints, personnel };
+            },
           },
           {
             path: "order-history",
@@ -97,6 +126,7 @@ export default function App() {
     <QueryClientProvider client={queryClient}>
       <Toaster />
       <RouterProvider router={router} />
+      {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
     </QueryClientProvider>
   );
 }

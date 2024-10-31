@@ -1,4 +1,4 @@
-import { Bell, LogOut, Menu } from 'lucide-react';
+import { Bell, LogOut, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useNavigate } from 'react-router-dom';
@@ -17,6 +17,7 @@ import { useAuth, useStoreData } from '@/store/state';
 import { onMessageListener } from '@/lib/firebase';
 import { Toast } from '@/components/ui/toast';
 import { useToast } from '@/hooks/use-toast';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -44,8 +45,8 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
       const { notification } = payload;
       const newNotification: Notification = {
         id: Date.now().toString(),
-        title: notification.title,
-        body: notification.body,
+        title: "Order Confirmation:",
+        body: `Your order from ${notification.title} has been confirmed!`,
         timestamp: Date.now(),
       };
       setNotifications(prev => [newNotification, ...prev]);
@@ -61,9 +62,12 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
     };
   }, [play, toast]);
 
-  const handleNotificationClick = () => {
-    // Here you would typically open a notifications panel
-    console.log('Open notifications panel');
+  const handleClearAllNotifications = () => {
+    setNotifications([]);
+  };
+
+  const handleDismissNotification = (id: string) => {
+    setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
   const handleLogout = () => {
@@ -71,20 +75,37 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
     navigate('/');
   };
 
+  const formatNotificationTime = (timestamp: number) => {
+    const date = new Date(timestamp);
+    return date.toLocaleString('en-US', {
+      day: 'numeric',
+      month: 'short',
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+  };
+
   return (
-    <header className="bg-white border-b shadow border-gray-200 px-6 md:px-10 space-x-4 py-2 flex justify-between w-full items-center ">
+    <header className="bg-white border-b shadow border-gray-200 px-4 md:px-10 py-2 flex justify-between w-full items-center">
       <div className="flex items-center justify-start space-x-4">
-        <img src="/logo.svg" alt="ShaQ D|D" className={cn("h-10 mx-4", {
+      <Button variant="ghost" size="icon" className={
+        cn('md:hidden', {
+          'hidden': !psShowLogo
+        })
+      } onClick={onMenuClick}>
+              <Menu className="h-5 w-5" />
+      </Button>
+        <img src="/logo.svg" alt="ShaQ D|D" className={cn("h-10", {
           'md:hidden': psShowLogo
         })} />
-        <h2 className="text-xl  md:block hidden text-primary">{title}</h2>
+        <h2 className="text-xl md:block hidden text-primary">{title}</h2>
       </div>
       
-      <div className="flex items-center space-x-4 mr-4">
+      <div className="flex items-center space-x-4">
         <div className="relative">
           <Popover>
             <PopoverTrigger asChild>
-              <Button variant="ghost" size="icon" onClick={handleNotificationClick}>
+              <Button variant="ghost" size="icon">
                 <Icons.Bell className="md:h-6 md:w-6 h-5 w-5" />
                 {notifications.length > 0 && (
                   <Badge
@@ -96,49 +117,74 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                 )}
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-80">
-              <h3 className="font-semibold mb-2">Notifications</h3>
-              {notifications.length === 0 ? (
-                <p className="text-sm text-gray-500">No new notifications</p>
-              ) : (
-                <ul className="space-y-2">
-                  {notifications.map((notification) => (
-                    <li key={notification.id} className="text-sm">
-                      <h4 className="font-medium">{notification.title}</h4>
-                      <p className="text-gray-500">{notification.body}</p>
-                      <small className="text-gray-400">
-                        {new Date(notification.timestamp).toLocaleString()}
-                      </small>
-                    </li>
-                  ))}
-                </ul>
-              )}
+            <PopoverContent className="w-[380px] p-0">
+              <div className="flex items-center justify-between border-b p-4">
+                <h3 className="font-semibold text-lg text-primary">Notifications</h3>
+                {notifications.length > 0 && (
+                  <button
+                    onClick={handleClearAllNotifications}
+                    className="text-primary text-sm hover:text-red-600"
+                  >
+                    Clear All Notifications
+                  </button>
+                )}
+              </div>
+              <div className="max-h-[400px] overflow-y-auto">
+                {notifications.length === 0 ? (
+                  <p className="text-sm text-gray-500 p-4">No new notifications</p>
+                ) : (
+                  <div className="divide-y">
+                    {notifications.map((notification) => (
+                      <div key={notification.id} className="p-4 relative hover:bg-gray-50">
+                        <button
+                          onClick={() => handleDismissNotification(notification.id)}
+                          className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
+                        >
+                          <X className="h-4 w-4" />
+                        </button>
+                        <div className="flex gap-3">
+                          <div className="mt-0.5">
+                            <Bell className="h-5 w-5 text-gray-500" />
+                          </div>
+                          <div className="pr-6">
+                            <p className="font-medium text-sm">{notification.title}</p>
+                            <p className="text-sm text-gray-600 mt-1">{notification.body}</p>
+                            <p className="text-xs text-gray-400 mt-1">
+                              {formatNotificationTime(notification.timestamp)}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
             </PopoverContent>
           </Popover>
         </div>
         <Popover>
           <PopoverTrigger asChild>
-            <Avatar className="hover:cursor-pointer hover:bg-primary hover:text-white w-8 h-8">
+            <Avatar className="hover:cursor-pointer hover:bg-primary text-white w-8 h-8">
               <AvatarImage src="/avatar.png" alt={user?.name || 'User'} />
               <AvatarFallback className='bg-ring'>
                 {user?.name ? user.name.split(' ').map(n => n[0]).join('').toUpperCase() : 'U'}
               </AvatarFallback>
             </Avatar>
           </PopoverTrigger>
-          <PopoverContent className=''>
-            <h5 className="text-base font-semibold">
-              {user?.name || 'User'}
-            </h5>
-            <span className='text-sm text-gray-500'>{user?.email || 'No email available'}</span>
-            <div className="flex justify-center items-center mt-2 w-full">
-              <Button 
-                className="w-full text-gray-600 hover:text-gray-800 hover:bg-gray-100 focus:outline-none focus:ring-0 focus:ring-offset-0"
-                variant="ghost"
+          <PopoverContent className="w-[240px] p-4">
+            <div className="space-y-2">
+              <h5 className="font-semibold">
+                {user?.name || 'User'}
+              </h5>
+              <p className='text-sm text-gray-500'>{user?.email || 'No email available'}</p>
+              <p className='text-sm text-gray-500'>{user?.phone_number || '0239488858'}</p>
+              <button 
+                className="flex items-center gap-2 mt-4 text-sm text-gray-600 hover:text-primary focus-visible:outline-none focus-visible:ring-0"
                 onClick={handleLogout}
               >
-                <LogOut className='w-4 h-4 mr-4' />
+                <LogOut className="w-4 h-4" />
                 Logout
-              </Button>
+              </button>
             </div>
           </PopoverContent>
         </Popover>
