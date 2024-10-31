@@ -73,6 +73,20 @@ export interface PaginatedResponse<T> {
   };
 
 
+
+export interface PaginatedResponse<T> {
+  orders: T[];
+  message: string;
+  pagination: {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    count: number;
+  };
+  };
+
+
 export interface Order {
   id: number;
   date: string;
