@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
 import { useStoreData } from "@/store/state";
-import { queryClient  } from "@/App";
+import { queryClient } from "@/App";
 
 export const api = axios.create({
   baseURL: "https://didi.shaqexpress.com/v1/",
