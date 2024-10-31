@@ -91,6 +91,7 @@ export interface Order {
   id: number;
   date: string;
   joint_name: string;
+  name?: string;
   joint_image: string;
   staff_name: string;
   address: string;
@@ -98,7 +99,8 @@ export interface Order {
   personnel_name: string;
   status: "pending" | "completed" | "cancelled";
   note?: string;
-  phone_number?: string;
+  personnel_phone_number?: string;
+  staff_phone_number?: string;
 }
 
 
@@ -312,7 +314,7 @@ export const fetchFoodJoints = async (): Promise<
 export const createOrder = async (orderData: {
   joint_id: number;
   note: string;
-  amount: string;
+  amount: number;
   personnel_id: number;
   staff_id: number;
 }): Promise<{ message: string } | undefined> => {
@@ -374,7 +376,7 @@ export const manageOrder = async (order_id: number, status: string) => {
   }
 
   try {
-    const response = await api.post("/orders/manage", { order_id, status });
+    const response = await api.put(`/orders/${order_id}/manage`, { order_id, status });
     await queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
     return response.data;
   } catch (error) {
@@ -414,16 +416,17 @@ export const fetchOrderDetails = async (
       date: faker.date.recent().toISOString(),
       amount: faker.commerce.price(),
       personnel_name: faker.person.fullName(),
-      phone_number: faker.phone.number(),
+      personnel_phone_number: faker.phone.number(),
       status: faker.helpers.arrayElement(["pending", "completed", "cancelled"]),
       address: faker.location.streetAddress(),
     };
   }
   try {
-    const response = await api.get<{ message: string; order: Order }>(
+    const response = await api.get<{ message: string; orders: Order }>(
       `/orders/${id}`
     );
-    return response.data.order;
+    console.log("API Order response  data:", response.data); // Logs the full response
+    return response.data.orders;
   } catch (error) {
     handleApiError(error);
   }

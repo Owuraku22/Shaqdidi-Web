@@ -48,44 +48,56 @@ const PsDashboardPage = () => {
       </div>
 
       <div className="grid gap-2 md:grid-cols-3 xl:grid-cols-4 3xl:grid-cols-5">
-        {data.map((values, index) => (
+        
+        {foodJoints?.joints.map((foodJoint) => (
           <>
             {isMobile ? (
-              <DrawerForm value={values} key={index}>
-                <div className="rounded-xl cursor-pointer border">
-                  <div className=" rounded-t-xl object-cover mb-1 border ">
+              <DrawerForm
+                foodJoint={foodJoint}
+                personnels={personnels!}
+                key={foodJoint.id}
+              >
+                <div
+                  key={foodJoint.id}
+                  className="rounded-xl  cursor-pointer border"
+                >
+                  <div className="rounded-t-xl object-cover mb-1 border ">
                     <img
-                      src="/hamburger.png"
-                      className="w-full h-[10rem] rounded-t-xl object-cover object-center"
+                      src={foodJoint.image_url}
+                      className=" w-full h-[10rem] rounded-t-xl object-cover object-center"
                     />
                   </div>
-                  <h1
-                    key={index}
-                    className="flex px-2 md:px-4 pt-1 font-bold text-sm md:text-[1.1em] "
-                  >
-                    {/* {values.name} */}
-                    Daavi’s Special Gob3
+                  <h1 className="flex px-2 md:px-4 pt-1 font-bold text-sm md:text-[1.1em] ">
+                    {foodJoint.name}
+                    {/* Daavi’s Special Gob3 */}
                   </h1>
                   <h1 className="flex px-2 md:px-4 text-[0.8em] md:text-sm font-roboto">
-                    {values.address}
+                    {foodJoint.address}
                   </h1>
                 </div>
               </DrawerForm>
             ) : (
-              <PopoverForm value={values} key={index}>
-                <div className="md:my-4 rounded-xl w-full  cursor-pointer border h-[9.5em] md:md:h-[12em]  lg:h-[13.5em]">
-                  <div className="h-[6em] md:h-[7.5em] lg:h-[9em] rounded-t-xl object-cover mb-1">
+              <PopoverForm
+                foodJoint={foodJoint}
+                personnels={personnels!}
+                key={foodJoint.id}
+              >
+                <div
+                  key={foodJoint.id}
+                  className="md:my-4 rounded-xl  cursor-pointer w-full border h-[9.5em] md:md:h-[12em]  lg:h-[13.5em] "
+                >
+                  <div className="h-[6em] md:h-[7.5em] lg:h-[9em] rounded-t-xl object-cover mb-1 border ">
                     <img
-                      src="/wakye.jpeg"
+                      src={foodJoint.image_url}
                       className="h-[6em] md:h-[7.5em]  lg:h-[9em] w-full rounded-t-xl object-cover object-center"
                     />
                   </div>
                   <h1 className="flex px-2 md:px-4 pt-1 font-bold text-sm md:text-[1.1em] ">
-                    {values.name}
+                    {foodJoint.name}
                     {/* Daavi’s Special Gob3 */}
                   </h1>
                   <h1 className="flex px-2 md:px-4 text-[0.8em] md:text-sm font-roboto">
-                    {values.address}
+                    {foodJoint.address}
                   </h1>
                 </div>
               </PopoverForm>

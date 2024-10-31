@@ -15,6 +15,7 @@ const PopoverForm = ({
   children: React.ReactNode;
 }) => {
   const [openModel, setOpenModel] = useState(false);
+  console.log(foodJoint)
 
   return (
     <Dialog open={openModel} onOpenChange={setOpenModel}>

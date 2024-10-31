@@ -9,14 +9,12 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
@@ -24,7 +22,6 @@ import {
 import {
   Link,
   Navigate,
-  redirect,
   useActionData,
   useNavigate,
   useNavigation,
@@ -32,15 +29,12 @@ import {
 } from "react-router-dom";
 import FormAuth from "./auth";
 import { AuthResponse } from "@/lib/api";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useStoreData } from "@/store/state";
 
 import { ToastAction } from "../ui/toast";
 import { requestPermission } from "../protected-route";
 
-// interface ActionData {
-//   error?: string;
-// }
 
 const FormSchema = z.object({
   email: z.string().email("Email must contain @ or '.' "),
@@ -197,6 +191,7 @@ export function SignInForm() {
                   Sign up
                 </Link>
               </div>
+              
             </form>
           </Form>
         </CardContent>

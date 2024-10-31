@@ -14,10 +14,10 @@ import {
 import { cn } from '@/lib/utils';
 import { Icons } from '../icons/icons';
 import { useAuth, useStoreData } from '@/store/state';
-import { onMessageListener } from '@/lib/firebase';
-import { Toast } from '@/components/ui/toast';
+import { messaging, onMessageListener } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { signOut } from '@/lib/api';
+import { MessagePayload, onMessage } from 'firebase/messaging';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -36,26 +36,26 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
   const navigate = useNavigate();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [play] = useSound(notificationSoundUrl);
-  const { user } = useAuth();
+  const { user, fbToken } = useAuth();
   const { logout } = useStoreData();
   const { toast } = useToast();
 
   useEffect(() => {
-    const unsubscribe = onMessageListener().then((payload: any) => {
+    const unsubscribe = onMessage(messaging, (payload: MessagePayload) => {
       const { notification } = payload;
       const newNotification: Notification = {
         id: Date.now().toString(),
         title: "Order Confirmation:",
-        body: `Your order from ${notification.title} has been confirmed!`,
+        body: `Your order from ${notification?.title} has been confirmed!`,
         timestamp: Date.now(),
       };
       setNotifications(prev => [newNotification, ...prev]);
       play();
       toast({
-        title: notification.title,
-        description: notification.body,
+        title: notification?.title,
+        description: notification?.body,
       });
-    });
+    })
 
     return () => {
       unsubscribe;
@@ -70,7 +70,9 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
     setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const fb_token =  fbToken!;
+    await signOut(fb_token)
     logout();
     navigate('/');
   };
