@@ -16,7 +16,7 @@ export default function OrderHistory() {
         queryFn: fetchOrders,
     })
 
-    console.log(data)
+    console.log("Orders:" ,data)
 
     return(
     <>
