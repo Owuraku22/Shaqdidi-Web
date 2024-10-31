@@ -144,5 +144,12 @@ export const Icons = {
         d="M22.5 25.5H30l-2.108-2.108A3.047 3.047 0 0127 21.237V16.5a9.003 9.003 0 00-6-8.489V7.5a3 3 0 00-6 0v.511A9.006 9.006 0 009 16.5v4.738c0 .808-.321 1.583-.893 2.154L6 25.5h7.5m9 0h-9m9 0V27a4.5 4.5 0 11-9 0v-1.5"
       ></path>
     </svg>
-  )
+  ),
+  MenuIcon: (props: React.SVGProps<SVGSVGElement>) => (
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width={24} height={24} color={"#000000"} fill={"none"} {...props}>
+      <path d="M4 5L20 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 12L20 12" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M4 19L20 19" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  ),
 };
