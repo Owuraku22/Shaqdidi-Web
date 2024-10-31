@@ -19,7 +19,7 @@ const PsDashboardPage = () => {
 
   // // Using useQuery to fetch food joints
   const { data: foodJoints, isLoading: isFoodLoading } =
-    useQuery<FoodJointResponse >({
+    useQuery<FoodJointResponse>({
       queryKey: ["foodJoints"],
       queryFn: fetchFoodJoints,
     });
@@ -29,7 +29,7 @@ const PsDashboardPage = () => {
     data: personnels,
     isLoading: isPersonnelLoading,
     isError: isPersonnelError,
-  } = useQuery<PersonnelResponse >({
+  } = useQuery<PersonnelResponse>({
     queryKey: ["personnels"],
     queryFn: fetchAvailablePersonnels,
   });

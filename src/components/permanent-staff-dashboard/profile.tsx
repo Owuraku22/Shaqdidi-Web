@@ -16,9 +16,11 @@ export default function Profile() {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <Avatar className="size-8">
+        <Avatar className="size-6">
           <AvatarImage src="https://github.com/shadcn.png" />
-          <AvatarFallback className="bg-primary text-white text-[18px] font-roboto">IA</AvatarFallback>
+          <AvatarFallback className="bg-primary text-white text-[18px] font-roboto">
+            IA
+          </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="mr-4 p-4 flex flex-col gap-1 border-none shadow-md ">
