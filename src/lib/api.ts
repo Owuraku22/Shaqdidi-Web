@@ -1,7 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
 import { useStoreData } from "@/store/state";
-import { queryClient } from "@/App";
+import { queryClient  } from "@/App";
 
 export const api = axios.create({
   baseURL: "https://didi.shaqexpress.com/v1/",
@@ -267,83 +267,31 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
   }
 };
 
-// export const fetchPersonnels = async (): Promise<Staff[] | undefined> => {
-//   if (useFaker) {
-//     return Array.from({ length: 10 }, () => ({
-//       id: faker.number.int(),
-//       name: faker.person.fullName(),
-//       role: faker.person.jobTitle(),
-//       status: faker.helpers.arrayElement(["Available", "Unavailable"]),
-//       email: faker.internet.email(),
-//       phone_number: faker.phone.number(),
-//     }));
-//   }
-//   try {
-//     const response = await api.get<{ message: string; personnels: Staff[] }>(
-//       "/personnels"
-//     );
-//     return response.data.personnels;
-//   } catch (error) {
-//     handleApiError(error);
-//   }
-// };
 
-// export const fetchAvailablePersonnels = async (): Promise<
-//   Personnel[] | undefined
-// > => {
-//   // if (useFaker) {
-//   //   return Array.from({ length: 5 }, () => ({
-//   //     id: faker.number.int(),
-//   //     name: faker.person.fullName(),
-//   //   }));
-//   // }
-//   try {
-//     const response = await api.get<Personnel[]>("/personnels/available");
-//     return response.data;
-//   } catch (error) {
-//     handleApiError(error);
-//   }
-// };
-
-// export const fetchFoodJoints = async (): Promise<FoodJoint[] | undefined> => {
-//   // if (useFaker) {
-//   //   return Array.from({ length: 5 }, () => ({
-//   //     id: faker.number.int(),
-//   //     name: faker.company.name(),
-//   //     address: faker.location.streetAddress(),
-//   //   }));
-//   // }
-//   try {
-//     const response = await api.get<FoodJoint[]>("/joints");
-//     return response.data;
-//   } catch (error) {
-//     handleApiError(error);
-//   }
-// };
 
 export const fetchAvailablePersonnels = async (): Promise<
-  PersonnelResponse | undefined
+  PersonnelResponse 
 > => {
   try {
     const response = await api.get<PersonnelResponse>("/personnels/available");
     console.log("API response data personnel:", response.data); // Logs the full response
     return response.data; // Returns the entire PersonnelResponse object
   } catch (error) {
-    handleApiError(error);
-    return undefined;
+   return handleApiError(error);
+    ;
   }
 };
 
 export const fetchFoodJoints = async (): Promise<
-  FoodJointResponse | undefined
+  FoodJointResponse
 > => {
   try {
     const response = await api.get<FoodJointResponse>("/joints");
     console.log("API response data:", response.data); // Logs the full response
     return response.data; // This returns the entire FoodJointResponse object
   } catch (error) {
-    handleApiError(error);
-    return undefined;
+   return handleApiError(error);
+    ;
   }
 };
 

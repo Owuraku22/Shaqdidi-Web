@@ -129,9 +129,9 @@ export function SignInForm() {
 
   return (
     <FormAuth>
-      <Card className=" shadow-none border-none w-full md:w-[30em] ">
+      <Card className=" shadow-none border-none w-full md:w-[30em]  bg-[#FFFFFF]">
         <CardHeader className="flex justify-center items-center">
-          <CardTitle className="font-bold-md text-2xl md:text-5xl">
+          <CardTitle className=" text-[24px] md:text-[44px] font-[700] md:font-[600] text-HeadersText ">
             User Sign In
           </CardTitle>
         </CardHeader>
@@ -139,7 +139,7 @@ export function SignInForm() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className=" space-y-6 w-full "
+              className=" px-8 md:px-0 space-y-6 w-full "
             >
               {/* displaying error message */}
               {/* {actionData?.error && (
@@ -152,7 +152,7 @@ export function SignInForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[18px] bg-transparent py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
                         placeholder="email"
                         {...field}
                       />
@@ -168,7 +168,7 @@ export function SignInForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[18px] bg-transparent py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
                         placeholder="enter your password"
                         type="password"
                         {...field}
@@ -178,27 +178,34 @@ export function SignInForm() {
                   </FormItem>
                 )}
               />
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full text-white text-[14px] py-4 rounded-full md:rounded-xl md:text-[24px] md:py-6 font-[500] font-roboto"
+              >
+                Sign In
+              </Button>
               <div className="flex justify-center items-center text-center lg:hidden ">
-                <small className="pr-2">Not Registered? </small>
-                <Link to={"/sign-up"} className="text-rose-700 ">
+                <small className="pr-2  text-[12px] text-secondaryText">
+                  Don’t have an Account?
+                </small>
+                <Link
+                  to={"/sign-up"}
+                  className="text-linkText text-[12px] font-roboto"
+                >
                   {" "}
                   Sign up
                 </Link>
               </div>
-              <Button
-                type="submit"
-                disabled={isSubmitting}
-                className="w-full text-white text-[24px] py-6 font-roboto"
-              >
-                Sign In
-              </Button>
             </form>
           </Form>
         </CardContent>
         <CardFooter></CardFooter>
         <CardFooter className="lg:flex justify-center items-center text-center hidden ">
-          <small className="pr-2">Not Registered? </small>
-          <Link to={"/sign-up"} className="text-rose-700">
+          <small className="pr-2 text-secondaryText text-[18px]">
+            Don’t have an Account yet?{" "}
+          </small>
+          <Link to={"/sign-up"} className="text-linkText text-[18px]">
             {" "}
             Sign up
           </Link>

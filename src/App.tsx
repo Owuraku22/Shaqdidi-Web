@@ -18,16 +18,12 @@ import OrderHistory from "./components/permanent-staff-dashboard/order-history";
 import Regiter from "./routes/register";
 import Login from "./routes/login";
 import { Toaster } from "./components/ui/toaster";
-import PsDashboardPage from "./components/permanent-staff-dashboard/permanent-staff-dashboard";
-import { string } from "zod";
+import PsDashboardPage from "./components/permanent-staff-dashboard/ps-dashboard";
 import {
   handleCreateOrder,
   handleSignInAction,
   handleSignUpAction,
 } from "./lib/actions";
-import { request } from "http";
-import { useEffect } from "react";
-import { useStoreData } from "./store/state";
 import { ProtectedRoute } from "./components/protected-route";
 import PersonnelError from "./personnel-error";
 
@@ -116,14 +112,6 @@ const router = createBrowserRouter([
             errorElement: <ErrorBoundary />,
             action: async ({ request }) => {
               return await handleCreateOrder(request);
-            },
-
-            loader: async () => {
-              const orders = await queryClient.fetchQuery({
-                queryKey: ["orders"],
-                queryFn: fetchOrders,
-              });
-              return { orders };
             },
           },
         ],
