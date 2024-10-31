@@ -19,7 +19,7 @@ const PsDashboardPage = () => {
 
   // // Using useQuery to fetch food joints
   const { data: foodJoints, isLoading: isFoodLoading } =
-    useQuery<FoodJointResponse >({
+    useQuery<FoodJointResponse>({
       queryKey: ["foodJoints"],
       queryFn: fetchFoodJoints,
     });
@@ -29,7 +29,7 @@ const PsDashboardPage = () => {
     data: personnels,
     isLoading: isPersonnelLoading,
     isError: isPersonnelError,
-  } = useQuery<PersonnelResponse >({
+  } = useQuery<PersonnelResponse>({
     queryKey: ["personnels"],
     queryFn: fetchAvailablePersonnels,
   });
@@ -52,8 +52,12 @@ const PsDashboardPage = () => {
           Browse food joints and place orders
         </h2>
       </div>
-      <div className="relative w-[27rem] my-4 mx-1 md:w-64  lg:m-4 md:mb-8 lg:ml-4">
-        <Input type="text" placeholder="Search" className="pl-10 " />
+      <div className="relative w-[27rem] my-4 mx-1 md:w-64  lg:m-4 md:mb-8 lg:ml-4 bg-[#CDCDCD80] rounded-lg">
+        <Input
+          type="text"
+          placeholder="Search"
+          className="pl-10  bg-[#CDCDCD80] focus-visible:bg-white "
+        />
         <Icons.Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
       </div>
 

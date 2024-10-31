@@ -82,7 +82,7 @@ export const handleCreateOrder = async (request: Request) => {
       staff_id,
     });
 
-    if (!response) throw new Error("Account registration failed. Please retry");
+    if (!response) throw new Error("Order creation failed. Please retry");
 
     return response;
   } catch (error) {

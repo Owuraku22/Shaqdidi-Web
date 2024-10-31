@@ -3,31 +3,19 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "@/components/nsp/layout";
 import PsLayout from "@/components/permanent-staff-dashboard/layout";
 import Home from "@/routes/home";
-import {
-  fetchAvailablePersonnels,
-  fetchFoodJoints,
-  fetchOrders,
-  FoodJoint,
-  Personnel,
-  signIn,
-} from "@/lib/api";
+import { fetchOrders } from "@/lib/api";
 import ErrorBoundary from "./error-page";
 import OrderHistory from "./components/permanent-staff-dashboard/order-history";
 import Regiter from "./routes/register";
 import Login from "./routes/login";
 import { Toaster } from "./components/ui/toaster";
 import PsDashboardPage from "./components/permanent-staff-dashboard/ps-dashboard";
-import { string } from "zod";
 import {
   handleCreateOrder,
   handleSignInAction,
   handleSignUpAction,
 } from "./lib/actions";
-import { request } from "http";
-import { useEffect } from "react";
-import { useStoreData } from "./store/state";
 import { ProtectedRoute } from "./components/protected-route";
-import PersonnelError from "./personnel-error";
 
 const queryClient = new QueryClient();
 
