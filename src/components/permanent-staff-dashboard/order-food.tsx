@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Select,
@@ -21,8 +21,8 @@ import {
 import { z } from "zod";
 import { Textarea } from "../ui/textarea";
 import { Input } from "../ui/input";
-import { useSubmit } from "react-router-dom";
-import { FoodJoint, Personnel, PersonnelResponse } from "@/lib/api";
+import { useNavigate, useSubmit } from "react-router-dom";
+import { FoodJoint, PersonnelResponse } from "@/lib/api";
 import { useStoreData } from "@/store/state";
 
 const formSchema = z.object({
@@ -41,6 +41,8 @@ const FoodJoints = ({
   setOpenModel?: (open: boolean) => void;
 }) => {
   const submit = useSubmit();
+  const navigate = useNavigate();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -53,6 +55,17 @@ const FoodJoints = ({
   const staff_id = user?.id;
 
   const [confirm, setConfirm] = useState(false);
+  // const [isFormData, setIsFormData] = useState(false);
+
+  // const formValues = form.watch();
+  // useEffect(() => {
+  //   const allFieldsFilled =
+  //     Boolean(form.watch("amount")) &&
+  //     Boolean(form.watch("note")) &&
+  //     Boolean(form.watch("personnel_id"));
+  //   setIsFormData(allFieldsFilled);
+  // }, [formValues]);
+
 
   function onSubmit(data: z.infer<typeof formSchema>) {
     const jointData = {
@@ -60,12 +73,12 @@ const FoodJoints = ({
       address: foodJoint.address,
       joint_name: foodJoint.name,
       staff_id: staff_id!,
-      joint_image: foodJoint.image_url,
+      // joint_image: foodJoint.image_url,
       ...data,
     };
-    console.log("Order data", jointData);
-    submit(jointData, { action: "/ps/order-history", method: "POST" });
     if (confirm) {
+      submit(jointData, { action: "/ps/order-history", method: "POST" });
+      console.log("Orderd data: ", jointData);
       toast({
         title: "You submitted the following values:",
         description: (
@@ -76,20 +89,23 @@ const FoodJoints = ({
           </pre>
         ),
       });
+      // Navigate to OrderHistory page after submission
+      navigate("/ps/order-history");
+      setConfirm(false);
+    } else {
+      setConfirm(true);
     }
-    setConfirm(true);
   }
   return (
     <>
       {/* background image for food joint */}
-      <div
-        className="relative w-full h-[12em] md:h-[15em] flex  bg-no-repeat bg-cover rounded-t-none  md:rounded-t-[0.5em]"
-        style={{
-          backgroundImage: `url(${foodJoint.image_url})`,
-        }}
-      >
+      <div className="relative w-full h-[12em] md:h-[15em] flex  bg-no-repeat  rounded-t-none  md:rounded-t-[0.5em]">
+        <img
+          src={foodJoint.image_url}
+          className=" w-full rounded-t-lg object-cover object-center"
+        />
         {/* Name of food joint and address for larger screen */}
-        <div className="hidden md:flex flex-col absolute bottom-0 py-3 px-8 w-full bg-black bg-opacity-50 text-white">
+        <div className="hidden md:flex flex-col absolute bottom-0 py-3 px-8 w-full bg-black bg-opacity-60 text-white">
           <h2 className=" text-3xl lg:text-3xl  text-white font-poppins">
             {foodJoint.name}
           </h2>
@@ -100,8 +116,12 @@ const FoodJoints = ({
       </div>
       {/* Name of food joint and address for mobile screen */}
       <div className=" md:hidden pt-3 px-4  text-black">
-        <h2 className="xtrabold text-xl lg:text-3xl  ">{foodJoint.name}</h2>
-        <span className="pt-6 text-slate-600 text-sm">{foodJoint.address}</span>
+        <h2 className="text-[20px] font-[700] font-roboto ">
+          {foodJoint.name}
+        </h2>
+        <span className="pt-6 text-[14px] font-[400] text-[#212121] font-roboto">
+          {foodJoint.address}
+        </span>
       </div>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 m-4 ">
@@ -111,7 +131,7 @@ const FoodJoints = ({
             name="amount"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-primary text-xl px-0 md:px-4 font-roboto">
+                <FormLabel className="text-primary text-[0.875rem] font-[600] px-0 md:px-4 font-roboto">
                   Amount
                 </FormLabel>
                 <FormControl>
@@ -119,7 +139,7 @@ const FoodJoints = ({
                     type="number"
                     placeholder="Enter the Amount you want to buy"
                     {...field}
-                    className="bg-white"
+                    className="bg-white text-[0.875rem] font-[400]"
                   />
                 </FormControl>
               </FormItem>
@@ -131,14 +151,14 @@ const FoodJoints = ({
             name="note"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-primary text-xl px-0 md:px-4 font-roboto">
+                <FormLabel className="text-primary text-[0.875rem] font-[600] px-0 md:px-4 font-roboto">
                   Leave a Note
                 </FormLabel>
                 <FormControl>
                   <Textarea
                     placeholder="Add any Special instructions or requests"
                     {...field}
-                    className="text-start bg-white font-roboto"
+                    className="text-start bg-white font-roboto text-[0.875rem] font-[400]"
                   />
                 </FormControl>
               </FormItem>
@@ -150,11 +170,11 @@ const FoodJoints = ({
             name="personnel_id"
             render={({ field }) => (
               <FormItem className="flex flex-col">
-                <FormLabel className="text-primary text-xl px-0 md:px-4 font-roboto">
+                <FormLabel className="text-primary text-[0.875rem] font-[600] px-0 md:px-4 font-roboto">
                   Select available Personnel
                 </FormLabel>
-                <FormLabel className="text-[1em] px-0 md:px-4 font-roboto">
-                  Select available Personnel
+                <FormLabel className="text-[0.875rem] font-[400] text-[#212121] px-0 md:px-4 font-roboto">
+                  Choose who will handle this order
                 </FormLabel>
                 <FormControl>
                   <Select
@@ -162,7 +182,11 @@ const FoodJoints = ({
                     defaultValue={field.value}
                     value={field.value}
                   >
-                    <SelectTrigger className="w-full bg-white text-black font-roboto">
+                    <SelectTrigger
+                      className={`w-full bg-white font-roboto ${
+                        !field.value ? "text-[#757575]" : "text-[#212121]"
+                      }`}
+                    >
                       <SelectValue placeholder="Select" />
                     </SelectTrigger>
                     <SelectContent {...field}>
@@ -182,13 +206,19 @@ const FoodJoints = ({
           />
           <div className="md:flex md:justify-end md:w-full gap-4">
             <Button
-              onClick={() => setOpenModel!(false)}
+              onClick={() => {
+                setConfirm(false);
+                setOpenModel!(false);
+              }}
               className="hidden md:block w-[6.5em] bg-transparent text-primary border border-primary hover:bg-primary-foreground"
             >
               Cancel
             </Button>
-
-            <Button type="submit" className="w-full md:w-[6.5em] font-roboto">
+            <Button
+              type="submit"
+              className="w-full md:w-[6.5rem]"
+              // disabled={!isFormData}
+            >
               {confirm ? "Confirm" : "Order Now"}
             </Button>
           </div>

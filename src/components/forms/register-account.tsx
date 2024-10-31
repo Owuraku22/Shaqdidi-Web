@@ -133,11 +133,11 @@ export default function RegisterAccount() {
     <FormAuth isSignIn>
       <Card className="w-full md:w-[30rem] border-none shadow-none">
         <CardHeader className="flex justify-center items-center">
-          <CardTitle className="hidden md:flex font-bold text-3xl md:text-4xl">
+          <CardTitle className="hidden md:flex text-[24px] md:text-[44px] font-[700] md:font-[600] text-HeadersText ">
             Let’s Get Started
           </CardTitle>
           <CardDescription
-            className="font-bold-md text-3xl md:text-2xl text-black
+            className="text-[24px] md:text-[44px] font-[700] md:font-[600] text-HeadersText 
            md:text-gray-400"
           >
             Create an Account
@@ -147,7 +147,7 @@ export default function RegisterAccount() {
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className="w-full space-y-8"
+              className="w-full px-8 md:px-0 space-y-8"
             >
               <FormField
                 control={form.control}
@@ -191,7 +191,7 @@ export default function RegisterAccount() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[18px] bg-transparent py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
                         placeholder="Full Name"
                         type="text"
                         {...field}
@@ -206,7 +206,8 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input className="text-[18px] bg-transparent py-6 font-roboto"
+                      <Input
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
                         placeholder="Email Address"
                         type="email"
                         {...field}
@@ -221,7 +222,8 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input className="text-[18px] bg-transparent py-6 font-roboto"
+                      <Input
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
                         placeholder="Password"
                         type="password"
                         {...field}
@@ -236,22 +238,32 @@ export default function RegisterAccount() {
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
-                      <Input className="text-[18px] bg-transparent py-6 font-roboto" placeholder="Phone Number" type="tel" {...field} />
+                      <Input
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
+                        placeholder="Phone Number"
+                        type="tel"
+                        {...field}
+                      />
                     </FormControl>
                   </FormItem>
                 )}
               />
 
-              <Button type="submit" className="w-full">
+              <Button
+                type="submit"
+                className="w-full text-white text-[14px] py-4 rounded-full md:rounded-xl md:text-[24px] md:py-6 font-[500] font-roboto"
+              >
                 Sign Up
               </Button>
             </form>
           </Form>
         </CardContent>
         <CardFooter className="flex justify-center md:hidden">
-          <small className="pr-2">Already have an account ?</small>
-          <Link to={"/"} className="text-rose-700">
-            {""} Log In
+          <small className="pr-2  text-[12px] text-secondaryText">
+            Already have an account ?
+          </small>
+          <Link to={"/"} className="text-linkText text-[12px] font-roboto">
+            {""} Sign In
           </Link>
         </CardFooter>
       </Card>

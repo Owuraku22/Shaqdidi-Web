@@ -33,6 +33,7 @@ interface OrderCardProps extends Order {
 export default function OrderCard({
   id,
   joint_name,
+  joint_image,
   address,
   status,
   amount,
@@ -63,7 +64,7 @@ export default function OrderCard({
   const OrderContent = () => (
     <>
       <div className="relative w-full bg-gradient-to-b from-black to-transparent bg-opacity-20 rounded-t-2xl">
-        <img src="/placeholder.png" alt={joint_name} className="w-full h-44 object-cover rounded-t-lg" />
+        <img src={joint_image} alt={joint_name} className="w-full h-44 object-cover rounded-t-lg" />
         <div className="absolute bottom-0 left-0 right-0 bg-black bg-opacity-40 text-white p-2 pl-6">
           <h3 className="text-lg font-semibold">{joint_name}</h3>
           <p className="text-sm">{address}</p>
@@ -98,6 +99,7 @@ export default function OrderCard({
     </>
   );
 
+  
   const FooterContent = () => (
     <>
       {activeTab === 'today' && status === 'Pending' ? (
@@ -120,7 +122,7 @@ export default function OrderCard({
   const CardTrigger = (
     <Card className="w-full cursor-pointer">
       <CardContent className="p-0 rounded-t-lg">
-        <img src="/placeholder.png" alt={joint_name} className="w-full h-40 rounded-t-xl object-cover" />
+        <img src={joint_image} alt={joint_name} className="w-full h-40 rounded-t-xl object-cover" />
         <div className="p-4">
           <h3 className="text-lg font-semibold">{joint_name}</h3>
           <div className="flex justify-between items-center mt-2">

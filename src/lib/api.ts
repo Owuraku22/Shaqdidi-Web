@@ -1,6 +1,7 @@
 import axios, { AxiosError } from "axios";
 import { faker } from "@faker-js/faker";
 import { useStoreData } from "@/store/state";
+import { queryClient  } from "@/App";
 
 export const api = axios.create({
   baseURL: "https://didi.shaqexpress.com/v1/",
@@ -39,8 +40,8 @@ export interface AuthResponse {
     id: number;
     name: string;
     email: string;
-    phone_number: number;
     account_type: string;
+    phone_number: string;
   };
 }
 
@@ -58,11 +59,26 @@ export interface Staff {
 //   name: string;
 // }
 
+
+export interface PaginatedResponse<T> {
+  orders: T[];
+  message: string;
+  pagination: {
+    current_page: number;
+    last_page: number;
+    per_page: number;
+    total: number;
+    count: number;
+  };
+  };
+
+
 export interface Order {
   id: number;
   date: string;
   joint_name: string;
   joint_image: string;
+  staff_name: string;
   address: string;
   amount: string;
   personnel_name: string;
@@ -71,7 +87,8 @@ export interface Order {
   phone_number?: string;
 }
 
-// Defining a single food joint
+
+
 export interface FoodJoint {
   id: number;
   name: string;
@@ -100,6 +117,25 @@ export interface PersonnelResponse {
 }
 
 const useFaker = import.meta.env.VITE_REACT_APP_USE_FAKER === "true";
+
+
+
+// Query Keys
+export const queryKeys = {
+  orders: {
+    all: ['orders'] as const,
+    list: (page: number) => [...queryKeys.orders.all, 'list', page] as const,
+    detail: (id: number) => [...queryKeys.orders.all, 'detail', id] as const,
+  },
+  personnel: {
+    all: ['personnel'] as const,
+    available: () => [...queryKeys.personnel.all, 'available'] as const,
+  },
+  foodJoints: {
+    all: ['foodJoints'] as const,
+  },
+};
+
 
 const handleApiError = (error: unknown) => {
   if (axios.isAxiosError(error)) {
@@ -145,7 +181,7 @@ export const signUp = async (userData: {
         name: userData.full_name,
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         account_type: "staff",
-        phone_number: faker.number.int(),
+        phone_number: faker.phone.number(),
       },
     };
   }
@@ -176,7 +212,7 @@ export const signIn = async (credentials: {
         name: faker.person.fullName(),
         account_type: "staff",
         email: faker.internet.email({ firstName: faker.person.fullName() }),
-        phone_number: faker.number.int(),
+        phone_number: faker.phone.number(),
       },
     };
   }
@@ -219,7 +255,7 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
         email: faker.internet.email({ firstName: faker.person.fullName() }),
         name: faker.person.fullName(),
         account_type: "staff",
-        phone_number: faker.number.int(),
+        phone_number: faker.phone.number(),
       },
     };
   }
@@ -231,83 +267,31 @@ export const refreshToken = async (): Promise<AuthResponse | undefined> => {
   }
 };
 
-// export const fetchPersonnels = async (): Promise<Staff[] | undefined> => {
-//   if (useFaker) {
-//     return Array.from({ length: 10 }, () => ({
-//       id: faker.number.int(),
-//       name: faker.person.fullName(),
-//       role: faker.person.jobTitle(),
-//       status: faker.helpers.arrayElement(["Available", "Unavailable"]),
-//       email: faker.internet.email(),
-//       phone_number: faker.phone.number(),
-//     }));
-//   }
-//   try {
-//     const response = await api.get<{ message: string; personnels: Staff[] }>(
-//       "/personnels"
-//     );
-//     return response.data.personnels;
-//   } catch (error) {
-//     handleApiError(error);
-//   }
-// };
 
-// export const fetchAvailablePersonnels = async (): Promise<
-//   Personnel[] | undefined
-// > => {
-//   // if (useFaker) {
-//   //   return Array.from({ length: 5 }, () => ({
-//   //     id: faker.number.int(),
-//   //     name: faker.person.fullName(),
-//   //   }));
-//   // }
-//   try {
-//     const response = await api.get<Personnel[]>("/personnels/available");
-//     return response.data;
-//   } catch (error) {
-//     handleApiError(error);
-//   }
-// };
-
-// export const fetchFoodJoints = async (): Promise<FoodJoint[] | undefined> => {
-//   // if (useFaker) {
-//   //   return Array.from({ length: 5 }, () => ({
-//   //     id: faker.number.int(),
-//   //     name: faker.company.name(),
-//   //     address: faker.location.streetAddress(),
-//   //   }));
-//   // }
-//   try {
-//     const response = await api.get<FoodJoint[]>("/joints");
-//     return response.data;
-//   } catch (error) {
-//     handleApiError(error);
-//   }
-// };
 
 export const fetchAvailablePersonnels = async (): Promise<
-  PersonnelResponse | undefined
+  PersonnelResponse 
 > => {
   try {
     const response = await api.get<PersonnelResponse>("/personnels/available");
     console.log("API response data personnel:", response.data); // Logs the full response
     return response.data; // Returns the entire PersonnelResponse object
   } catch (error) {
-    handleApiError(error);
-    return undefined;
+   return handleApiError(error);
+    ;
   }
 };
 
 export const fetchFoodJoints = async (): Promise<
-  FoodJointResponse | undefined
+  FoodJointResponse
 > => {
   try {
     const response = await api.get<FoodJointResponse>("/joints");
     console.log("API response data:", response.data); // Logs the full response
     return response.data; // This returns the entire FoodJointResponse object
   } catch (error) {
-    handleApiError(error);
-    return undefined;
+   return handleApiError(error);
+    ;
   }
 };
 
@@ -332,28 +316,76 @@ export const createOrder = async (orderData: {
   }
 };
 
-export const fetchOrders = async (): Promise<Order[] | undefined> => {
+export const fetchOrders = async ({ pageParam = 1 }): Promise<PaginatedResponse<Order>> => {
   if (useFaker) {
-    return Array.from({ length: 10 }, () => ({
+    const orders = Array.from({ length: 10 }, () => ({
       id: faker.number.int(),
       date: faker.date.recent().toISOString(),
       joint_name: faker.company.name(),
-      joint_image: faker.company.name(),
+      joint_image: faker.image.avatar(),
+      staff_name: faker.company.name(),
+      note: faker.lorem.sentence(),
       address: faker.location.streetAddress(),
       amount: faker.commerce.price(),
       personnel_name: faker.person.fullName(),
       status: faker.helpers.arrayElement(["pending", "completed", "cancelled"]),
     }));
+
+    return {
+      orders: orders,
+      message: "Orders fetched successfully",
+      pagination: {
+        current_page: pageParam,
+        last_page: 5,
+        per_page: 10,
+        total: 50,
+        count: 0
+      },
+    };
   }
+
   try {
-    const response = await api.get<{ message: string; orders: Order[] }>(
-      "/orders"
-    );
-    return response.data.orders;
+    const response = await api.get<PaginatedResponse<Order>>(`/orders?page=${pageParam}`);
+    return response.data;
   } catch (error) {
     handleApiError(error);
+    throw error;
   }
 };
+
+export const manageOrder = async (order_id: number, status: string) => {
+  if (useFaker) {
+    await new Promise(resolve => setTimeout(resolve, 1000));
+    return { message: "Order status successfully updated" };
+  }
+
+  try {
+    const response = await api.post("/orders/manage", { order_id, status });
+    await queryClient.invalidateQueries({ queryKey: queryKeys.orders.all });
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    throw error;
+  }
+};
+
+// Pre-fetch utilities
+export const prefetchOrders = async (page: number = 1) => {
+  await queryClient.prefetchQuery({
+    queryKey: queryKeys.orders.list(page),
+    queryFn: () => fetchOrders({ pageParam: page }),
+  });
+};
+
+// Loader utilities for React Router
+export const ordersLoader = async () => {
+  const orders = await queryClient.fetchQuery({
+    queryKey: queryKeys.orders.list(1),
+    queryFn: () => fetchOrders({ pageParam: 1 }),
+  });
+  return { orders: orders.orders };
+};
+
 
 export const fetchOrderDetails = async (
   id: number
@@ -362,7 +394,8 @@ export const fetchOrderDetails = async (
     return {
       id,
       joint_name: faker.company.name(),
-      joint_image: faker.company.name(),
+      joint_image: faker.image.avatar(),
+      staff_name: faker.company.name(),
       note: faker.lorem.sentence(),
       date: faker.date.recent().toISOString(),
       amount: faker.commerce.price(),
@@ -382,20 +415,3 @@ export const fetchOrderDetails = async (
   }
 };
 
-export const manageOrder = async (
-  order_id: number,
-  status: string
-): Promise<{ message: string } | undefined> => {
-  if (useFaker) {
-    return { message: "Order status successfully updated" };
-  }
-  try {
-    const response = await api.post<{ message: string }>("/orders/manage", {
-      order_id,
-      status,
-    });
-    return response.data;
-  } catch (error) {
-    handleApiError(error);
-  }
-};
