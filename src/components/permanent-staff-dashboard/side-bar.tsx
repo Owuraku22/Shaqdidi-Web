@@ -14,7 +14,7 @@ import { Icons } from "../icons/icons";
 
 export function SheetSide() {
   return (
-    <aside className="lg:hidden grid grid-cols-2 gap-2 bg-black">
+    <aside className="lg:hidden">
       <Sheet>
         <SheetTrigger asChild>
           <Icons.MenuIcon />

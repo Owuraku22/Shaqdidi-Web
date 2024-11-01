@@ -175,7 +175,7 @@ export default function OrderCard({
                 'text-amber-400': status === 'pending',
                 'text-green-400': status === 'completed',
                 'text-red-400': status === 'cancelled',
-              })}> {status.substring(0, 1).toUpperCase() + status.substring(1)}</span>
+              })}> {status?.substring(0, 1).toUpperCase() + status?.substring(1)}</span>
             </p>
           </div>
           <div className="mt-2 text-sm text-gray-500 flex justify-between w-full">
