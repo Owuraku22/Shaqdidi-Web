@@ -16,8 +16,9 @@ import { Icons } from '../icons/icons';
 import { useAuth, useStoreData } from '@/store/state';
 import { messaging, onMessageListener } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
-import { signOut } from '@/lib/api';
+import { queryKeys, signOut } from '@/lib/api';
 import { MessagePayload, onMessage } from 'firebase/messaging';
+import { useQueryClient } from '@tanstack/react-query';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -34,6 +35,7 @@ export interface Notification {
 
 export default function Header({ onMenuClick, title, psShowLogo = false }: HeaderProps) {
   const navigate = useNavigate();
+  const queryClient = useQueryClient()
   const [play] = useSound(notificationSoundUrl);
   const { user, fbToken } = useAuth();
   const { logout } = useStoreData();
@@ -46,12 +48,13 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
       const { notification } = payload;
       const newNotification: Notification = {
         id: Date.now().toString(),
-        title: "Order Confirmation:",
-        body: `Your order from ${notification?.title} has been confirmed!`,
+        title: notification?.title || 'New Notification',
+        body: notification?.body || 'No notification body',
         timestamp: Date.now(),
       };
       setNotificationsStore(newNotification);
-      setNotifications(prev => [newNotification, ...prev]);
+      setNotifications(prev => [newNotification, ...prev!]);
+      queryClient.invalidateQueries({queryKey: queryKeys.orders.all})
       play();
       toast({
         title: notification?.title,
@@ -69,7 +72,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
   };
 
   const handleDismissNotification = (id: string) => {
-    setNotifications(prev => prev.filter(notification => notification.id !== id));
+    setNotifications(prev => prev?.filter(notification => notification.id !== id));
   };
 
   const handleLogout = async () => {
@@ -114,7 +117,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                 {notifications?.length > 0 && (
                   <Badge
                     variant="default"
-                    className="absolute bg-green-500 -top-1 -right-1 px-1 min-w-[1.25rem] h-5 flex items-center justify-center text-xs"
+                    className="absolute bg-green-500 hover:bg-green-600 -top-1 -right-1 px-1 min-w-[1.25rem] h-5 flex items-center justify-center text-xs"
                   >
                     {notifications?.length}
                   </Badge>
@@ -127,7 +130,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                 {notifications?.length > 0 && (
                   <button
                     onClick={handleClearAllNotifications}
-                    className="text-primary text-sm hover:text-red-600"
+                    className="text-primary text-sm "
                   >
                     Clear All Notifications
                   </button>

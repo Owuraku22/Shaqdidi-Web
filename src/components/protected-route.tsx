@@ -1,4 +1,4 @@
-import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { Navigate, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { getToken } from "firebase/messaging";
 import { messaging } from "@/lib/firebase";
 import { useAuth, useStoreData } from '@/store/state';
@@ -6,6 +6,7 @@ import { useEffect } from 'react';
 import { toast } from "@/hooks/use-toast";
 import { FirebaseError } from 'firebase/app';
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from './ui/button';
 
 const { VITE_APP_VAPID_KEY } = import.meta.env;
 
@@ -20,7 +21,13 @@ function setFbToken(token: string) {
 
 export async function requestPermission() {
   const permission = await Notification.requestPermission();
-
+  if (!("Notification" in window)) {
+    toast({
+      variant: "destructive",
+      title: "Notifications Error ",
+      description: `This browser does not support notifications.`,
+    });
+}
   if (permission === "granted") {
     try {
       const token = await getToken(messaging, {
@@ -54,6 +61,7 @@ export function ProtectedRoute() {
   const { isAuth, user } = useAuth();
   const { setFbToken } = useStoreData();
   const location = useLocation();
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (isAuth) {
@@ -87,6 +95,9 @@ export function ProtectedRoute() {
             You don't have permission to access this page. Please contact your administrator if you believe this is an error.
           </AlertDescription>
         </Alert>
+        <Button className="mt-4" onClick={() => navigate('/')}>
+          Go Back
+        </Button>
       </div>
     );
   }
