@@ -115,27 +115,27 @@ export default function OrderCard({
         </div>
         <div className="grid gap-4 py-4 px-7">
           <div className="flex flex-col gap-4">
-            <span className="font-semibold text-red-500">Amount</span>
+            <span className="font-medium text-red-500">Amount</span>
             <span className="col-span-3 border rounded-lg px-3 py-2"> GHC {details.amount}</span>
           </div>
           <div className="flex flex-col gap-4">
-            <span className="font-semibold text-red-500">Note</span>
+            <span className="font-medium text-red-500">Note</span>
             <span className="col-span-3 border rounded-lg px-3 py-2">{details.note}</span>
           </div>
           <div className="flex flex-col gap-4">
-            <span className="font-semibold text-red-500">Assigned Personnel</span>
+            <span className="font-medium text-red-500">{details.staff_name? "Staff" : 'Personnel'} Name</span>
             <span className="col-span-3 border rounded-lg px-3 py-2">{details.name || details.staff_name || 'No personnel assigned'}</span>
           </div>
           <div className="flex flex-col gap-4">
-            <span className="font-semibold text-red-500">Phone Number</span>
+            <span className="font-medium text-red-500">Phone Number</span>
             <span className="col-span-3 border rounded-lg px-3 py-2">{details.personnel_phone_number || details.staff_phone_number || 'No phone number available'}</span>
           </div>
           <div className="flex flex-col gap-4">
-            <span className="font-semibold text-red-500">Status</span>
+            <span className="font-medium text-red-500">Status</span>
             <span className="col-span-3 border rounded-lg px-3 py-2">{details.status}</span>
           </div>
           <div className="flex flex-col gap-4">
-            <span className="font-semibold text-red-500">Date</span>
+            <span className="font-medium text-red-500">Date</span>
             <span className="col-span-3 border rounded-lg px-3 py-2">{new Date(details.date).toLocaleDateString()}</span>
           </div>
         </div>

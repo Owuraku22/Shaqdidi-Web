@@ -146,7 +146,7 @@ export function SignInForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto focus-visible:outline-[#212121]/40 focus-visible:right-0 focus-visible:ring-transparent"
                         placeholder="email"
                         {...field}
                       />
@@ -162,7 +162,7 @@ export function SignInForm() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto focus-visible:outline-[#212121]/40 focus-visible:right-0 focus-visible:ring-transparent"
                         placeholder="enter your password"
                         type="password"
                         {...field}

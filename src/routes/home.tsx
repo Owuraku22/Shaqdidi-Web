@@ -59,6 +59,10 @@ export default function Home() {
     });
   }
 
+
+
+
+
   console.log('Logging Order data : ', data)
   // Flatten and process orders
   const allOrders = data?.pages.flatMap(page => page.orders) ?? [];
