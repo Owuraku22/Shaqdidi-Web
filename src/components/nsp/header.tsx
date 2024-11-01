@@ -25,7 +25,7 @@ interface HeaderProps {
   psShowLogo?: boolean
 }
 
-interface Notification {
+export interface Notification {
   id: string;
   title: string;
   body: string;
@@ -34,11 +34,12 @@ interface Notification {
 
 export default function Header({ onMenuClick, title, psShowLogo = false }: HeaderProps) {
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [play] = useSound(notificationSoundUrl);
   const { user, fbToken } = useAuth();
   const { logout } = useStoreData();
   const { toast } = useToast();
+  const { setNotifications: setNotificationsStore, notifications: notificationsStore } = useStoreData()
+  const [notifications, setNotifications] = useState<Notification[]>(notificationsStore!);
 
   useEffect(() => {
     const unsubscribe = onMessage(messaging, (payload: MessagePayload) => {
@@ -49,6 +50,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
         body: `Your order from ${notification?.title} has been confirmed!`,
         timestamp: Date.now(),
       };
+      setNotificationsStore(newNotification);
       setNotifications(prev => [newNotification, ...prev]);
       play();
       toast({
@@ -58,7 +60,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
     })
 
     return () => {
-      unsubscribe;
+      unsubscribe();
     };
   }, [play, toast]);
 

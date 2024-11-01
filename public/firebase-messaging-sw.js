@@ -6,13 +6,13 @@ importScripts(
 );
 
 firebase.initializeApp({
-  apiKey: import.meta.env.VITE_APP_API_KEY,
-  authDomain: import.meta.env.VITE_APP_AUTH_DOMAIN,
-  projectId: import.meta.env.VITE_APP_PROJECT_ID,
-  storageBucket: import.meta.env.VITE_APP_STORAGE_BUCKET,
-  messagingSenderId: import.meta.env.VITE_APP_MESSAGING_SENDER_ID,
-  appId: import.meta.env.VITE_APP_APP_ID,
-  measurementId: import.meta.env.VITE_APP_MEASUREMENT_ID,
+  apiKey: "AIzaSyCGi0obrEaVBOl4Z1sW9QOOvTBlTkRqJ_o",
+  authDomain: "shaqdidi-9119f.firebaseapp.com",
+  projectId: "shaqdidi-9119f",
+  storageBucket: "shaqdidi-9119f.firebasestorage.app",
+  messagingSenderId: "328040124720",
+  appId: "1:328040124720:web:267b90d9aa31946fe878f5",
+  measurementId: "G-DG2BZ4N4XK"
 });
 
 const messaging = firebase.messaging();
@@ -22,7 +22,7 @@ messaging.onBackgroundMessage((payload) => {
   const notificationTitle = payload.notification.title;
   const notificationOptions = {
     body: payload.notification.body,
-    icon: "/firebase-logo.png",
+    // icon: "/firebase-logo.png",
   };
 
   self.registration.showNotification(notificationTitle, notificationOptions);
