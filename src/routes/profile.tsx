@@ -1,7 +1,17 @@
 import { useLoaderData } from 'react-router-dom';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { UserProfile } from '@/lib/api';
+// import { UserProfile } from '@/lib/api';
+
+interface UserProfile {
+  name: string;
+  image: string;
+  role: string;
+  bio: string;
+  email: string;
+  phoneNumber: number;
+  joinDate: Date
+}
 
 export default function Profile() {
   const profile = useLoaderData() as UserProfile;
