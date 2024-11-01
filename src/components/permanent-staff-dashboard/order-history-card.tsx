@@ -84,7 +84,7 @@ export default function OrderHistoryCard({
           <div className="grid gap-4 py-4 px-7">
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Amount</span>
-              <span className="col-span-3 border rounded-md px-3 py-2">{amount}</span>
+              <span className="col-span-3 border rounded-md px-3 py-2">GH₵{amount}</span>
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Note</span>

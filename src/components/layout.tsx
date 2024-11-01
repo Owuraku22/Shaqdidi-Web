@@ -31,7 +31,7 @@ export default function Layout({ isPs = false, routes }: LayoutProps) {
         {/* SIDE BAR*/}
         {
             isPs && (
-                <aside className="hidden md:block flex-1 px-4">
+                <aside className="hidden lg:block flex-1 px-4">
                         <div className="p-4 mb-8 flex justify-between md:justify-center items-center w-full">
                             <h2 className="text-xl font-bold md:hidden block text-left">ShaQ D|D|</h2>
                             <div className="lg:flex items-center space-x-4 md:block hidden">

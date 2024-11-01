@@ -16,6 +16,7 @@ import { Icons } from './icons/icons';
 import { useAuth, useStoreData } from '@/store/state';
 import { onMessageListener } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
+import { SheetSide } from './permanent-staff-dashboard/side-bar';
 
 
 interface HeaderProps {
@@ -84,7 +85,7 @@ export default function Header({ title, showPSLogo = false }: HeaderProps) {
   };
 
   return (
-    <header className={`bg-white ${ showPSLogo ? "shadow-sm" : "shadow border-b border-gray-200"} px-4 md:px-10 py-2 flex justify-between w-full items-center`}>
+    <header className={`bg-white ${ showPSLogo ? "shadow-sm " : "shadow border-b border-gray-200"} px-4 md:px-10 py-2 flex justify-between w-full items-center`}>
       <div className="flex items-center justify-start space-x-4">
       {/* <Button variant="ghost" size="icon" className={
         cn('md:hidden', {
@@ -93,10 +94,16 @@ export default function Header({ title, showPSLogo = false }: HeaderProps) {
       } onClick={onMenuClick}>
               <Menu className="h-5 w-5" />
       </Button> */}
-        <img src="/logo.svg" alt="ShaQ D|D" className={cn("h-10", {
-          'md:hidden': showPSLogo
-        })} />
-        <h2 className="text-[18px] md:block hidden text-primary">{title}</h2>
+      {
+        !showPSLogo ? (
+          <img src="/logo.svg" alt="ShaQ D|D" className={cn("h-10", {
+            'md:hidden': showPSLogo
+          })} />
+        ) : (
+          <SheetSide />
+        )
+      }
+        <h2 className="text-[18px] text-primary">{title}</h2>
       </div>
       
       <div className="flex items-center space-x-4">
