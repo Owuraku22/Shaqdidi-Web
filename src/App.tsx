@@ -113,6 +113,14 @@ const router = createBrowserRouter([
             action: async ({ request }) => {
               return await handleCreateOrder(request);
             },
+
+            loader: async () => {
+              const orders = await queryClient.fetchQuery({
+                queryKey: ["o"],
+                queryFn: fetchOrders,
+              });
+              return { orders };
+            },
           },
         ],
       },

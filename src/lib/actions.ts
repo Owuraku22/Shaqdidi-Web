@@ -7,9 +7,9 @@ export const handleSignInAction = async (request: Request) => {
   const password = formData.get("password") as string;
 
   try {
-    const fb_token = useStoreData.getState().fbToken ?? "";
+    const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
-    const response = await signIn({ email, password, fb_token: fb_token });
+    const response = await signIn({ email, password, fb_token });
 
     //checking if the response is successful
     if (!response)
@@ -39,7 +39,7 @@ export const handleSignUpAction = async (request: Request) => {
   // const fb_token = formData.get("fb_token") as string;
 
   try {
-    const fb_token = useStoreData.getState().fbToken ?? "";
+    const fb_token = useStoreData.getState().fbToken ?? ''
     // calling the singin api and passing the form data to it
     const response = await signUp({
       account_type,
@@ -47,7 +47,7 @@ export const handleSignUpAction = async (request: Request) => {
       password,
       phone_number,
       full_name,
-      fb_token: fb_token,
+      fb_token,
     });
 
     if (!response) throw new Error("Account registration failed. Please retry");
@@ -66,16 +66,24 @@ export const handleSignUpAction = async (request: Request) => {
 
 export const handleCreateOrder = async (request: Request) => {
   const formData = await request.formData();
-  const joint_id = +(formData.get("joint_id") as string, 10);
+  const joint_id = +(formData.get("joint_id") as string);
   const note = formData.get("note") as string;
-  const amount = formData.get("amount") as string;
+  const amount = +(formData.get("amount") as string);
   const personnel_id = +(formData.get("personnel_id") as string);
   const staff_id = +(formData.get("staff_id") as string);
+
+  console.log(formData)
+  console.log('staff_id: ', staff_id)
+  console.log('personnel_id: ', personnel_id)
+  console.log('joint_id: ', joint_id)
+  console.log('note: ', note)
+  console.log('amount: ', amount)
+  console.log('request: ', request)
 
   try {
     const response = await createOrder({
       amount,
-      joint_id,
+      joint_id: 2,
       note,
       personnel_id,
       staff_id,
@@ -83,6 +91,7 @@ export const handleCreateOrder = async (request: Request) => {
 
     if (!response) throw new Error("Order creation failed. Please retry");
 
+    console.log(response)
     return response;
   } catch (error) {
     console.log("Failed to create order try again", error);

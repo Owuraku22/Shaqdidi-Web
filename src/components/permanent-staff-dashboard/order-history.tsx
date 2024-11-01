@@ -12,8 +12,8 @@ import { fetchOrders } from "@/lib/api";
 export default function OrderHistory() {
     const [activeTab, setActiveTab] = useState('current');
     const { data } = useQuery({
-        queryKey: ['orders'],
-        queryFn: fetchOrders,
+        queryKey: ['ord'],
+        queryFn: () => fetchOrders({pageParam: 1}),
     })
 
     console.log(data)
@@ -27,11 +27,11 @@ export default function OrderHistory() {
         </TabsList>
         <TabsContent value="current">
         {
-            !data?.length  ? (
+            !data?.orders?.length  ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3">
-                  {data?.filter(e => e.status === "pending").map(order => (
+                  {data?.orders?.filter(e => e.status.toLowerCase() === "pending").map(order => (
                     <OrderHistoryCard
                       key={order.id}
                       {...order}
@@ -44,11 +44,11 @@ export default function OrderHistory() {
         </TabsContent>
         <TabsContent value="previous">
         {
-            !data?.length ? (
+            !data?.orders?.length ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3">
-                    {data?.filter(ordered => (ordered.status === "completed" || ordered.status === "cancelled")).map(order => (
+                    {data?.orders.filter(ordered => (ordered.status.toLowerCase() === "completed" || ordered.status.toLowerCase() === "cancelled")).map(order => (
                     <OrderHistoryCard
                         key={order.id}
                         {...order}

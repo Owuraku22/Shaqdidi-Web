@@ -14,10 +14,10 @@ import {
 import { cn } from '@/lib/utils';
 import { Icons } from '../icons/icons';
 import { useAuth, useStoreData } from '@/store/state';
-import { onMessageListener } from '@/lib/firebase';
-import { Toast } from '@/components/ui/toast';
+import { messaging, onMessageListener } from '@/lib/firebase';
 import { useToast } from '@/hooks/use-toast';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { signOut } from '@/lib/api';
+import { MessagePayload, onMessage } from 'firebase/messaging';
 
 interface HeaderProps {
   onMenuClick: () => void;
@@ -25,7 +25,7 @@ interface HeaderProps {
   psShowLogo?: boolean
 }
 
-interface Notification {
+export interface Notification {
   id: string;
   title: string;
   body: string;
@@ -34,31 +34,33 @@ interface Notification {
 
 export default function Header({ onMenuClick, title, psShowLogo = false }: HeaderProps) {
   const navigate = useNavigate();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
   const [play] = useSound(notificationSoundUrl);
-  const { user } = useAuth();
+  const { user, fbToken } = useAuth();
   const { logout } = useStoreData();
   const { toast } = useToast();
+  const { setNotifications: setNotificationsStore, notifications: notificationsStore } = useStoreData()
+  const [notifications, setNotifications] = useState<Notification[]>(notificationsStore!);
 
   useEffect(() => {
-    const unsubscribe = onMessageListener().then((payload: any) => {
+    const unsubscribe = onMessage(messaging, (payload: MessagePayload) => {
       const { notification } = payload;
       const newNotification: Notification = {
         id: Date.now().toString(),
         title: "Order Confirmation:",
-        body: `Your order from ${notification.title} has been confirmed!`,
+        body: `Your order from ${notification?.title} has been confirmed!`,
         timestamp: Date.now(),
       };
+      setNotificationsStore(newNotification);
       setNotifications(prev => [newNotification, ...prev]);
       play();
       toast({
-        title: notification.title,
-        description: notification.body,
+        title: notification?.title,
+        description: notification?.body,
       });
-    });
+    })
 
     return () => {
-      unsubscribe;
+      unsubscribe();
     };
   }, [play, toast]);
 
@@ -70,7 +72,9 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
     setNotifications(prev => prev.filter(notification => notification.id !== id));
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const fb_token =  fbToken!;
+    await signOut(fb_token)
     logout();
     navigate('/');
   };
@@ -107,12 +111,12 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
             <PopoverTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Icons.Bell className="md:h-6 md:w-6 h-5 w-5" />
-                {notifications.length > 0 && (
+                {notifications?.length > 0 && (
                   <Badge
                     variant="default"
                     className="absolute bg-green-500 -top-1 -right-1 px-1 min-w-[1.25rem] h-5 flex items-center justify-center text-xs"
                   >
-                    {notifications.length}
+                    {notifications?.length}
                   </Badge>
                 )}
               </Button>
@@ -120,7 +124,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
             <PopoverContent className="w-[380px] p-0">
               <div className="flex items-center justify-between border-b p-4">
                 <h3 className="font-semibold text-lg text-primary">Notifications</h3>
-                {notifications.length > 0 && (
+                {notifications?.length > 0 && (
                   <button
                     onClick={handleClearAllNotifications}
                     className="text-primary text-sm hover:text-red-600"
@@ -130,11 +134,11 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                 )}
               </div>
               <div className="max-h-[400px] overflow-y-auto">
-                {notifications.length === 0 ? (
+                {notifications?.length === 0 ? (
                   <p className="text-sm text-gray-500 p-4">No new notifications</p>
                 ) : (
                   <div className="divide-y">
-                    {notifications.map((notification) => (
+                    {notifications?.map((notification) => (
                       <div key={notification.id} className="p-4 relative hover:bg-gray-50">
                         <button
                           onClick={() => handleDismissNotification(notification.id)}
