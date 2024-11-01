@@ -65,7 +65,7 @@ export default function PermanentStaff() {
                 <TableCell>{staff.name}</TableCell>
                 <TableCell>{staff.role}</TableCell>
                 <TableCell>{staff.email}</TableCell>
-                <TableCell>{staff.phoneNumber}</TableCell>
+                {/* <TableCell>{staff.phoneNumber}</TableCell> */}
               </TableRow>
             ))}
           </TableBody>
@@ -84,7 +84,7 @@ export default function PermanentStaff() {
             <div className="grid gap-4 py-4">
               <div className="flex items-center space-x-4">
                 <Avatar className="h-16 w-16">
-                  <AvatarImage src={selectedStaff.image} alt={selectedStaff.name} />
+                  {/* <AvatarImage src={selectedStaff} alt={selectedStaff.name} /> */}
                   <AvatarFallback>{selectedStaff.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
@@ -98,7 +98,7 @@ export default function PermanentStaff() {
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
                 <span className="font-bold">Phone:</span>
-                <span className="col-span-3">{selectedStaff.phoneNumber}</span>
+                {/* <span className="col-span-3">{selectedStaff.phoneNumber}</span> */}
               </div>
             </div>
           )}
