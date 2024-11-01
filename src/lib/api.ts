@@ -119,7 +119,6 @@ export interface PersonnelResponse {
 const useFaker = import.meta.env.VITE_REACT_APP_USE_FAKER === "true";
 
 
-
 // Query Keys
 export const queryKeys = {
   orders: {
@@ -346,6 +345,7 @@ export const fetchOrders = async ({ pageParam = 1 }): Promise<PaginatedResponse<
 
   try {
     const response = await api.get<PaginatedResponse<Order>>(`/orders?page=${pageParam}`);
+    // const response = await api.get<PaginatedResponse<Order>>(`/orders`);
     return response.data;
   } catch (error) {
     handleApiError(error);

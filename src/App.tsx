@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import Layout from "@/components/nsp/layout";
-import PsLayout from "@/components/permanent-staff-dashboard/layout";
+import PsLayout from "@/components/layout";
 import Home from "@/routes/home";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 
@@ -86,7 +86,7 @@ const router = createBrowserRouter([
 
       {
         path: "/ps",
-        element: <PsLayout />,
+        element: <PsLayout isPs routes={psRoutes} />,
         // element: <Layout isPs routes={psRoutes} />,
         errorElement: <ErrorBoundary />,
         children: [

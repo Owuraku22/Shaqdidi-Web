@@ -76,9 +76,10 @@ const FoodJoints = ({
       // joint_image: foodJoint.image_url,
       ...data,
     };
+    console.log("joint Data: ", jointData);
     if (confirm) {
       submit(jointData, { action: "/ps/order-history", method: "POST" });
-      console.log("Orderd data: ", jointData);
+      console.log("Ordered data: ", jointData);
       toast({
         title: "You submitted the following values:",
         description: (

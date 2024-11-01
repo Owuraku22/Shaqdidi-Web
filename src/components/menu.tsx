@@ -37,7 +37,7 @@ export default function Menu() {
               pathname === menu.url
                 ? "bg-primary-foreground text-primary"
                 : "text-slate-900 hover:bg-gray-200"
-            } flex items-center gap-2 px-2 rounded py-3 text-[.9em]`}
+            } flex items-center gap-2 px-2 rounded py-3 text-[16px]`}
           >
             <span className="size-6 block"> {menu.icon} </span>
             <span> {menu.label} </span>

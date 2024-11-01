@@ -7,9 +7,9 @@ export const handleSignInAction = async (request: Request) => {
   const password = formData.get("password") as string;
 
   try {
-    const fb_token = useStoreData.getState().fbToken ?? "";
+    // const fb_token = useStoreData.getState().fbToken ?? "";
     // calling the singin api and passing the form data to it
-    const response = await signIn({ email, password, fb_token: fb_token });
+    const response = await signIn({ email, password, fb_token: 'qwerty' });
 
     //checking if the response is successful
     if (!response)

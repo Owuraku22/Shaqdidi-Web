@@ -6,17 +6,17 @@ import { cn } from '@/lib/utils';
 import OrderHistoryEmpty from "./order-history-empty";
 
 import { useQuery } from "@tanstack/react-query";
-import { fetchOrders } from "@/lib/api";
+import { fetchOrders, Order, PaginatedResponse } from "@/lib/api";
 
 
 export default function OrderHistory() {
     const [activeTab, setActiveTab] = useState('current');
-    const { data } = useQuery({
+    const { data: Orders } = useQuery<PaginatedResponse<Order>>({
         queryKey: ['orders'],
-        queryFn: fetchOrders,
+        queryFn: () => fetchOrders({ pageParam: 1 }),
     })
 
-    console.log("Orders:" ,data)
+    console.log("Orders:", Orders)
 
     return(
     <>
@@ -27,11 +27,11 @@ export default function OrderHistory() {
         </TabsList>
         <TabsContent value="current">
         {
-            !data?.length  ? (
+            !Orders?.orders.length  ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3">
-                  {data?.filter(e => e.status === "pending").map(order => (
+                  {Orders?.orders.filter(e => e.status.toLowerCase() === "pending").map(order => (
                     <OrderHistoryCard
                       key={order.id}
                       {...order}
@@ -44,11 +44,11 @@ export default function OrderHistory() {
         </TabsContent>
         <TabsContent value="previous">
         {
-            !data?.length ? (
+            !Orders?.orders?.length ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3">
-                    {data?.filter(ordered => (ordered.status === "completed" || ordered.status === "cancelled")).map(order => (
+                    {Orders?.orders?.filter(ordered => (ordered.status.toLowerCase() === "completed" || ordered.status.toLowerCase() === "cancelled")).map(order => (
                     <OrderHistoryCard
                         key={order.id}
                         {...order}
