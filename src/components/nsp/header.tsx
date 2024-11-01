@@ -111,12 +111,12 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
             <PopoverTrigger asChild>
               <Button variant="ghost" size="icon">
                 <Icons.Bell className="md:h-6 md:w-6 h-5 w-5" />
-                {notifications.length > 0 && (
+                {notifications?.length > 0 && (
                   <Badge
                     variant="default"
                     className="absolute bg-green-500 -top-1 -right-1 px-1 min-w-[1.25rem] h-5 flex items-center justify-center text-xs"
                   >
-                    {notifications.length}
+                    {notifications?.length}
                   </Badge>
                 )}
               </Button>
@@ -124,7 +124,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
             <PopoverContent className="w-[380px] p-0">
               <div className="flex items-center justify-between border-b p-4">
                 <h3 className="font-semibold text-lg text-primary">Notifications</h3>
-                {notifications.length > 0 && (
+                {notifications?.length > 0 && (
                   <button
                     onClick={handleClearAllNotifications}
                     className="text-primary text-sm hover:text-red-600"
@@ -134,11 +134,11 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                 )}
               </div>
               <div className="max-h-[400px] overflow-y-auto">
-                {notifications.length === 0 ? (
+                {notifications?.length === 0 ? (
                   <p className="text-sm text-gray-500 p-4">No new notifications</p>
                 ) : (
                   <div className="divide-y">
-                    {notifications.map((notification) => (
+                    {notifications?.map((notification) => (
                       <div key={notification.id} className="p-4 relative hover:bg-gray-50">
                         <button
                           onClick={() => handleDismissNotification(notification.id)}
