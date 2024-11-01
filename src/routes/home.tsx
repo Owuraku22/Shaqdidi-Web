@@ -1,24 +1,21 @@
-import { useState } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import OrderCard from "@/components/nsp/order-card";
-import { Order, fetchOrders, manageOrder, queryKeys } from "@/lib/api";
-import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Search, Loader2 } from "lucide-react";
-import EmptyState from "@/components/nsp/empty-state";
-import { useInView } from "react-intersection-observer";
-import { useEffect } from "react";
-import { Button } from "@/components/ui/button";
-import { useToast } from "@/hooks/use-toast";
+import { useState, useEffect, useCallback } from 'react';
+import { useInfiniteQuery } from '@tanstack/react-query';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import OrderCard from '@/components/nsp/order-card';
+import { Order, fetchOrders, manageOrder, queryKeys } from '@/lib/api';
+import { cn } from '@/lib/utils';
+import { Input } from '@/components/ui/input';
+import { Search, Loader2 } from 'lucide-react';
+import EmptyState from '@/components/nsp/empty-state';
+import { useInView } from 'react-intersection-observer';
+import { Button } from '@/components/ui/button';
+import { useToast } from '@/hooks/use-toast';
 
 export default function Home() {
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("today");
   const { toast } = useToast();
   const { ref, inView } = useInView();
-
-  console.log("Inview : ", inView);
 
   const {
     data,
@@ -30,13 +27,9 @@ export default function Home() {
     isFetchingNextPage,
     refetch,
   } = useInfiniteQuery({
-    queryKey: queryKeys.orders.all,
-    queryFn: () => {
-      console.log("Fetching orders...");
-      return fetchOrders({ pageParam: 1 });
-    },
+    queryKey: queryKeys.orders.all,  
+    queryFn: ({ pageParam = 1 }) => fetchOrders({ pageParam }),
     getNextPageParam: (lastPage) => {
-      console.log(lastPage);
       if (!lastPage?.pagination) return undefined;
 
       const { current_page, last_page } = lastPage.pagination;
@@ -45,11 +38,15 @@ export default function Home() {
     initialPageParam: 1,
   });
 
-  useEffect(() => {
+  const loadMoreOrders = useCallback(() => {
     if (inView && hasNextPage && !isFetchingNextPage) {
       fetchNextPage();
     }
   }, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+
+  useEffect(() => {
+    loadMoreOrders();
+  }, [loadMoreOrders]);
 
   if (isError) {
     toast({
@@ -59,7 +56,6 @@ export default function Home() {
     });
   }
 
-  console.log("Logging Order data : ", data);
   // Flatten and process orders
   const allOrders = data?.pages.flatMap((page) => page.orders) ?? [];
 
@@ -83,16 +79,15 @@ export default function Home() {
     setSearch(event.target.value);
   };
 
-  const filteredPreviousOrders = previousOrders?.filter(
-    (order) =>
-      order.joint_name?.toLowerCase().includes(search?.toLowerCase()) ||
-      order.address?.toLowerCase().includes(search?.toLowerCase()) ||
-      order.staff_name?.toLowerCase().includes(search?.toLowerCase())
+  const filteredPreviousOrders = previousOrders.filter(order =>
+    order.joint_name?.toLowerCase().includes(search.toLowerCase()) ||
+    order.address?.toLowerCase().includes(search.toLowerCase()) || 
+    order.staff_name?.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleMarkCompleted = async (id: number) => {
     try {
-      await manageOrder(id, "Completed");
+      await manageOrder(id, "completed");
       refetch();
     } catch (error: any) {
       toast({
@@ -138,7 +133,7 @@ export default function Home() {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="today">
-          {todayOrders?.length > 0 ? (
+          {todayOrders.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
               {todayOrders.map((order) => (
                 <OrderCard
@@ -167,12 +162,9 @@ export default function Home() {
               onChange={handleSearch}
               className="pl-10"
             />
-            <Search
-              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
-              size={20}
-            />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
           </div>
-          {filteredPreviousOrders?.length > 0 ? (
+          {filteredPreviousOrders.length > 0 ? (
             <>
               <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {filteredPreviousOrders.map((order, index) => (
@@ -182,7 +174,7 @@ export default function Home() {
                       onMarkCompleted={handleMarkCompleted}
                       activeTab={activeTab}
                     />
-                    {index === filteredPreviousOrders?.length - 1 && (
+                    {index === filteredPreviousOrders.length - 1 && (
                       <div ref={ref} className="mt-4">
                         {isFetchingNextPage && (
                           <div className="flex justify-center">
