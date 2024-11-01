@@ -11,12 +11,12 @@ import { fetchOrders, Order, PaginatedResponse } from "@/lib/api";
 
 export default function OrderHistory() {
     const [activeTab, setActiveTab] = useState('current');
-    const { data: Orders } = useQuery<PaginatedResponse<Order>>({
-        queryKey: ['orders'],
-        queryFn: () => fetchOrders({ pageParam: 1 }),
+    const { data } = useQuery({
+        queryKey: ['ord'],
+        queryFn: () => fetchOrders({pageParam: 1}),
     })
 
-    console.log("Orders:", Orders)
+    console.log(data)
 
     return(
     <>
@@ -27,11 +27,11 @@ export default function OrderHistory() {
         </TabsList>
         <TabsContent value="current">
         {
-            !Orders?.orders.length  ? (
+            !data?.orders?.length  ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3">
-                  {Orders?.orders.filter(e => e.status.toLowerCase() === "pending").map(order => (
+                  {data?.orders?.filter(e => e.status.toLowerCase() === "pending").map(order => (
                     <OrderHistoryCard
                       key={order.id}
                       {...order}
@@ -44,11 +44,11 @@ export default function OrderHistory() {
         </TabsContent>
         <TabsContent value="previous">
         {
-            !Orders?.orders?.length ? (
+            !data?.orders?.length ? (
                 <OrderHistoryEmpty />
             ) : (
                 <div className="grid gap-4 md:grid-cols-3">
-                    {Orders?.orders?.filter(ordered => (ordered.status.toLowerCase() === "completed" || ordered.status.toLowerCase() === "cancelled")).map(order => (
+                    {data?.orders.filter(ordered => (ordered.status.toLowerCase() === "completed" || ordered.status.toLowerCase() === "cancelled")).map(order => (
                     <OrderHistoryCard
                         key={order.id}
                         {...order}

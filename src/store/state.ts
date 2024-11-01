@@ -1,12 +1,15 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 import { AuthResponse } from '@/lib/api';
+import type { Notification } from '@/components/nsp/header'
 
 interface StoreState {
   user: AuthResponse['user'] | null;
   isAuth: boolean;
   authToken: string | null;
   fbToken: string | null;
+  notifications: Notification[] | null; 
+  setNotifications: (notification: Notification) => void
   setUser: (user: AuthResponse['user']) => void;
   setAuthToken: (token: string) => void;
   setFbToken: (token: string) => void;
@@ -20,6 +23,10 @@ export const useStoreData = create<StoreState>()(
       isAuth: false,
       authToken: null,
       fbToken: null,
+      notifications: null,
+      setNotifications: (notification) => set((state) => ({
+        notifications: state.notifications ? [...state.notifications, notification] : [notification]
+      })), 
       setUser: (user) => set({ user, isAuth: true }),
       setAuthToken: (token) => set({ authToken: token }),
       setFbToken: (token) => set({ fbToken: token }),
@@ -32,6 +39,7 @@ export const useStoreData = create<StoreState>()(
         isAuth: state.isAuth,
         authToken: state.authToken,
         fbToken: state.fbToken,
+        notifications: state.notifications
       }),
     }
   )

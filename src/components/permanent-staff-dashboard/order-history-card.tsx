@@ -24,7 +24,7 @@ export default function OrderHistoryCard({
   personnel_name,
   status,
   note,
-  phone_number,
+  personnel_phone_number,
   activeTab
 }: OrderCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -96,7 +96,7 @@ export default function OrderHistoryCard({
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Phone Number</span>
-              <span className="col-span-3 border rounded-md px-3 py-2">{phone_number}</span>
+              <span className="col-span-3 border rounded-md px-3 py-2">{personnel_phone_number}</span>
             </div>
             <div className="flex flex-col gap-4">
               <span className="font-semibold text-red-500">Status</span>

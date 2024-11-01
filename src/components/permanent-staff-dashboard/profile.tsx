@@ -1,16 +1,17 @@
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuTrigger,
+  } from "@/components/ui/dropdown-menu"
+  import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+  import { useNavigate } from 'react-router-dom';
+  import { useEffect, useState } from 'react';
+import { Button } from "../ui/button";
 import { useStoreData } from "@/store/state";
 
 export default function Profile() {
-  //   const { user } = useStoreData((state) => state.user);
-  const user = useStoreData((state) => state.user);
+    const navigate = useNavigate();
+    const { user } = useStoreData()
 
   return (
     <DropdownMenu>

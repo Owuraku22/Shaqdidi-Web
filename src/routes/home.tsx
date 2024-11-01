@@ -33,7 +33,7 @@ export default function Home() {
     queryKey: queryKeys.orders.all,  
     queryFn: () => {
       console.log('Fetching orders...', )
-      return fetchOrders({ pageParam: 0 });
+      return fetchOrders({ pageParam: 1 });
     },
     getNextPageParam: (lastPage) => {
       console.log(lastPage)
@@ -42,7 +42,7 @@ export default function Home() {
       const { current_page, last_page } = lastPage.pagination;
       return current_page < last_page ? current_page + 1 : undefined;
     },
-    initialPageParam: 0,
+    initialPageParam: 1,
   });
 
   useEffect(() => {
@@ -67,14 +67,14 @@ export default function Home() {
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const todayOrders = allOrders.filter(order => {
-    const orderDate = new Date(order.date);
+    const orderDate = new Date(order?.date);
     orderDate.setHours(0, 0, 0, 0);
     return orderDate.getTime() === today.getTime();
   });
 
   // Filter previous orders
   const previousOrders = allOrders.filter(order => {
-    const orderDate = new Date(order.date);
+    const orderDate = new Date(order?.date);
     orderDate.setHours(0, 0, 0, 0);
     return orderDate.getTime() < today.getTime();
   });
@@ -154,8 +154,6 @@ export default function Home() {
           )}
         </TabsContent>
         <TabsContent value="previous">
-          {filteredPreviousOrders?.length > 0 ? (
-            <>
               <div className="relative w-64 mb-3 mt-2">
                 <Input
                   type="text"
@@ -166,6 +164,8 @@ export default function Home() {
                 />
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
               </div>
+          {filteredPreviousOrders?.length > 0 ? (
+            <>
               <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
                 {filteredPreviousOrders.map((order, index) => (
                   <div key={order.id}>

@@ -1,8 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Sheet, SheetContent, SheetHeader, SheetTitle } from '@/components/ui/sheet';
-import { Button } from '@/components/ui/button';
-import { X } from 'lucide-react';
+import { Sheet, SheetContent, SheetHeader } from '@/components/ui/sheet';
 
 interface SidebarProps {
   onClose: () => void;
