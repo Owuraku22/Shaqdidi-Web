@@ -1,24 +1,24 @@
-import { useState } from 'react';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import OrderCard from '@/components/nsp/order-card';
-import { Order, fetchOrders, manageOrder, queryKeys } from '@/lib/api';
-import { cn } from '@/lib/utils';
-import { Input } from '@/components/ui/input';
-import { Search, Loader2 } from 'lucide-react';
-import EmptyState from '@/components/nsp/empty-state';
-import { useInView } from 'react-intersection-observer';
-import { useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import { useState } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import OrderCard from "@/components/nsp/order-card";
+import { Order, fetchOrders, manageOrder, queryKeys } from "@/lib/api";
+import { cn } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Search, Loader2 } from "lucide-react";
+import EmptyState from "@/components/nsp/empty-state";
+import { useInView } from "react-intersection-observer";
+import { useEffect } from "react";
+import { Button } from "@/components/ui/button";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
-  const [search, setSearch] = useState('');
-  const [activeTab, setActiveTab] = useState('today');
+  const [search, setSearch] = useState("");
+  const [activeTab, setActiveTab] = useState("today");
   const { toast } = useToast();
   const { ref, inView } = useInView();
 
-  console.log('Inview : ', inView)
+  console.log("Inview : ", inView);
 
   const {
     data,
@@ -28,17 +28,17 @@ export default function Home() {
     fetchNextPage,
     hasNextPage,
     isFetchingNextPage,
-    refetch
+    refetch,
   } = useInfiniteQuery({
-    queryKey: queryKeys.orders.all,  
+    queryKey: queryKeys.orders.all,
     queryFn: () => {
-      console.log('Fetching orders...', )
+      console.log("Fetching orders...");
       return fetchOrders({ pageParam: 1 });
     },
     getNextPageParam: (lastPage) => {
-      console.log(lastPage)
+      console.log(lastPage);
       if (!lastPage?.pagination) return undefined;
-      
+
       const { current_page, last_page } = lastPage.pagination;
       return current_page < last_page ? current_page + 1 : undefined;
     },
@@ -59,25 +59,21 @@ export default function Home() {
     });
   }
 
-
-
-
-
-  console.log('Logging Order data : ', data)
+  console.log("Logging Order data : ", data);
   // Flatten and process orders
-  const allOrders = data?.pages.flatMap(page => page.orders) ?? [];
-  
+  const allOrders = data?.pages.flatMap((page) => page.orders) ?? [];
+
   // Filter today's orders
   const today = new Date();
   today.setHours(0, 0, 0, 0);
-  const todayOrders = allOrders.filter(order => {
+  const todayOrders = allOrders.filter((order) => {
     const orderDate = new Date(order?.date);
     orderDate.setHours(0, 0, 0, 0);
     return orderDate.getTime() === today.getTime();
   });
 
   // Filter previous orders
-  const previousOrders = allOrders.filter(order => {
+  const previousOrders = allOrders.filter((order) => {
     const orderDate = new Date(order?.date);
     orderDate.setHours(0, 0, 0, 0);
     return orderDate.getTime() < today.getTime();
@@ -87,15 +83,16 @@ export default function Home() {
     setSearch(event.target.value);
   };
 
-  const filteredPreviousOrders = previousOrders?.filter(order =>
-    order.joint_name?.toLowerCase().includes(search?.toLowerCase()) ||
-    order.address?.toLowerCase().includes(search?.toLowerCase()) ||
-    order.staff_name?.toLowerCase().includes(search?.toLowerCase())
+  const filteredPreviousOrders = previousOrders?.filter(
+    (order) =>
+      order.joint_name?.toLowerCase().includes(search?.toLowerCase()) ||
+      order.address?.toLowerCase().includes(search?.toLowerCase()) ||
+      order.staff_name?.toLowerCase().includes(search?.toLowerCase())
   );
 
   const handleMarkCompleted = async (id: number) => {
     try {
-      await manageOrder(id, 'Completed');
+      await manageOrder(id, "Completed");
       refetch();
     } catch (error: any) {
       toast({
@@ -116,21 +113,25 @@ export default function Home() {
 
   return (
     <div className="container mx-auto px-4 py-8 bg-white">
-      <h1 className="md:text-3xl font-bold mb-6 md:mb-0">Manage Your Assigned Orders</h1>
+      <h1 className="md:text-3xl font-bold mb-6 md:mb-0">
+        Manage Your Assigned Orders
+      </h1>
       <Tabs value={activeTab} onValueChange={setActiveTab}>
         <TabsList className="w-full my-4 bg-transparent flex md:justify-start justify-center space-x-2">
-          <TabsTrigger 
-            value="today" 
-            className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow md:text-lg', 
-              { 'bg-primary text-white': activeTab === 'today' }
+          <TabsTrigger
+            value="today"
+            className={cn(
+              "rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow md:text-lg",
+              { "bg-primary text-white": activeTab === "today" }
             )}
           >
             Today
           </TabsTrigger>
-          <TabsTrigger 
-            value="previous" 
-            className={cn('rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow md:text-lg', 
-              { 'bg-primary text-white': activeTab === 'previous' }
+          <TabsTrigger
+            value="previous"
+            className={cn(
+              "rounded-full py-2 px-6 data-[state=active]:bg-primary/10 data-[state=active]:text-primary shadow md:text-lg",
+              { "bg-primary text-white": activeTab === "previous" }
             )}
           >
             Previous Orders
@@ -139,7 +140,7 @@ export default function Home() {
         <TabsContent value="today">
           {todayOrders?.length > 0 ? (
             <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
-              {todayOrders.map(order => (
+              {todayOrders.map((order) => (
                 <OrderCard
                   key={order.id}
                   {...order}
@@ -150,24 +151,27 @@ export default function Home() {
             </div>
           ) : (
             <div className="h-full w-full mt-12 flex justify-center items-center">
-              <EmptyState 
-                message='No Orders Assigned Yet' 
-                onRefresh={() => refetch()} 
-              /> 
+              <EmptyState
+                message="No Orders Assigned Yet"
+                onRefresh={() => refetch()}
+              />
             </div>
           )}
         </TabsContent>
         <TabsContent value="previous">
-              <div className="relative w-64 mb-3 mt-2">
-                <Input
-                  type="text"
-                  placeholder="Search"
-                  value={search}
-                  onChange={handleSearch}
-                  className="pl-10"
-                />
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" size={20} />
-              </div>
+          <div className="relative w-64 mb-3 mt-2">
+            <Input
+              type="text"
+              placeholder="Search"
+              value={search}
+              onChange={handleSearch}
+              className="pl-10"
+            />
+            <Search
+              className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"
+              size={20}
+            />
+          </div>
           {filteredPreviousOrders?.length > 0 ? (
             <>
               <div className="grid gap-4 md:grid-cols-3 lg:grid-cols-4">
@@ -192,8 +196,8 @@ export default function Home() {
               </div>
               {hasNextPage && !isFetchingNextPage && (
                 <div className="flex justify-center mt-4">
-                  <Button 
-                    variant="outline" 
+                  <Button
+                    variant="outline"
                     onClick={() => fetchNextPage()}
                     className="text-primary hover:text-primary-foreground"
                   >
@@ -204,10 +208,10 @@ export default function Home() {
             </>
           ) : (
             <div className="h-full w-full mt-12 flex justify-center items-center">
-              <EmptyState 
-                message='No Orders Completed Yet' 
-                onRefresh={() => refetch()} 
-              /> 
+              <EmptyState
+                message="No Orders Completed Yet"
+                onRefresh={() => refetch()}
+              />
             </div>
           )}
         </TabsContent>
