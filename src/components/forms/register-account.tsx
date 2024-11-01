@@ -190,7 +190,7 @@ export default function RegisterAccount() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto focus-visible:outline-[#212121]/40 focus-visible:right-0 focus-visible:ring-transparent"
                         placeholder="Full Name"
                         type="text"
                         {...field}
@@ -206,7 +206,7 @@ export default function RegisterAccount() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto focus-visible:outline-[#212121]/40 focus-visible:right-0 focus-visible:ring-transparent"
                         placeholder="Email Address"
                         type="email"
                         {...field}
@@ -222,7 +222,7 @@ export default function RegisterAccount() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto focus-visible:outline-[#212121]/40 focus-visible:right-0 focus-visible:ring-transparent"
                         placeholder="Password"
                         type="password"
                         {...field}
@@ -238,7 +238,7 @@ export default function RegisterAccount() {
                   <FormItem>
                     <FormControl>
                       <Input
-                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto"
+                        className="text-[14px] md:text-[18px] bg-transparent py-4 md:py-6 font-roboto focus-visible:outline-[#212121]/40 focus-visible:right-0 focus-visible:ring-transparent"
                         placeholder="Phone Number"
                         type="tel"
                         {...field}
@@ -250,7 +250,7 @@ export default function RegisterAccount() {
 
               <Button
                 type="submit"
-                className="w-full text-white text-[14px] py-4 rounded-full md:rounded-xl md:text-[24px] md:py-6 font-[500] font-roboto"
+                className="w-full text-white text-[14px] py-4 rounded-full md:rounded-xl md:text-[24px] md:py-6 font-[500] font-roboto focus-visible:outline-[#212121]/40 focus-visible:right-0 focus-visible:ring-transparent"
               >
                 Sign Up
               </Button>
