@@ -142,9 +142,9 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                 ) : (
                   <div className="divide-y">
                     {notifications?.map((notification) => (
-                      <div key={notification.id} className="p-4 relative hover:bg-gray-50">
+                      <div key={notification?.id} className="p-4 relative hover:bg-gray-50">
                         <button
-                          onClick={() => handleDismissNotification(notification.id)}
+                          onClick={() => handleDismissNotification(notification?.id)}
                           className="absolute right-4 top-4 text-gray-400 hover:text-gray-600"
                         >
                           <X className="h-4 w-4" />
@@ -154,10 +154,10 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                             <Bell className="h-5 w-5 text-gray-500" />
                           </div>
                           <div className="pr-6">
-                            <p className="font-medium text-sm">{notification.title}</p>
-                            <p className="text-sm text-gray-600 mt-1">{notification.body}</p>
+                            <p className="font-medium text-sm">{notification?.title}</p>
+                            <p className="text-sm text-gray-600 mt-1">{notification?.body}</p>
                             <p className="text-xs text-gray-400 mt-1">
-                              {formatNotificationTime(notification.timestamp)}
+                              {formatNotificationTime(notification?.timestamp)}
                             </p>
                           </div>
                         </div>
