@@ -25,6 +25,7 @@ import { Loader2 } from "lucide-react";
 interface OrderCardProps extends Order {
   onMarkCompleted: (id: number) => void;
   activeTab: string;
+  isPs?: boolean;
 }
 
 export default function OrderCard({
@@ -42,6 +43,7 @@ export default function OrderCard({
   staff_name,
   onMarkCompleted,
   activeTab,
+  isPs=false
 }: OrderCardProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const queryClient = useQueryClient();
