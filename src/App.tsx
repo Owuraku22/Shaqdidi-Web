@@ -9,9 +9,6 @@ import {
   fetchAvailablePersonnels,
   fetchFoodJoints,
   fetchOrders,
-  FoodJoint,
-  Personnel,
-  signIn,
 } from "@/lib/api";
 import ErrorBoundary from "./error-page";
 import OrderHistory from "./components/permanent-staff-dashboard/order-history";

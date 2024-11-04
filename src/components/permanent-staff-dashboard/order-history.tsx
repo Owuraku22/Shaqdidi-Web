@@ -68,7 +68,6 @@ export default function OrderHistory() {
       if (ordered?.status) refetch();
       return ordered?.status.toLowerCase() === "pending";
     }) || [];
-    
   const previousOrders =
     allOrders.filter((ordered) => {
       if (ordered?.status) refetch();
@@ -78,15 +77,15 @@ export default function OrderHistory() {
       );
     }) || [];
 
-  const handleMarkCompleted = async (id: number) => {
+  const handleMarkCancelled = async (id: number) => {
     try {
-      await manageOrder(id, "Completed");
+      await manageOrder(id, "Cancelled");
       refetch();
     } catch (error: any) {
       toast({
         variant: "destructive",
         title: "Error",
-        description: error.message || "Failed to mark order as completed",
+        description: error.message || "Failed to mark order as cancelled",
       });
     }
   };
@@ -130,7 +129,7 @@ export default function OrderHistory() {
               {currentOrders?.map((order) => (
                 <OrderCard
                   {...order}
-                  onMarkCompleted={handleMarkCompleted}
+                  onMarkCompleted={handleMarkCancelled}
                   activeTab={activeTab}
                 />
               ))}
@@ -145,7 +144,7 @@ export default function OrderHistory() {
               {previousOrders.map((order) => (
                 <OrderCard
                   {...order}
-                  onMarkCompleted={handleMarkCompleted}
+                  onMarkCompleted={handleMarkCancelled}
                   activeTab={activeTab}
                 />
               ))}
