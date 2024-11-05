@@ -93,15 +93,16 @@ export function SignInForm() {
   useEffect(() => {
     if (!fbToken)
       toast({
-        variant: "destructive",
-        title: "Notification Error",
+        // variant: "destructive",
+        title: "Notification Request",
         description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
         action: (
           <ToastAction
-            altText="Try again"
+          className="border border-primary text-primary"
+            altText="Enable Notification"
             onClick={async () => await requestPermission()}
           >
-            Try again
+            Enable Notification
           </ToastAction>
         ),
       });

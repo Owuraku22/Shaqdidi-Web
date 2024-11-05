@@ -61,6 +61,7 @@ export default function OrderCard({
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    queryClient.invalidateQueries({ queryKey: ["orders"] });
   };
 
   const handleCloseModal = () => {

@@ -24,14 +24,7 @@ import {
 import { ProtectedRoute } from "./components/protected-route";
 import PersonnelError from "./personnel-error";
 
-export const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      staleTime: 1000 * 60 * 5, // 5 minutes
-      retry: 1,
-    },
-  },
-});
+export const queryClient = new QueryClient();
 
 const nspRoutes = [{ path: "/nsp", label: "Home" }];
 

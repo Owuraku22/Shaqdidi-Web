@@ -10,6 +10,8 @@ interface StoreState {
   fbToken: string | null;
   notifications: Notification[] | null; 
   setNotifications: (notification: Notification) => void
+  clearNotifications: () => void,
+  deleteNotification: (id: string) => void,
   setUser: (user: AuthResponse['user']) => void;
   setAuthToken: (token: string) => void;
   setFbToken: (token: string) => void;
@@ -27,6 +29,10 @@ export const useStoreData = create<StoreState>()(
       setNotifications: (notification) => set((state) => ({
         notifications: state.notifications ? [...state.notifications, notification] : [notification]
       })), 
+      clearNotifications: () => set({ notifications: null }),
+      deleteNotification: (id) => set((state) => ({
+        notifications: state.notifications?.filter((notification) => notification.id !== id)
+      })),
       setUser: (user) => set({ user, isAuth: true }),
       setAuthToken: (token) => set({ authToken: token }),
       setFbToken: (token) => set({ fbToken: token }),

@@ -40,7 +40,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
   const { user, fbToken } = useAuth();
   const { logout } = useStoreData();
   const { toast } = useToast();
-  const { setNotifications: setNotificationsStore, notifications: notificationsStore } = useStoreData()
+  const { setNotifications: setNotificationsStore, notifications: notificationsStore, clearNotifications, deleteNotification} = useStoreData()
   const [notifications, setNotifications] = useState<Notification[]>(notificationsStore!);
 
   useEffect(() => {
@@ -53,7 +53,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
         timestamp: Date.now(),
       };
       setNotificationsStore(newNotification);
-      setNotifications(prev => [newNotification, ...prev!]);
+      setNotifications(prev => prev !== null ? [newNotification, ...prev] : [newNotification]);
       queryClient.invalidateQueries({queryKey: queryKeys.orders.all})
       play();
       toast({
@@ -69,10 +69,12 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
 
   const handleClearAllNotifications = () => {
     setNotifications([]);
+    clearNotifications();
   };
 
   const handleDismissNotification = (id: string) => {
     setNotifications(prev => prev?.filter(notification => notification.id !== id));
+    deleteNotification(id)
   };
 
   const handleLogout = async () => {
@@ -137,7 +139,7 @@ export default function Header({ onMenuClick, title, psShowLogo = false }: Heade
                 )}
               </div>
               <div className="max-h-[400px] overflow-y-auto">
-                {notifications?.length === 0 ? (
+                {notifications?.length === 0 || notifications === null ? (
                   <p className="text-sm text-gray-500 p-4">No new notifications</p>
                 ) : (
                   <div className="divide-y">
