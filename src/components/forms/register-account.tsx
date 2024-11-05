@@ -30,6 +30,8 @@ import { toast } from "@/hooks/use-toast";
 import { useEffect } from "react";
 import { AuthResponse } from "@/lib/api";
 import { useStoreData } from "@/store/state";
+import { ToastAction } from "../ui/toast";
+import { requestPermission } from "../protected-route";
 
 const formSchema = z
   .object({
@@ -62,7 +64,7 @@ export default function RegisterAccount() {
   const navigate = useNavigate();
   const setUser = useStoreData((state) => state.setUser);
   const setAuthToken = useStoreData((state) => state.setAuthToken);
-  const { isAuth, user } = useStoreData();
+  const { isAuth, user, fbToken } = useStoreData();
 
   const form = useForm<z.infer<typeof formSchema1>>({
     resolver: zodResolver(formSchema),
@@ -78,14 +80,7 @@ export default function RegisterAccount() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log("Toast should appear");
     submit(values, { action: "/sign-up", method: "post" });
-    // toast({
-    //   title: "You have submitted th following values:",
-    //   description: (
-    //     <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-    //       <code className="text-white">{JSON.stringify(values, null, 2)}</code>
-    //     </pre>
-    //   ),
-    // });
+
   }
   useEffect(() => {
     if (actionData && "data" in actionData) {
@@ -117,6 +112,24 @@ export default function RegisterAccount() {
       }
     }
   }, [actionData, setUser, navigate, toast]);
+
+  useEffect(() => {
+    if (!fbToken)
+      toast({
+        // variant: "destructive",
+        title: "Notification Request",
+        description: `All notifications will be disabled, please enable notifications for Shaqdidi`,
+        action: (
+          <ToastAction
+          className="border border-primary hover:text-primary"
+            altText="Enable Notification"
+            onClick={async () => await requestPermission()}
+          >
+            Enable Notification
+          </ToastAction>
+        ),
+      });
+  }, []);
 
   // Redirect authenticated users trying to access sign-up or login pages
   if (

@@ -24,6 +24,7 @@ import { Input } from "../ui/input";
 import { useNavigate, useSubmit } from "react-router-dom";
 import { FoodJoint, PersonnelResponse } from "@/lib/api";
 import { useStoreData } from "@/store/state";
+import { queryClient } from "@/App";
 
 const formSchema = z.object({
   amount: z.string().min(2).max(50),
@@ -81,15 +82,12 @@ const FoodJoints = ({
       submit(jointData, { action: "/ps/order-history", method: "POST" });
       console.log("Ordered data: ", jointData);
       toast({
-        title: "You submitted the following values:",
-        description: (
-          <pre className="mt-2 w-[340px] rounded-md bg-slate-950 p-4">
-            <code className="text-white">
-              {JSON.stringify(jointData, null, 2)}
-            </code>
-          </pre>
-        ),
+        variant: "default",
+        title: "Success",
+        description: "Order Placed Successfully",
       });
+      queryClient.invalidateQueries({queryKey: ["orders", 'ord']});
+      setOpenModel!(false);
       // Navigate to OrderHistory page after submission
       navigate("/ps/order-history");
       setConfirm(false);

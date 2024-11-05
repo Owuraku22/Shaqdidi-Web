@@ -20,7 +20,6 @@ function setFbToken(token: string) {
 }
 
 export async function requestPermission() {
-  const permission = await Notification.requestPermission();
   if (!("Notification" in window)) {
     toast({
       variant: "destructive",
@@ -28,15 +27,18 @@ export async function requestPermission() {
       description: `This browser does not support notifications.`,
     });
 }
-  if (permission === "granted") {
+
+const permission = await Notification.requestPermission();
+console.log(permission);
+  if (permission === "granted" || permission === "default") {
     try {
       const token = await getToken(messaging, {
         vapidKey: VITE_APP_VAPID_KEY,
       });
-
+      if(!token) return null
       setFbToken(token);
       console.log("Firebase Token generated : ", token);
-
+      return token
     } catch (error: FirebaseError | any) {
       if (error instanceof FirebaseError) {
         toast({
@@ -46,6 +48,7 @@ export async function requestPermission() {
         });
       }
       console.log(error);
+      return null
     }
     
   } else if (permission === "denied") {
@@ -54,6 +57,25 @@ export async function requestPermission() {
       title: "Your Notifications Are Blocked",
       description: `All notifications will be disabled, please enable notifications for Shaqdidi. Refresh the page to try again`,
     });
+  }
+  try {
+    const token = await getToken(messaging, {
+      vapidKey: VITE_APP_VAPID_KEY,
+    });
+    if(!token) return null 
+    setFbToken(token);
+    console.log("Firebase Token generated : ", token);
+
+  } catch (error: FirebaseError | any) {
+    if (error instanceof FirebaseError) {
+      toast({
+        variant: "destructive",
+        title: "Notification Error",
+        description: error.message,
+      });
+    }
+    console.log(error);
+    return null
   }
 }
 
@@ -64,10 +86,17 @@ export function ProtectedRoute() {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (isAuth) {
-      requestPermission();
-    }
-  }, [isAuth]);
+    
+      requestPermission().then(async (v) => {
+        if (!v) return
+        const token = await getToken(messaging, {
+          vapidKey: VITE_APP_VAPID_KEY,
+        });
+        if(!token) return null 
+        setFbToken(token);
+      });
+
+  }, []);
 
   
 
@@ -88,7 +117,7 @@ export function ProtectedRoute() {
   if ((user?.account_type === 'staff' && isPersonnelRoute) || 
       (user?.account_type === 'personnel' && isStaffRoute)) {
     return (
-      <div className="flex items-center justify-center h-screen">
+      <div className="flex flex-col space-y-3 items-center justify-center h-screen">
         <Alert variant="destructive" className="max-w-md">
           <AlertTitle>Access Denied</AlertTitle>
           <AlertDescription>
