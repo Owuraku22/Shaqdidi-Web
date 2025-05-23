@@ -4,7 +4,7 @@ import { useStoreData } from "@/store/state";
 import { queryClient } from "@/App";
 
 export const api = axios.create({
-  baseURL: "https://didi.shaqexpress.com/v1/",
+  baseURL: "https://shaqdidi-main-eiwz0b.laravel.cloud/api",
   headers: {
     "Content-Type": "application/json",
     Accept: "application/json",
